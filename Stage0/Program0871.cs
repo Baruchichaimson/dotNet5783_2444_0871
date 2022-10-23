@@ -10,7 +10,7 @@ partial class Program
             Welcome0871();
             Welcome2444();
             Console.ReadKey();
-           
+           /////p
 
         }
         static partial void Welcome2444();
