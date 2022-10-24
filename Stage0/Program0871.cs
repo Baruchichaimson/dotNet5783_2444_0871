@@ -11,6 +11,9 @@ partial class Program
             Welcome2444();
             Console.ReadKey();
         }
+        /// <summary>
+        /// 
+        /// </summary>
 
         
         static partial void Welcome2444();
