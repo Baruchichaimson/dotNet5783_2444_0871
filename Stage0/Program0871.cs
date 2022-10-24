@@ -10,8 +10,6 @@ partial class Program
             Welcome0871();
             Welcome2444();
             Console.ReadKey();
-           
-            ////eee
         }
         static partial void Welcome2444();
         private static void Welcome0871()
