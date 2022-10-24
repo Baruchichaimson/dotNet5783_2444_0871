@@ -12,9 +12,7 @@ partial class Program
             Console.ReadKey();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        
         static partial void Welcome2444();
         private static void Welcome0871()
         {
