@@ -4,7 +4,7 @@ namespace  Program0871
 {
 partial class Program
     {
-
+        //////12345
         static void Main(string[] args)
         {
             Welcome0871();
