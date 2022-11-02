@@ -1,4 +1,5 @@
 ﻿using DO;
+using System.Diagnostics.Metrics;
 using System.Reflection.Metadata.Ecma335;
 using static DO.Enums;
 
@@ -124,16 +125,19 @@ internal static class DataSource
     }
     static void AddOrderItemsToStore()
     {
-
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < 20; i++)
         {
-            OrderItem newOrderItem = new OrderItem();
+            int RandomProduct = RandomNumber.Next(0, 10);
+            for (int j = 0; j < RandomNumber.Next(2,5); j++)
+            {
+                OrderItem newOrderItem = new OrderItem();
 
-            newOrderItem.ProductID = Config.GetOrderItem;
-            newOrderItem.OredrID = Config.GetOrder;
-            newOrderItem.Price =
-            newOrderItem.Amount = RandomNumber.Next(1, 5);
-            OrderItems[Config.NextOrderItem++] = newOrderItem;
+                newOrderItem.ProductID = Products[RandomProduct + j].Id;
+                newOrderItem.OredrID = Orders[i].Id;
+                newOrderItem.Price = Products[RandomProduct + j].Price;
+                newOrderItem.Amount = RandomNumber.Next(1, 7);
+                OrderItems[Config.NextOrderItem++] = newOrderItem;
+            }
         }
     }
     internal static class Config
