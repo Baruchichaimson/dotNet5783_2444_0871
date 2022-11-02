@@ -96,32 +96,43 @@ internal static class DataSource
           "bkrolman11@weather.com","eboice12@simplemachines.org","nlingner13@whitehouse.gov","dcochranef@sbwire.com" 
         };
 
-        DateTime RandomTime = new DateTime(RandomNumber.Next(2000,2023), RandomNumber.Next(1, 13), 
-            RandomNumber.Next(1, 31), RandomNumber.Next(1, 13), RandomNumber.Next(1, 61), RandomNumber.Next(1, 61));
+        
 
         for (int i = 0; i < 20; i++)
         {
+            DateTime RandomTime = new DateTime(DateTime.Now.Year, RandomNumber.Next(1, DateTime.Now.Month),
+            RandomNumber.Next(1, DateTime.Now.Day), RandomNumber.Next(1, 13), RandomNumber.Next(1, 61), RandomNumber.Next(1, 61));
+            RandomTime.AddMonths(-1);
+
             Order newOrder = new Order();
 
-            newOrder.Id = RandomNumber.Next(100000, 999999);
+            newOrder.Id = Config.GetOrder;
             newOrder.CustomerName = costomername[RandomNumber.Next(0, 40)];
             newOrder.CustomerAdress = costomeraddress[RandomNumber.Next(0, 40)];
             newOrder.CustomerEmail = costomeremail[RandomNumber.Next(0, 40)];
             newOrder.OrderDate = RandomTime;
-            //newOrder.ShipDate.ToString(
-            // newOrder.DeliveryrDate.ToString(
+            if (i < 16)
+                newOrder.ShipDate = newOrder.OrderDate.Add(new TimeSpan(RandomNumber.Next(2), 0, 0, 0));
+            else
+                newOrder.ShipDate = DateTime.MinValue;
+            if(i < 12)
+                newOrder.DeliveryrDate = newOrder.ShipDate.Add(new TimeSpan(RandomNumber.Next(2), 0, 0, 0));
+            else
+                newOrder.DeliveryrDate = DateTime.MinValue;
             Orders[Config.NextOrder++] = newOrder;
         }
     }
     static void AddOrderItemsToStore()
     {
+
         for (int i = 0; i < 40; i++)
         {
             OrderItem newOrderItem = new OrderItem();
-            newOrderItem.ProductID = RandomNumber.Next(100000, 999999);
-            //newOrderItem.OredrID = 
-            //newOrderItem.Price = 
-            // newOrderItem.Amount =
+
+            newOrderItem.ProductID = Config.GetOrderItem;
+            newOrderItem.OredrID = Config.GetOrder;
+            newOrderItem.Price =
+            newOrderItem.Amount = RandomNumber.Next(1, 5);
             OrderItems[Config.NextOrderItem++] = newOrderItem;
         }
     }
