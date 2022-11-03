@@ -7,43 +7,53 @@ using static DO.Enums;
 namespace Dal;
 internal static class DataSource
 {
-    static public readonly Random RandomNumber = new Random(DateTime.Now.Millisecond);
-    internal static Product[] Products = new Product[50];
+    static public readonly Random RandomNumber = new Random(DateTime.Now.Millisecond); ///initialization random object.
+
+    internal static Product[] Products = new Product[50];        ///initialization three arrays for the three entities.
     internal static Order[] Orders = new Order[100];
     internal static OrderItem[] OrderItems = new OrderItem[200];
 
-    private static void s_Initialize()
+    private static void s_Initialize() ///function call to any function that holding the data of the entities.
     {
         AddProductToStore();
         AddOrderToStore();
         AddOrderItemsToStore();
     }
-    static DataSource()
+    static DataSource() ///call of the default constructor we have inn the class.
     {
         s_Initialize();
     }
 
-    static void AddProductToStore()
+    static void AddProductToStore() ///put products in the store.
     {
+        ///arrays for all the product ant array to one category etc.
         string[] CoffeMachines = new string[] { "PIXIE", "CITIZE", "ESSENZA", "ESSENZA_PLUSE", "ATELIER" };
         string[] Capsules = new string[] { "ARPEGGIO", "ROMA", "VOLLUTO", "RISTRETO", "SCURO" };
         string[] Accessories = new string[] { "COFFE_MUG", "VARSILO", "NOMAD_SMALL", "NOMAD_LARGE", "SHAKER" };
         string[] Forthers = new string[] { "BARISTA", "AROCHINO", "AROCHINO_2", "AROCHINO_3", "AROCHINO_4" };
         string[] Sweets = new string[] { "AMARETTI_COOKIES", "MILK_CHOOCOLATE", "MINI_COOKIES", "ORANGE_COOKIES", "DARK_CHOOCOLATE" };
 
-        int FivePrecentProduct = (int)(25 * 0.05);
-        int CounterIdProducts = 100000;
+        int FivePrecentProduct = (int)(25 * 0.05);///calculation the five precent of products. 
+        int CounterIdProducts = 100000; /// the first run number for the id product.
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)///run on the five category
         {
             Product NewProduct = new Product();
-            NewProduct.Categoryname = (CoffeeShop)i;
-            for (int j = 0; j < 5; j++)
+
+            NewProduct.Categoryname = (CoffeeShop)i; ///run on the enum of the five category.
+
+            for (int j = 0; j < 5; j++)              /// run on the 5 product from one category.
             {
-                NewProduct.Id = CounterIdProducts++;
-                NewProduct.Instock = FivePrecentProduct > 0 ? 0 : RandomNumber.Next(20, 50);
+                NewProduct.Id = CounterIdProducts++; ///the next run number for the id.
+
+            ///if the five precent number until bigger from zero that mean that not all the five precent
+            ///is allready zero in the stock so keep put zero in the stock of the product for now but if 
+            ///is allready zero so lest start to put number of stock to the products. 
+                NewProduct.Instock = FivePrecentProduct > 0 ? 0 : RandomNumber.Next(20, 50); 
+
                 NewProduct.Name = NewProduct.Categoryname switch
                 {
+                    ///put the product name in the order of the category. 
                     CoffeeShop.COFFE_MACHINES => CoffeMachines[j],
                     CoffeeShop.CAPSULES => Capsules[j],
                     CoffeeShop.ACCESSORIES => Accessories[j],
@@ -53,6 +63,7 @@ internal static class DataSource
                 };
                 NewProduct.Price = NewProduct.Categoryname switch
                 {
+                    ///put the product price in the order of the category. 
                     CoffeeShop.COFFE_MACHINES => RandomNumber.Next(500, 1500),
                     CoffeeShop.CAPSULES => RandomNumber.Next(30, 70),
                     CoffeeShop.ACCESSORIES => RandomNumber.Next(70, 90),
@@ -61,13 +72,14 @@ internal static class DataSource
                     _ => throw new ArgumentNullException("You didnt send right name")
                 };
 
-                FivePrecentProduct--;
-                Products[Config.NextProduct++] = NewProduct;
+                FivePrecentProduct--;///the five precent from product reduce one after we make one product to put in the store. 
+                Products[Config.NextProduct++] = NewProduct; ///put the new product in the store.
             }
         }
     }   
-    static void AddOrderToStore()
+    static void AddOrderToStore()  ///put orders in the store.
     {
+        ///arrays for all the names and emails and address of the people are make order.
         string[] costomername = new string[]
         { "Laurent Conklin", "Ariana Mohring", "Ilsa Humphrey", "Breanne Bursnell", "Alexandros Popping",
           "Orel Gerritsma", "Desiri Spreull", "Lewiss Duffer", "Frederique Crow", "Selena Forster",
@@ -99,33 +111,36 @@ internal static class DataSource
           "bkrolman11@weather.com","eboice12@simplemachines.org","nlingner13@whitehouse.gov","dcochranef@sbwire.com" 
         };
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 20; i++) ///until 20 orders.
         {
+            ///make new object for the random time for the date of the order we need.
             DateTime RandomTime = new DateTime(DateTime.Now.Year, RandomNumber.Next(1, DateTime.Now.Month),
             RandomNumber.Next(1, DateTime.Now.Day), RandomNumber.Next(1, 13), RandomNumber.Next(1, 61), RandomNumber.Next(1, 61));
-            RandomTime.AddMonths(-1);
+            RandomTime.AddMonths(-1); ///just to not make a problem with future time.
 
-            Order newOrder = new Order();
+            Order newOrder = new Order(); 
 
-            newOrder.Id = Config.GetOrder;
+            newOrder.Id = Config.GetOrder; ///id for the orders with the run number that we have in the function config.
             newOrder.CustomerName = costomername[RandomNumber.Next(0, 40)];
             newOrder.CustomerAdress = costomeraddress[RandomNumber.Next(0, 40)];
             newOrder.CustomerEmail = costomeremail[RandomNumber.Next(0, 40)];
             newOrder.OrderDate = RandomTime;
             if (i < 16)
-                newOrder.ShipDate = newOrder.OrderDate.Add(new TimeSpan(RandomNumber.Next(2), 0, 0, 0));
+                ///random number just we make him to be one ot two days after the random date we have.
+                newOrder.ShipDate = newOrder.OrderDate.Add(new TimeSpan(RandomNumber.Next(2), 0, 0, 0)); 
             else
                 newOrder.ShipDate = DateTime.MinValue;
             if(i < 12)
+                ///random number just we make him to be one ot two days after the random date we have.
                 newOrder.DeliveryrDate = newOrder.ShipDate.Add(new TimeSpan(RandomNumber.Next(2), 0, 0, 0));
             else
                 newOrder.DeliveryrDate = DateTime.MinValue;
-            Orders[Config.NextOrder++] = newOrder;
+            Orders[Config.NextOrder++] = newOrder; ///put the new order in the store.
         }
     }
     static void AddOrderItemsToStore()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 20; i++)  ///until 40 item product (minimum amount of item for one order is two.
         {
             int RandomProduct = RandomNumber.Next(0, 10);
             for (int j = 0; j < RandomNumber.Next(2,5); j++)
