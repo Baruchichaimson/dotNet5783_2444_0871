@@ -22,49 +22,50 @@ internal static class DataSource
     {
         s_Initialize();
     }
-   
+
     static void AddProductToStore()
     {
-        string[] CoffeMachines = new string[] { "PIXIE", "CITIZE", "ESSENZA", "ESSENZA_PLUSE" , "ATELIER"};
+        string[] CoffeMachines = new string[] { "PIXIE", "CITIZE", "ESSENZA", "ESSENZA_PLUSE", "ATELIER" };
         string[] Capsules = new string[] { "ARPEGGIO", "ROMA", "VOLLUTO", "RISTRETO", "SCURO" };
         string[] Accessories = new string[] { "COFFE_MUG", "VARSILO", "NOMAD_SMALL", "NOMAD_LARGE", "SHAKER" };
-        string[] Forthers = new string[] { "BARISTA", "AROCHINO", "AROCHINO_2", "AROCHINO_3" , "AROCHINO_4" };
-        string[] Sweets = new string[] { "AMARETTI_COOKIES", "MILK_CHOOCOLATE", "MINI_COOKIES", "ORANGE_COOKIES", "DARK_CHOOCOLATE"};
+        string[] Forthers = new string[] { "BARISTA", "AROCHINO", "AROCHINO_2", "AROCHINO_3", "AROCHINO_4" };
+        string[] Sweets = new string[] { "AMARETTI_COOKIES", "MILK_CHOOCOLATE", "MINI_COOKIES", "ORANGE_COOKIES", "DARK_CHOOCOLATE" };
 
         int FivePrecentProduct = (int)(25 * 0.05);
         int CounterIdProducts = 100000;
- 
+
         for (int i = 0; i < 5; i++)
         {
             Product NewProduct = new Product();
             NewProduct.Categoryname = (CoffeeShop)i;
-            for(int j = 0; j < 5; j++)
-            { 
+            for (int j = 0; j < 5; j++)
+            {
                 NewProduct.Id = CounterIdProducts++;
                 NewProduct.Instock = FivePrecentProduct > 0 ? 0 : RandomNumber.Next(20, 50);
                 NewProduct.Name = NewProduct.Categoryname switch
                 {
-                  CoffeeShop.COFFE_MACHINES => CoffeMachines[j],
-                  CoffeeShop.CAPSULES => Capsules[j],
-                  CoffeeShop.ACCESSORIES => Accessories[j],
-                  CoffeeShop.FROTHERS => Forthers[j],
-                  CoffeeShop.SWEETS => Sweets[j],
-                _ => throw new ArgumentNullException("You didnt send right name")
+                    CoffeeShop.COFFE_MACHINES => CoffeMachines[j],
+                    CoffeeShop.CAPSULES => Capsules[j],
+                    CoffeeShop.ACCESSORIES => Accessories[j],
+                    CoffeeShop.FROTHERS => Forthers[j],
+                    CoffeeShop.SWEETS => Sweets[j],
+                    _ => throw new ArgumentNullException("You didnt send right name")
                 };
-            NewProduct.Price = NewProduct.Categoryname switch
-            {
-                CoffeeShop.COFFE_MACHINES => RandomNumber.Next(500, 1500),
-                CoffeeShop.CAPSULES => RandomNumber.Next(30, 70),
-                CoffeeShop.ACCESSORIES => RandomNumber.Next(70, 90),
-                CoffeeShop.FROTHERS => RandomNumber.Next(60, 80),
-                CoffeeShop.SWEETS => RandomNumber.Next(20, 30),
-                _ => throw new ArgumentNullException("You didnt send right name")
-            };
+                NewProduct.Price = NewProduct.Categoryname switch
+                {
+                    CoffeeShop.COFFE_MACHINES => RandomNumber.Next(500, 1500),
+                    CoffeeShop.CAPSULES => RandomNumber.Next(30, 70),
+                    CoffeeShop.ACCESSORIES => RandomNumber.Next(70, 90),
+                    CoffeeShop.FROTHERS => RandomNumber.Next(60, 80),
+                    CoffeeShop.SWEETS => RandomNumber.Next(20, 30),
+                    _ => throw new ArgumentNullException("You didnt send right name")
+                };
 
-            FivePrecentProduct--;
-            Products[Config.NextProduct++] = NewProduct;
+                FivePrecentProduct--;
+                Products[Config.NextProduct++] = NewProduct;
+            }
         }
-    }
+    }   
     static void AddOrderToStore()
     {
         string[] costomername = new string[]
