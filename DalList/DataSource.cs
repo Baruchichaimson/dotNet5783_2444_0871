@@ -1,5 +1,6 @@
 ﻿using DO;
 using System.Diagnostics.Metrics;
+using System.Net.Http.Headers;
 using System.Reflection.Metadata.Ecma335;
 using static DO.Enums;
 
@@ -7,9 +8,9 @@ namespace Dal;
 internal static class DataSource
 {
     static public readonly Random RandomNumber = new Random(DateTime.Now.Millisecond);
-    static Product[] Products = new Product[50];
-    static Order[] Orders = new Order[100];
-    static OrderItem[] OrderItems = new OrderItem[200];
+    internal static Product[] Products = new Product[50];
+    internal static Order[] Orders = new Order[100];
+    internal static OrderItem[] OrderItems = new OrderItem[200];
 
     private static void s_Initialize()
     {
@@ -24,33 +25,33 @@ internal static class DataSource
    
     static void AddProductToStore()
     {
-        string[] CoffeMachines = new string[] { "PIXIE", "CITIZE", "ESSENZA", "ESSENZA_PLUSE" };
-        string[] Capsules = new string[] { "ARPEGGIO", "ROMA", "VOLLUTO" };
-        string[] Accessories = new string[] { "COFFE_MUG", "VARSILO" };
-        string[] Forthers = new string[] { "BARISTA", "AROCHINO" };
-        string[] Sweets = new string[] { "AMARETTI_COOKIES", "MILK_CHOOCOLATE" };
+        string[] CoffeMachines = new string[] { "PIXIE", "CITIZE", "ESSENZA", "ESSENZA_PLUSE" , "ATELIER"};
+        string[] Capsules = new string[] { "ARPEGGIO", "ROMA", "VOLLUTO", "RISTRETO", "SCURO" };
+        string[] Accessories = new string[] { "COFFE_MUG", "VARSILO", "NOMAD_SMALL", "NOMAD_LARGE", "SHAKER" };
+        string[] Forthers = new string[] { "BARISTA", "AROCHINO", "AROCHINO_2", "AROCHINO_3" , "AROCHINO_4" };
+        string[] Sweets = new string[] { "AMARETTI_COOKIES", "MILK_CHOOCOLATE", "MINI_COOKIES", "ORANGE_COOKIES", "DARK_CHOOCOLATE"};
 
-        int NumberOfProducts = 13;
-        int FivePrecentProduct = (int)(NumberOfProducts * 0.05);
-
-        for (int i = 0; i < NumberOfProducts; i++)
+        int FivePrecentProduct = (int)(25 * 0.05);
+        int CounterIdProducts = 100000;
+ 
+        for (int i = 0; i < 5; i++)
         {
-
-            Product newproduct = new Product();
-
-            newproduct.Id = RandomNumber.Next(100000, 999999);
-            newproduct.Categoryname = (CoffeeShop)RandomNumber.Next(0, 5);
-            newproduct.Instock = FivePrecentProduct > 0 ? 0 : RandomNumber.Next(20, 50);
-            newproduct.Name = newproduct.Categoryname switch
-            {
-                CoffeeShop.COFFE_MACHINES => CoffeMachines[RandomNumber.Next(1, 4)],
-                CoffeeShop.CAPSULES => Capsules[RandomNumber.Next(1, 3)],
-                CoffeeShop.ACCESSORIES => Accessories[RandomNumber.Next(1, 2)],
-                CoffeeShop.FROTHERS => Forthers[RandomNumber.Next(1, 2)],
-                CoffeeShop.SWEETS => Sweets[RandomNumber.Next(1, 2)],
+            Product NewProduct = new Product();
+            NewProduct.Categoryname = (CoffeeShop)i;
+            for(int j = 0; j < 5; j++)
+            { 
+                NewProduct.Id = CounterIdProducts++;
+                NewProduct.Instock = FivePrecentProduct > 0 ? 0 : RandomNumber.Next(20, 50);
+                NewProduct.Name = NewProduct.Categoryname switch
+                {
+                  CoffeeShop.COFFE_MACHINES => CoffeMachines[j],
+                  CoffeeShop.CAPSULES => Capsules[j],
+                  CoffeeShop.ACCESSORIES => Accessories[j],
+                  CoffeeShop.FROTHERS => Forthers[j],
+                  CoffeeShop.SWEETS => Sweets[j],
                 _ => throw new ArgumentNullException("You didnt send right name")
-            };
-            newproduct.Price = newproduct.Categoryname switch
+                };
+            NewProduct.Price = NewProduct.Categoryname switch
             {
                 CoffeeShop.COFFE_MACHINES => RandomNumber.Next(500, 1500),
                 CoffeeShop.CAPSULES => RandomNumber.Next(30, 70),
@@ -61,7 +62,7 @@ internal static class DataSource
             };
 
             FivePrecentProduct--;
-            Products[Config.NextProduct++] = newproduct;
+            Products[Config.NextProduct++] = NewProduct;
         }
     }
     static void AddOrderToStore()
@@ -97,8 +98,6 @@ internal static class DataSource
           "bkrolman11@weather.com","eboice12@simplemachines.org","nlingner13@whitehouse.gov","dcochranef@sbwire.com" 
         };
 
-        
-
         for (int i = 0; i < 20; i++)
         {
             DateTime RandomTime = new DateTime(DateTime.Now.Year, RandomNumber.Next(1, DateTime.Now.Month),
@@ -132,6 +131,7 @@ internal static class DataSource
             {
                 OrderItem newOrderItem = new OrderItem();
 
+                newOrderItem.Id = Config.GetOrderItem;
                 newOrderItem.ProductID = Products[RandomProduct + j].Id;
                 newOrderItem.OredrID = Orders[i].Id;
                 newOrderItem.Price = Products[RandomProduct + j].Price;
@@ -147,8 +147,8 @@ internal static class DataSource
         internal static int NextProduct = 0;
 
         private static int IdOrder = 100000;
-        internal static int GetOrder => NextOrder++;
+        internal static int GetOrder => IdOrder++;
         private static int IdOrderItem = 100000;
-        internal static int GetOrderItem => NextOrderItem++;
+        internal static int GetOrderItem => IdOrderItem++;
     }
 }
