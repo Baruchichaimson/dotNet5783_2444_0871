@@ -138,32 +138,33 @@ internal static class DataSource
             Orders[Config.NextOrder++] = newOrder; ///put the new order in the store.
         }
     }
-    static void AddOrderItemsToStore()
+    static void AddOrderItemsToStore() ///put orderitems in the store.
     {
-        for (int i = 0; i < 20; i++)  ///until 40 item product (minimum amount of item for one order is two.
+        for (int i = 0; i < 20; i++)  ///until 40 item product (minimum amount of item for one order is two).
         {
-            int RandomProduct = RandomNumber.Next(0, 10);
-            for (int j = 0; j < RandomNumber.Next(2,5); j++)
+            int RandomProduct = RandomNumber.Next(0, 10); 
+            for (int j = 0; j < RandomNumber.Next(2,5); j++) //ranum amount of product between 2 and 5. 
             {
                 OrderItem newOrderItem = new OrderItem();
 
-                newOrderItem.Id = Config.GetOrderItem;
-                newOrderItem.ProductID = Products[RandomProduct + j].Id;
-                newOrderItem.OredrID = Orders[i].Id;
-                newOrderItem.Price = Products[RandomProduct + j].Price;
-                newOrderItem.Amount = RandomNumber.Next(1, 7);
-                OrderItems[Config.NextOrderItem++] = newOrderItem;
+                newOrderItem.Id = Config.GetOrderItem; //the run number that we have to the orderitem we put in the id of the order item. 
+                newOrderItem.ProductID = Products[RandomProduct + j].Id; //put id product from the array product in the id.
+                newOrderItem.OredrID = Orders[i].Id; //put id order from the array order in the id.
+                newOrderItem.Price = Products[RandomProduct + j].Price; //put price to the itemorder from the array product in the price.
+                newOrderItem.Amount = RandomNumber.Next(1, 7); //we can order from one product just between 1 and 6.
+                OrderItems[Config.NextOrderItem++] = newOrderItem; //up the run number for the order item.
             }
         }
     }
-    internal static class Config
+    internal static class Config // we make class config for all the run number we have here in the data source. 
     {
         internal static int NextOrder = 0;
         internal static int NextOrderItem = 0;
         internal static int NextProduct = 0;
 
+        //run number that start from number with 6 digits for the id number.
         private static int IdOrder = 100000;
-        internal static int GetOrder => IdOrder++;
+        internal static int GetOrder => IdOrder++; 
         private static int IdOrderItem = 100000;
         internal static int GetOrderItem => IdOrderItem++;
     }
