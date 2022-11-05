@@ -12,7 +12,10 @@ public class DalOrder
             if (NewOrder.Id == DataSource.Orders[i].Id)
                 throw new Exception("the id is allready exist");
         }
-        DataSource.Orders[DataSource.Config.NextOrder++] = NewOrder;
+        if (DataSource.Config.NextOrder == 101)
+            throw new Exception("the storge of order is full");
+        else
+            DataSource.Orders[DataSource.Config.NextOrder++] = NewOrder;
 
         return NewOrder.Id;
     }
@@ -22,10 +25,15 @@ public class DalOrder
         {
             if (IDToDelete == DataSource.Orders[i].Id)
             {
-                Order Temp = DataSource.Orders[i];
-                DataSource.Orders[i] = DataSource.Orders[DataSource.Config.NextOrder - 1];
-                DataSource.Orders[DataSource.Config.NextOrder - 1] = Temp;
-                DataSource.Config.NextOrder--;
+                if (DataSource.Config.NextOrder == 0)
+                    throw new Exception("the storge of order is empty");
+                else
+                {
+                    Order Temp = DataSource.Orders[i];
+                    DataSource.Orders[i] = DataSource.Orders[DataSource.Config.NextOrder - 1];
+                    DataSource.Orders[DataSource.Config.NextOrder - 1] = Temp;
+                    DataSource.Config.NextOrder--;
+                }
                 break;
             }
         }

@@ -142,7 +142,7 @@ internal static class DataSource
     {
         for (int i = 0; i < 20; i++)  ///until 40 item product (minimum amount of item for one order is two).
         {
-            int RandomProduct = RandomNumber.Next(0, 10); 
+            int RandomProduct = RandomNumber.Next(0, 21); 
             for (int j = 0; j < RandomNumber.Next(2,5); j++) //ranum amount of product between 2 and 5. 
             {
                 OrderItem newOrderItem = new OrderItem();

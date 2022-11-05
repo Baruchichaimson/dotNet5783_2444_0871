@@ -11,7 +11,10 @@ public class DalProduct
             if (NewProduct.Id == DataSource.Products[i].Id)
                 throw new Exception("the id is allready exist");
         }
-        DataSource.Products[DataSource.Config.NextProduct++] = NewProduct;
+        if (DataSource.Config.NextProduct == 51)
+            throw new Exception("the storge of proudct is full");
+        else
+            DataSource.Products[DataSource.Config.NextProduct++] = NewProduct;
 
         return NewProduct.Id;
     }
@@ -21,10 +24,15 @@ public class DalProduct
         {
             if (IDToDelete == DataSource.Products[i].Id)
             {
-                Product Temp = DataSource.Products[i];
-                DataSource.Products[i] = DataSource.Products[DataSource.Config.NextProduct - 1];
-                DataSource.Products[DataSource.Config.NextProduct - 1] = Temp;
-                DataSource.Config.NextProduct--;
+                if (DataSource.Config.NextProduct == 0)
+                    throw new Exception("the storge of proudct is empty");
+                else
+                {
+                    Product Temp = DataSource.Products[i];
+                    DataSource.Products[i] = DataSource.Products[DataSource.Config.NextProduct - 1];
+                    DataSource.Products[DataSource.Config.NextProduct - 1] = Temp;
+                    DataSource.Config.NextProduct--;
+                }
                 break;
             }
         }

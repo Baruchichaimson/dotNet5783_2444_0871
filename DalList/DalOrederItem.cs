@@ -1,8 +1,5 @@
-﻿
-using DO;
-
+﻿using DO;
 namespace Dal;
-
 public class DalOrederItem
 {
     public static int AddOrderItem(OrderItem NewOrderItem)
@@ -12,7 +9,10 @@ public class DalOrederItem
             if (NewOrderItem.Id == DataSource.OrderItems[i].Id)
                 throw new Exception("the id is allready exist");
         }
-        DataSource.OrderItems[DataSource.Config.NextOrderItem++] = NewOrderItem;
+        if (DataSource.Config.NextOrderItem == 201)
+            throw new Exception("the storge of orderitems is full");
+        else
+            DataSource.OrderItems[DataSource.Config.NextOrderItem++] = NewOrderItem;
 
         return NewOrderItem.Id;
     }
@@ -22,10 +22,15 @@ public class DalOrederItem
         {
             if (IDToDelete == DataSource.Orders[i].Id)
             {
-                OrderItem Temp = DataSource.OrderItems[i];
-                DataSource.OrderItems[i] = DataSource.OrderItems[DataSource.Config.NextOrderItem - 1];
-                DataSource.OrderItems[DataSource.Config.NextOrderItem - 1] = Temp;
-                DataSource.Config.NextOrderItem--;
+                if (DataSource.Config.NextOrderItem == 0)
+                    throw new Exception("the storge of orderitems is empty");
+                else
+                {
+                    OrderItem Temp = DataSource.OrderItems[i];
+                    DataSource.OrderItems[i] = DataSource.OrderItems[DataSource.Config.NextOrderItem - 1];
+                    DataSource.OrderItems[DataSource.Config.NextOrderItem - 1] = Temp;
+                    DataSource.Config.NextOrderItem--;
+                }
                 break;
             }
         }
