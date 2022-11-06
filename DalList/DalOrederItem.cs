@@ -2,14 +2,27 @@
 namespace Dal;
 public class DalOrederItem
 {
+   
     public static int AddOrderItem(OrderItem NewOrderItem)
     {
-        for (int i = 0; i < DataSource.NextOrderItem; i++)
+        NewOrderItem.Id = DataSource.GetOrderItem;
+        bool exist = false;
+        for(int i = 0; i < DataSource.Products.Length; i++)
         {
-            if (NewOrderItem.Id == DataSource.OrderItems[i].Id)
-                throw new Exception("the id is allready exist");
+            if(NewOrderItem.ProductID == DataSource.Products[i].Id)
+            {
+                exist = true; break;
+            }
         }
-        if (DataSource.NextOrderItem == 201)
+        if (!exist)
+        {
+            throw new Exception("Product id does not exist");
+        }
+        if(OrderItemsListByOrder(NewOrderItem.OredrID).Length >= 4)
+        {
+            throw new Exception("too much items in order");
+        }
+        if (DataSource.NextOrderItem == 200)
             throw new Exception("the storge of orderitems is full");
         else
             DataSource.OrderItems[DataSource.NextOrderItem++] = NewOrderItem;
@@ -18,19 +31,17 @@ public class DalOrederItem
     }
     public static void DeleteOrderItem(int IDToDelete)
     {
+        if (DataSource.NextOrderItem == 0)
+            throw new Exception("the storge of orderitems is empty");
+
         for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
             if (IDToDelete == DataSource.Orders[i].Id)
             {
-                if (DataSource.NextOrderItem == 0)
-                    throw new Exception("the storge of orderitems is empty");
-                else
-                {
                     OrderItem Temp = DataSource.OrderItems[i];
                     DataSource.OrderItems[i] = DataSource.OrderItems[DataSource.NextOrderItem - 1];
                     DataSource.OrderItems[DataSource.NextOrderItem - 1] = Temp;
                     DataSource.NextOrderItem--;
-                }
                 break;
             }
         }
@@ -67,7 +78,7 @@ public class DalOrederItem
         }
         return orderItemsList;
     }
-    public static OrderItem GetOrderItem(int OrderId, int ProductId)
+    public static OrderItem GetOrderItemByOrderAndProductId(int OrderId, int ProductId)
     {
         for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
@@ -78,7 +89,7 @@ public class DalOrederItem
         }
         throw new Exception("the order item is not exist");
     }
-    public static OrderItem[] OrderItemsList(int OrderId)
+    public static OrderItem[] OrderItemsListByOrder(int OrderId)
     {
         
         int CounterOfItems = 0;

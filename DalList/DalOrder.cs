@@ -5,14 +5,11 @@ namespace Dal;
 
 public class DalOrder
 {
+   
     public static int AddOrder(Order NewOrder)
     {
-        for (int i = 0; i < DataSource.NextOrder; i++)
-        {
-            if (NewOrder.Id == DataSource.Orders[i].Id)
-                throw new Exception("the id is allready exist");
-        }
-        if (DataSource.NextOrder == 101)
+        NewOrder.Id = DataSource.GetOrder;
+        if (DataSource.NextOrder == 100)
             throw new Exception("the storge of order is full");
         else
             DataSource.Orders[DataSource.NextOrder++] = NewOrder;

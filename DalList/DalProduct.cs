@@ -4,16 +4,20 @@ namespace Dal;
 
 public class DalProduct
 {
+   
     public static int AddProduct(Product NewProduct)
     {
+       
         for (int i = 0; i < DataSource.NextProduct; i++)
         {
+           
             if (NewProduct.Id == DataSource.Products[i].Id)
-                throw new Exception("the id is allready exist");
+            throw new Exception("the id is allready exist");
         }
-        if (DataSource.NextProduct == 51)
+        if (DataSource.NextProduct == 50)
             throw new Exception("the storge of proudct is full");
         else
+           
             DataSource.Products[DataSource.NextProduct++] = NewProduct;
 
         return NewProduct.Id;
@@ -62,7 +66,10 @@ public class DalProduct
     }
     public static Product[] ProductList()
     {
+        Console.WriteLine("1");
+        Console.WriteLine(DataSource.NextProduct);
         Product[] productsList = new Product[DataSource.NextProduct];
+        Console.WriteLine("2");
         for(int i = 0; i < DataSource.NextProduct; i++)
         {
             productsList[i] = DataSource.Products[i];

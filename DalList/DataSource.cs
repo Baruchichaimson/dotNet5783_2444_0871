@@ -61,25 +61,28 @@ internal static class DataSource
                     CoffeeShop.SWEETS => Sweets[j],
                     _ => throw new ArgumentNullException("You didnt send right name")
                 };
-                NewProduct.Price = NewProduct.Categoryname switch
-                {
-                    ///put the product price in the order of the category. 
-                    CoffeeShop.COFFE_MACHINES => RandomNumber.Next(500, 1500),
-                    CoffeeShop.CAPSULES => RandomNumber.Next(30, 70),
-                    CoffeeShop.ACCESSORIES => RandomNumber.Next(70, 90),
-                    CoffeeShop.FROTHERS => RandomNumber.Next(60, 80),
-                    CoffeeShop.SWEETS => RandomNumber.Next(20, 30),
-                    _ => throw new ArgumentNullException("You didnt send right name")
-                };
+                NewProduct.Price = RandomNumber.Next(100, 300);
+                //    NewProduct.Categoryname switch
+                //    {
+                //    / put the product price in the order of the category.
+                //    CoffeeShop.COFFE_MACHINES => RandomNumber.Next(500, 1500),
+                //    CoffeeShop.CAPSULES => RandomNumber.Next(30, 70),
+                //    CoffeeShop.ACCESSORIES => RandomNumber.Next(70, 90),
+                //    CoffeeShop.FROTHERS => RandomNumber.Next(60, 80),
+                //    CoffeeShop.SWEETS => RandomNumber.Next(20, 30),
+                //    _ => throw new ArgumentNullException("You didnt send right name")
+                //};
 
-                FivePrecentProduct--;///the five precent from product reduce one after we make one product to put in the store. 
+            FivePrecentProduct--;///the five precent from product reduce one after we make one product to put in the store. 
                 Products[NextProduct++] = NewProduct; ///put the new product in the store.
             }
         }
     }   
     static void AddOrderToStore()  ///put orders in the store.
     {
-        ///arrays for all the names and emails and address of the people are make order.
+        ///arrays for all the names and emails
+        ///
+        /// and address of the people are make order.
         string[] costomername = new string[]
         { "Laurent Conklin", "Ariana Mohring", "Ilsa Humphrey", "Breanne Bursnell", "Alexandros Popping",
           "Orel Gerritsma", "Desiri Spreull", "Lewiss Duffer", "Frederique Crow", "Selena Forster",
@@ -159,14 +162,14 @@ internal static class DataSource
     // we make class config for all the run number we have here in the data source. 
     //internal static class Config 
     //{
-    internal static int NextOrder = 0;
+        internal static int NextOrder = 0;
         internal static int NextOrderItem = 0;
         internal static int NextProduct = 0;
 
         //run number that start from number with 6 digits for the id number.
-        private static int IdOrder = 100000;
+        private static int IdOrder = 1;
         internal static int GetOrder => IdOrder++; 
-        private static int IdOrderItem = 100000;
+        private static int IdOrderItem = 1;
         internal static int GetOrderItem => IdOrderItem++;
     //}
 }
