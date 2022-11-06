@@ -80,11 +80,20 @@ public class DalOrederItem
     }
     public static OrderItem[] OrderItemsList(int OrderId)
     {
-        OrderItem[] OrderItemInOrder = new OrderItem[4];
+        
         int CounterOfItems = 0;
         for (int i = 0; i < DataSource.Config.NextOrderItem; i++)
         {
            if(OrderId == DataSource.OrderItems[i].OredrID)
+            {
+                CounterOfItems++;
+            }
+        }
+        OrderItem[] OrderItemInOrder = new OrderItem[CounterOfItems];
+        CounterOfItems = 0;
+        for (int i = 0; i < DataSource.Config.NextOrderItem; i++)
+        {
+            if (OrderId == DataSource.OrderItems[i].OredrID)
             {
                 OrderItemInOrder[CounterOfItems++] = DataSource.OrderItems[i];
             }
