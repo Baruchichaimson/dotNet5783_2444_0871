@@ -73,7 +73,7 @@ internal static class DataSource
                 };
 
                 FivePrecentProduct--;///the five precent from product reduce one after we make one product to put in the store. 
-                Products[Config.NextProduct++] = NewProduct; ///put the new product in the store.
+                Products[NextProduct++] = NewProduct; ///put the new product in the store.
             }
         }
     }   
@@ -120,7 +120,7 @@ internal static class DataSource
 
             Order newOrder = new Order(); 
 
-            newOrder.Id = Config.GetOrder; ///id for the orders with the run number that we have in the function config.
+            newOrder.Id = GetOrder; ///id for the orders with the run number that we have in the function config.
             newOrder.CustomerName = costomername[RandomNumber.Next(0, 40)];
             newOrder.CustomerAdress = costomeraddress[RandomNumber.Next(0, 40)];
             newOrder.CustomerEmail = costomeremail[RandomNumber.Next(0, 40)];
@@ -135,7 +135,7 @@ internal static class DataSource
                 newOrder.DeliveryrDate = newOrder.ShipDate.Add(new TimeSpan(RandomNumber.Next(2), 0, 0, 0));
             else
                 newOrder.DeliveryrDate = DateTime.MinValue;
-            Orders[Config.NextOrder++] = newOrder; ///put the new order in the store.
+            Orders[NextOrder++] = newOrder; ///put the new order in the store.
         }
     }
     static void AddOrderItemsToStore() ///put orderitems in the store.
@@ -147,18 +147,19 @@ internal static class DataSource
             {
                 OrderItem newOrderItem = new OrderItem();
 
-                newOrderItem.Id = Config.GetOrderItem; //the run number that we have to the orderitem we put in the id of the order item. 
+                newOrderItem.Id = GetOrderItem; //the run number that we have to the orderitem we put in the id of the order item. 
                 newOrderItem.ProductID = Products[RandomProduct + j].Id; //put id product from the array product in the id.
                 newOrderItem.OredrID = Orders[i].Id; //put id order from the array order in the id.
                 newOrderItem.Price = Products[RandomProduct + j].Price; //put price to the itemorder from the array product in the price.
                 newOrderItem.Amount = RandomNumber.Next(1, 7); //we can order from one product just between 1 and 6.
-                OrderItems[Config.NextOrderItem++] = newOrderItem; //up the run number for the order item.
+                OrderItems[NextOrderItem++] = newOrderItem; //up the run number for the order item.
             }
         }
     }
-    internal static class Config // we make class config for all the run number we have here in the data source. 
-    {
-        internal static int NextOrder = 0;
+    // we make class config for all the run number we have here in the data source. 
+    //internal static class Config 
+    //{
+    internal static int NextOrder = 0;
         internal static int NextOrderItem = 0;
         internal static int NextProduct = 0;
 
@@ -167,5 +168,5 @@ internal static class DataSource
         internal static int GetOrder => IdOrder++; 
         private static int IdOrderItem = 100000;
         internal static int GetOrderItem => IdOrderItem++;
-    }
+    //}
 }

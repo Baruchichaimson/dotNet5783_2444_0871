@@ -7,40 +7,40 @@ public class DalOrder
 {
     public static int AddOrder(Order NewOrder)
     {
-        for (int i = 0; i < DataSource.Config.NextOrder; i++)
+        for (int i = 0; i < DataSource.NextOrder; i++)
         {
             if (NewOrder.Id == DataSource.Orders[i].Id)
                 throw new Exception("the id is allready exist");
         }
-        if (DataSource.Config.NextOrder == 101)
+        if (DataSource.NextOrder == 101)
             throw new Exception("the storge of order is full");
         else
-            DataSource.Orders[DataSource.Config.NextOrder++] = NewOrder;
+            DataSource.Orders[DataSource.NextOrder++] = NewOrder;
 
         return NewOrder.Id;
     }
     public static void DeleteOrder(int IDToDelete)
     {
-        for (int i = 0; i < DataSource.Config.NextOrder; i++)
+        for (int i = 0; i < DataSource.NextOrder; i++)
         {
             if (IDToDelete == DataSource.Orders[i].Id)
             {
-                if (DataSource.Config.NextOrder == 0)
+                if (DataSource.NextOrder == 0)
                     throw new Exception("the storge of order is empty");
                 else
                 {
                     Order Temp = DataSource.Orders[i];
-                    DataSource.Orders[i] = DataSource.Orders[DataSource.Config.NextOrder - 1];
-                    DataSource.Orders[DataSource.Config.NextOrder - 1] = Temp;
-                    DataSource.Config.NextOrder--;
+                    DataSource.Orders[i] = DataSource.Orders[DataSource.NextOrder - 1];
+                    DataSource.Orders[DataSource.NextOrder - 1] = Temp;
+                    DataSource.NextOrder--;
                 }
                 break;
             }
         }
     }
-    public static void UpdateProduct(Order newOrder)
+    public static void UpdateOrder(Order newOrder)
     {
-        for (int i = 0; i < DataSource.Config.NextOrder; i++)
+        for (int i = 0; i < DataSource.NextOrder; i++)
         {
             if (newOrder.Id == DataSource.Orders[i].Id)
             {
@@ -52,7 +52,7 @@ public class DalOrder
     }
     public static Order GetOrder(int IDToGet)
     {
-        for (int i = 0; i < DataSource.Config.NextOrder; i++)
+        for (int i = 0; i < DataSource.NextOrder; i++)
         {
             if (IDToGet == DataSource.Orders[i].Id)
             {
@@ -63,8 +63,8 @@ public class DalOrder
     }
     public static Order[] OrderList()
     {
-        Order[] orderList = new Order[DataSource.Config.NextOrder];
-        for (int i = 0; i < DataSource.Config.NextOrder; i++)
+        Order[] orderList = new Order[DataSource.NextOrder];
+        for (int i = 0; i < DataSource.NextOrder; i++)
         {
             orderList[i] = DataSource.Orders[i];
         }

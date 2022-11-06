@@ -4,32 +4,32 @@ public class DalOrederItem
 {
     public static int AddOrderItem(OrderItem NewOrderItem)
     {
-        for (int i = 0; i < DataSource.Config.NextOrderItem; i++)
+        for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
             if (NewOrderItem.Id == DataSource.OrderItems[i].Id)
                 throw new Exception("the id is allready exist");
         }
-        if (DataSource.Config.NextOrderItem == 201)
+        if (DataSource.NextOrderItem == 201)
             throw new Exception("the storge of orderitems is full");
         else
-            DataSource.OrderItems[DataSource.Config.NextOrderItem++] = NewOrderItem;
+            DataSource.OrderItems[DataSource.NextOrderItem++] = NewOrderItem;
 
         return NewOrderItem.Id;
     }
     public static void DeleteOrderItem(int IDToDelete)
     {
-        for (int i = 0; i < DataSource.Config.NextOrderItem; i++)
+        for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
             if (IDToDelete == DataSource.Orders[i].Id)
             {
-                if (DataSource.Config.NextOrderItem == 0)
+                if (DataSource.NextOrderItem == 0)
                     throw new Exception("the storge of orderitems is empty");
                 else
                 {
                     OrderItem Temp = DataSource.OrderItems[i];
-                    DataSource.OrderItems[i] = DataSource.OrderItems[DataSource.Config.NextOrderItem - 1];
-                    DataSource.OrderItems[DataSource.Config.NextOrderItem - 1] = Temp;
-                    DataSource.Config.NextOrderItem--;
+                    DataSource.OrderItems[i] = DataSource.OrderItems[DataSource.NextOrderItem - 1];
+                    DataSource.OrderItems[DataSource.NextOrderItem - 1] = Temp;
+                    DataSource.NextOrderItem--;
                 }
                 break;
             }
@@ -37,7 +37,7 @@ public class DalOrederItem
     }
     public static void UpdateOrderItem(OrderItem newOrderItem)
     {
-        for (int i = 0; i < DataSource.Config.NextOrderItem; i++)
+        for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
             if (newOrderItem.Id == DataSource.OrderItems[i].Id)
             {
@@ -49,7 +49,7 @@ public class DalOrederItem
     }
     public static OrderItem GetOrderItem(int IDToGet)
     {
-        for (int i = 0; i < DataSource.Config.NextOrderItem; i++)
+        for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
             if (IDToGet == DataSource.OrderItems[i].Id)
             {
@@ -60,8 +60,8 @@ public class DalOrederItem
     }
     public static OrderItem[] OrderItemsList()
     {
-        OrderItem[] orderItemsList = new OrderItem[DataSource.Config.NextOrderItem];
-        for (int i = 0; i < DataSource.Config.NextOrderItem; i++)
+        OrderItem[] orderItemsList = new OrderItem[DataSource.NextOrderItem];
+        for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
             orderItemsList[i] = DataSource.OrderItems[i];
         }
@@ -69,7 +69,7 @@ public class DalOrederItem
     }
     public static OrderItem GetOrderItem(int OrderId, int ProductId)
     {
-        for (int i = 0; i < DataSource.Config.NextOrderItem; i++)
+        for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
             if(OrderId == DataSource.OrderItems[i].OredrID && ProductId == DataSource.OrderItems[i].ProductID)
             {
@@ -82,7 +82,7 @@ public class DalOrederItem
     {
         
         int CounterOfItems = 0;
-        for (int i = 0; i < DataSource.Config.NextOrderItem; i++)
+        for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
            if(OrderId == DataSource.OrderItems[i].OredrID)
             {
@@ -91,7 +91,7 @@ public class DalOrederItem
         }
         OrderItem[] OrderItemInOrder = new OrderItem[CounterOfItems];
         CounterOfItems = 0;
-        for (int i = 0; i < DataSource.Config.NextOrderItem; i++)
+        for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
             if (OrderId == DataSource.OrderItems[i].OredrID)
             {

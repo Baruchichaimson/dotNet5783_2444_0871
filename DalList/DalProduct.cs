@@ -6,32 +6,32 @@ public class DalProduct
 {
     public static int AddProduct(Product NewProduct)
     {
-        for (int i = 0; i < DataSource.Config.NextProduct; i++)
+        for (int i = 0; i < DataSource.NextProduct; i++)
         {
             if (NewProduct.Id == DataSource.Products[i].Id)
                 throw new Exception("the id is allready exist");
         }
-        if (DataSource.Config.NextProduct == 51)
+        if (DataSource.NextProduct == 51)
             throw new Exception("the storge of proudct is full");
         else
-            DataSource.Products[DataSource.Config.NextProduct++] = NewProduct;
+            DataSource.Products[DataSource.NextProduct++] = NewProduct;
 
         return NewProduct.Id;
     }
     public static void DeleteProduct(int IDToDelete)
     {
-        for (int i = 0; i < DataSource.Config.NextProduct; i++)
+        for (int i = 0; i < DataSource.NextProduct; i++)
         {
             if (IDToDelete == DataSource.Products[i].Id)
             {
-                if (DataSource.Config.NextProduct == 0)
+                if (DataSource.NextProduct == 0)
                     throw new Exception("the storge of proudct is empty");
                 else
                 {
                     Product Temp = DataSource.Products[i];
-                    DataSource.Products[i] = DataSource.Products[DataSource.Config.NextProduct - 1];
-                    DataSource.Products[DataSource.Config.NextProduct - 1] = Temp;
-                    DataSource.Config.NextProduct--;
+                    DataSource.Products[i] = DataSource.Products[DataSource.NextProduct - 1];
+                    DataSource.Products[DataSource.NextProduct - 1] = Temp;
+                    DataSource.NextProduct--;
                 }
                 break;
             }
@@ -39,7 +39,7 @@ public class DalProduct
     }
     public static void UpdateProduct(Product newproduct)
     {
-        for (int i = 0; i < DataSource.Config.NextProduct; i++)
+        for (int i = 0; i < DataSource.NextProduct; i++)
         {
             if (newproduct.Id == DataSource.Products[i].Id)
             {
@@ -51,7 +51,7 @@ public class DalProduct
     }
     public static Product GetProduct(int IDToGet)
     {
-        for (int i = 0; i < DataSource.Config.NextProduct; i++)
+        for (int i = 0; i < DataSource.NextProduct; i++)
         {
             if (IDToGet == DataSource.Products[i].Id)
             {
@@ -62,8 +62,8 @@ public class DalProduct
     }
     public static Product[] ProductList()
     {
-        Product[] productsList = new Product[DataSource.Config.NextProduct];
-        for(int i = 0; i < DataSource.Config.NextProduct; i++)
+        Product[] productsList = new Product[DataSource.NextProduct];
+        for(int i = 0; i < DataSource.NextProduct; i++)
         {
             productsList[i] = DataSource.Products[i];
         }
