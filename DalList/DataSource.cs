@@ -118,7 +118,7 @@ internal static class DataSource
         {
             ///make new object for the random time for the date of the order we need.
             DateTime RandomTime = new DateTime(DateTime.Now.Year, RandomNumber.Next(1, DateTime.Now.Month),
-            RandomNumber.Next(1, DateTime.Now.Day), RandomNumber.Next(1, 13), RandomNumber.Next(1, 61), RandomNumber.Next(1, 61));
+            RandomNumber.Next(1, DateTime.Now.Day), RandomNumber.Next(0, 24), RandomNumber.Next(0, 60), RandomNumber.Next(0, 60));
             RandomTime.AddMonths(-1); ///just to not make a problem with future time.
 
             Order newOrder = new Order(); 
@@ -135,7 +135,7 @@ internal static class DataSource
                 newOrder.ShipDate = DateTime.MinValue;
             if(i < 12)
                 ///random number just we make him to be one ot two days after the random date we have.
-                newOrder.DeliveryrDate = newOrder.ShipDate.Add(new TimeSpan(RandomNumber.Next(2), 0, 0, 0));
+                newOrder.DeliveryrDate = newOrder.ShipDate.Add(new TimeSpan(RandomNumber.Next(1,3), 0, 0, 0));
             else
                 newOrder.DeliveryrDate = DateTime.MinValue;
             Orders[NextOrder++] = newOrder; ///put the new order in the store.
@@ -159,9 +159,7 @@ internal static class DataSource
             }
         }
     }
-    // we make class config for all the run number we have here in the data source. 
-    //internal static class Config 
-    //{
+    // we make class config for all the run number we have here in the data source.
         internal static int NextOrder = 0;
         internal static int NextOrderItem = 0;
         internal static int NextProduct = 0;
@@ -171,5 +169,4 @@ internal static class DataSource
         internal static int GetOrder => IdOrder++; 
         private static int IdOrderItem = 1;
         internal static int GetOrderItem => IdOrderItem++;
-    //}
 }

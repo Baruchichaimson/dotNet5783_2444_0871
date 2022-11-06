@@ -14,10 +14,10 @@ public class DalOrederItem
                 exist = true; break;
             }
         }
-        if (!exist)
-        {
-            throw new Exception("Product id does not exist");
-        }
+        //if (!exist)
+        //{
+          //  throw new Exception("Product id does not exist");
+        //}
         if(OrderItemsListByOrder(NewOrderItem.OredrID).Length >= 4)
         {
             throw new Exception("too much items in order");

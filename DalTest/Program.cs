@@ -35,6 +35,7 @@ internal class Program
                         Console.WriteLine("Enter the name of product:");
                         newproduct.Name = Console.ReadLine();
                         Console.WriteLine("Enter category number:");
+                        Console.WriteLine("for COFFE_MACHINES press  0 \nfor CAPSULES press 1 \nfor ACCESSORIES press 2 \nfor FROTHERS press 3 \nfor SWEETS press 4");
                         int numcategory = Convert.ToInt32(Console.ReadLine());
                         newproduct.Categoryname = numcategory switch
                         {
@@ -43,11 +44,16 @@ internal class Program
                             2 => CoffeeShop.ACCESSORIES,
                             3 => CoffeeShop.FROTHERS,
                             4 => CoffeeShop.SWEETS,
+                            _ => throw new Exception("No category found")
                         };
                         Console.WriteLine("Enter the price:");
-                        newproduct.Price = Convert.ToInt32(Console.ReadLine());
+                        double price;
+                        double.TryParse(Console.ReadLine(), out price);
+                        newproduct.Price = price;
                         Console.WriteLine("Enter amount:");
-                        newproduct.Instock = Convert.ToInt32(Console.ReadLine());
+                        int inStock;
+                        int.TryParse(Console.ReadLine(), out inStock);
+                        newproduct.Instock = inStock;
                         DalProduct.AddProduct(newproduct);
                         Console.WriteLine("the product has been succsefully added");
                     }
@@ -55,8 +61,10 @@ internal class Program
                 case (int)User.DELETE:
                     {
                         Console.WriteLine("Enter ID:");
-                        int productId = Convert.ToInt32(Console.ReadLine());
+                        int productId;
+                        int.TryParse(Console.ReadLine(), out productId);
                         DalProduct.DeleteProduct(productId);
+                        Console.WriteLine("the product has been succsefully deleted ");
                     };
                     break;
                 case (int)User.UPDATE:
@@ -67,6 +75,7 @@ internal class Program
                         Console.WriteLine("Enter the name of product:");
                         newproduct.Name = Console.ReadLine();
                         Console.WriteLine("Enter category number:");
+                        Console.WriteLine("for COFFE_MACHINES press  0 \nfor CAPSULES press 1 \nfor ACCESSORIES press 2 \nfor FROTHERS press 3 \nfor SWEETS press 4");
                         int numcategory = Convert.ToInt32(Console.ReadLine());
                         newproduct.Categoryname = numcategory switch
                         {
@@ -261,6 +270,7 @@ internal class Program
                         {
                             Console.WriteLine(newarray[i]);
                         }
+                        Console.WriteLine("print the order sucssefuly");
                     }
                     break;
             }
@@ -268,12 +278,13 @@ internal class Program
     }
     static void Main(string[] args)
     {
-        Console.WriteLine("Press your choice \n exit press: 0 \n for product menu press: 1 \n for order menu press: 2 \n for order item menu press: 3");
         int user_choice;
-        user_choice = Convert.ToInt32(Console.ReadLine());
-        try
+        while (true)
         {
-            while (true)
+            Console.WriteLine("Press your choice \n exit press: 0 \n for product menu press: 1 \n for order menu press: 2 \n for order item menu press: 3");
+
+            user_choice = Convert.ToInt32(Console.ReadLine());
+            try
             {
                 switch (user_choice)
                 {
@@ -288,19 +299,18 @@ internal class Program
                     case (int)UserForMain.ORDER_ITEM:
                         OrderItemOptions();
                         break;
-
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
-   
-  
-   
+
+
+
 
 
 
