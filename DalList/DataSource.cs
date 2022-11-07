@@ -130,12 +130,12 @@ internal static class DataSource
             newOrder.OrderDate = RandomTime;
             if (i < 16)
                 ///random number just we make him to be one ot two days after the random date we have.
-                newOrder.ShipDate = newOrder.OrderDate.Add(new TimeSpan(RandomNumber.Next(2), 0, 0, 0)); 
+                newOrder.ShipDate = newOrder.OrderDate.Add(new TimeSpan(RandomNumber.Next(1,3), 0, 0, 0)); 
             else
                 newOrder.ShipDate = DateTime.MinValue;
             if(i < 12)
                 ///random number just we make him to be one ot two days after the random date we have.
-                newOrder.DeliveryrDate = newOrder.ShipDate.Add(new TimeSpan(RandomNumber.Next(1,3), 0, 0, 0));
+                newOrder.DeliveryrDate = newOrder.ShipDate.Add(new TimeSpan(RandomNumber.Next(4,6), 0, 0, 0));
             else
                 newOrder.DeliveryrDate = DateTime.MinValue;
             Orders[NextOrder++] = newOrder; ///put the new order in the store.

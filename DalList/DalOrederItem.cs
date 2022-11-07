@@ -14,10 +14,10 @@ public class DalOrederItem
                 exist = true; break;
             }
         }
-        //if (!exist)
-        //{
-          //  throw new Exception("Product id does not exist");
-        //}
+        if (!exist)
+        {
+            throw new Exception("Product id does not exist");
+        }
         if(OrderItemsListByOrder(NewOrderItem.OredrID).Length >= 4)
         {
             throw new Exception("too much items in order");
@@ -52,8 +52,9 @@ public class DalOrederItem
         {
             if (newOrderItem.Id == DataSource.OrderItems[i].Id)
             {
+                newOrderItem.OredrID = DataSource.OrderItems[i].OredrID;
                 DataSource.OrderItems[i] = newOrderItem;
-                break;
+                return;         
             }
         }
         throw new Exception("the id is not exist");
