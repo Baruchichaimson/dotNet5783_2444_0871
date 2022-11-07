@@ -3,23 +3,23 @@ using System.Drawing;
 
 namespace Dal;
 
-// class for Manage The order item database
+/// class for Manage The order item database
 public class DalOrederItem
 {
 
-    // Function to add a new order item
+    /// Function to add a new order item
     public static int AddOrderItem(OrderItem newOrderItem)
     {
         newOrderItem.Id = DataSource.GetOrderItem;
         bool productExist = false;
         bool orderExist = false;
-        //Checking if the product exists in the database
+        ///Checking if the product exists in the database
         for (int i = 0; i < DataSource.Products.Length; i++)
         {
             if(newOrderItem.ProductID == DataSource.Products[i].Id)
                 productExist = true; break;
         }
-        //Checking if the order exists in the database
+        ///Checking if the order exists in the database
         for (int i = 0; i < DataSource.Orders.Length; i++)
         {
             if (newOrderItem.OredrID == DataSource.Orders[i].Id)
@@ -31,7 +31,7 @@ public class DalOrederItem
         if (!orderExist)
             throw new Exception("Order id does not exist\n");
 
-        //Checking if the order is full 
+        ///Checking if the order is full 
         if (OrderItemsListByOrder(newOrderItem.OredrID).Length >= 4)
             throw new Exception("too much items in order\n");
 
@@ -40,7 +40,7 @@ public class DalOrederItem
             if (OrderItemsListByOrder(newOrderItem.OredrID)[i].ProductID == newOrderItem.ProductID)
                 throw new Exception("the product is allready exist in the order\n");
         }
-        //Checking if the orderitem database is full 
+        ///Checking if the orderitem database is full 
         if (DataSource.NextOrderItem == 200)
             throw new Exception("the storge of orderitems is full\n");
         else
@@ -48,7 +48,7 @@ public class DalOrederItem
 
         return newOrderItem.Id;
     }
-    //Function to delete an order item
+    ///Function to delete an order item
     public static void DeleteOrderItem(int idToDelete)
     {
         if (DataSource.NextOrderItem == 0)
@@ -58,7 +58,7 @@ public class DalOrederItem
         {
             if (idToDelete == DataSource.OrderItems[i].Id)
             {
-               // Replaces with the last one and lowers the size of the array
+               /// Replaces with the last one and lowers the size of the array
                     OrderItem temp = DataSource.OrderItems[i];
                     DataSource.OrderItems[i] = DataSource.OrderItems[DataSource.NextOrderItem - 1];
                     DataSource.OrderItems[DataSource.NextOrderItem - 1] = temp;
@@ -67,7 +67,7 @@ public class DalOrederItem
             }
         }
     }
-    //Function to update an order item
+    ///Function to update an order item
     public static void UpdateOrderItem(OrderItem newOrderItem)
     {
         for (int i = 0; i < DataSource.NextOrderItem; i++)
@@ -81,7 +81,7 @@ public class DalOrederItem
         }
         throw new Exception("the id is not exist");
     }
-    // A function that returns an order item by id
+    /// A function that returns an order item by id
     public static OrderItem GetOrderItem(int idToGet)
     {
         for (int i = 0; i < DataSource.NextOrderItem; i++)
@@ -93,7 +93,7 @@ public class DalOrederItem
         }
         throw new Exception("the OrderItem is not exist");
     }
-    // A function that returns an array of the order items in the database
+    /// A function that returns an array of the order items in the database
     public static OrderItem[] OrderItemsList()
     {
         OrderItem[] orderItemsList = new OrderItem[DataSource.NextOrderItem];
@@ -103,7 +103,7 @@ public class DalOrederItem
         }
         return orderItemsList;
     }
-    //A function that returns an order item by prodact and order id;
+    ///A function that returns an order item by prodact and order id;
     public static OrderItem GetOrderItemByOrderAndProductId(int orderId, int productId)
     {
         for (int i = 0; i < DataSource.NextOrderItem; i++)
@@ -115,7 +115,7 @@ public class DalOrederItem
         }
         throw new Exception("the order item is not exist");
     }
-    // A function that returns an array of the order items by order id
+    /// A function that returns an array of the order items by order id
     public static OrderItem[] OrderItemsListByOrder(int orderId)
     {
         

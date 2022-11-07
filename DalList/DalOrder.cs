@@ -3,11 +3,11 @@ using DO;
 
 namespace Dal;
 
-// class for Manage The order database
+/// class for Manage The order database
 public class DalOrder
 {
 
-    // Function to add a new order
+    /// Function to add a new order
     public static int AddOrder(Order newOrder)
     {
         newOrder.Id = DataSource.GetOrder;
@@ -18,7 +18,7 @@ public class DalOrder
 
         return newOrder.Id;
     }
-    //Function to delete an order
+    ///Function to delete an order
     public static void DeleteOrder(int idToDelete)
     {
         for (int i = 0; i < DataSource.NextOrder; i++)
@@ -29,7 +29,7 @@ public class DalOrder
                     throw new Exception("the storge of order is empty\n");
                 else
                 {
-                    // Replaces with the last one and lowers the size of the array
+                    /// Replaces with the last one and lowers the size of the array
                     Order temp = DataSource.Orders[i];
                     DataSource.Orders[i] = DataSource.Orders[DataSource.NextOrder - 1];
                     DataSource.Orders[DataSource.NextOrder - 1] = temp;
@@ -39,7 +39,7 @@ public class DalOrder
             }
         }
     }
-    //Function to update an order
+    ///Function to update an order
     public static void UpdateOrder(Order newOrder)
     {
         bool exist = false;
@@ -55,7 +55,7 @@ public class DalOrder
         if (!exist)
              throw new Exception("the id is not exist\n");
     }
-    // A function that returns an order by id
+    /// A function that returns an order by id
     public static Order GetOrder(int idToGet)
     {
         for (int i = 0; i < DataSource.NextOrder; i++)
@@ -67,7 +67,7 @@ public class DalOrder
         }
         throw new Exception("the Order is not exist\n");
     }
-    // A function that returns an array of the orders in the database
+    /// A function that returns an array of the orders in the database
     public static Order[] OrderList()
     {
         Order[] orderList = new Order[DataSource.NextOrder];

@@ -13,7 +13,7 @@ internal static class DataSource
     internal static Order[] Orders = new Order[100];
     internal static OrderItem[] OrderItems = new OrderItem[200];
 
-    private static void s_Initialize() ///function call to any function that holding the data of the entities.
+    private static void S_Initialize() ///function call to any function that holding the data of the entities.
     {
         AddProductToStore();
         AddOrderToStore();
@@ -21,7 +21,7 @@ internal static class DataSource
     }
     static DataSource() ///call of the default constructor we have inn the class.
     {
-        s_Initialize();
+        S_Initialize();
     }
 
     static void AddProductToStore() ///put products in the store.
