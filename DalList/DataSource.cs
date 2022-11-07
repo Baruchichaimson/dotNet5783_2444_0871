@@ -36,7 +36,7 @@ internal static class DataSource
         int fivePrecentProduct = (int)(25 * 0.05);///calculation the five precent of products. 
         int counterIdProducts = 100000; /// the first run number for the id product.
 
-        for (int i = 0; i < 5; i++)///run on the five category
+        for (int i = 0; i < 5; i++) ///run on the five category
         {
             Product newProduct = new Product();
 
