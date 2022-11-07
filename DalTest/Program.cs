@@ -1,5 +1,6 @@
 ﻿using DO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -11,34 +12,35 @@ namespace Dal;
 
 internal class Program
 {
-    private DalProduct DalProduct = new DalProduct();
-    private DalOrder DalOrder = new DalOrder();
-    private DalOrederItem DalOrederItem = new DalOrederItem();
+    private DalProduct _DalProduct = new DalProduct();
+    private DalOrder _DalOrder = new DalOrder();
+    private DalOrederItem _DalOrederItem = new DalOrederItem();
     enum User { EXIT, ADD, DELETE, UPDATE, GET, PRINTALL, BY_ORDER_AND_PRODUCT, ITEM_BY_ORDER_ID };
     enum UserForMain { EXIT, PRODUCT, ORDER, ORDER_ITEM }
-    public static void ProductOptions()
+    public static void ProductOptions()/// the user input whice active he want to do on the product.
     {
         while (true)
         {
             Console.WriteLine("Press your choice \nexit press: 0 \nadd product press: 1 \ndelete product press: 2");
             Console.WriteLine("update product press: 3 \nget product by id press: 4 \nprint all products press: 5 \n");
-            int.TryParse(Console.ReadLine(), out int user_choice);
-            switch (user_choice)
+            int.TryParse(Console.ReadLine(), out int userChoice);
+            switch (userChoice)
             {
                 case (int)User.EXIT:
                     return;
-                case (int)User.ADD:
+                case (int)User.ADD: ///add new product and input the id, name, category, price , amount and add to the store.
+
                     {
-                        Product newproduct = new Product();
+                        Product newProduct = new Product(); 
                         Console.WriteLine("Enter ID:");
                         int.TryParse(Console.ReadLine(), out int id);
-                        newproduct.Id = id;
+                        newProduct.Id = id;
                         Console.WriteLine("Enter the name of product:");
-                        newproduct.Name = Console.ReadLine();
+                        newProduct.Name = Console.ReadLine();
                         Console.WriteLine("Enter category number:");
                         Console.WriteLine("for COFFE_MACHINES press  0 \nfor CAPSULES press 1 \nfor ACCESSORIES press 2 \nfor FROTHERS press 3 \nfor SWEETS press 4");
-                        int.TryParse(Console.ReadLine(), out int numcategory);
-                        newproduct.Categoryname = numcategory switch
+                        int.TryParse(Console.ReadLine(), out int numCategory);
+                        newProduct.Categoryname = numCategory switch
                         {
                             0 => CoffeeShop.COFFE_MACHINES,
                             1 => CoffeeShop.CAPSULES,
@@ -49,15 +51,15 @@ internal class Program
                         };
                         Console.WriteLine("Enter the price:");
                         double.TryParse(Console.ReadLine(), out double price);
-                        newproduct.Price = price;
+                        newProduct.Price = price;
                         Console.WriteLine("Enter amount:");
                         int.TryParse(Console.ReadLine(), out int inStock);
-                        newproduct.Instock = inStock;
-                        DalProduct.AddProduct(newproduct);
+                        newProduct.Instock = inStock;
+                        DalProduct.AddProduct(newProduct);/// go to the function that add product to array of products.
                         Console.WriteLine("the product has been succsefully added");
                     }
                     break;
-                case (int)User.DELETE:
+                case (int)User.DELETE: ///input id and go to the function that check if the id is exist and delete from the store.
                     {
                         Console.WriteLine("Enter ID:");
                         int.TryParse(Console.ReadLine(), out int productId);
@@ -65,18 +67,18 @@ internal class Program
                         Console.WriteLine("the product has been succsefully deleted ");
                     };
                     break;
-                case (int)User.UPDATE:
+                case (int)User.UPDATE:  ///add new product and input the id, name, category, price , amount.
                     {
-                        Product newproduct = new Product();
+                        Product newProduct = new Product();
                         Console.WriteLine("Enter ID to updae:");
                         int.TryParse(Console.ReadLine(), out int id);
-                        newproduct.Id = id;
+                        newProduct.Id = id;
                         Console.WriteLine("Enter the name of product:");
-                        newproduct.Name = Console.ReadLine();
+                        newProduct.Name = Console.ReadLine();
                         Console.WriteLine("Enter category number:");
                         Console.WriteLine("for COFFE_MACHINES press  0 \nfor CAPSULES press 1 \nfor ACCESSORIES press 2 \nfor FROTHERS press 3 \nfor SWEETS press 4");
-                        int.TryParse(Console.ReadLine(), out int numcategory);
-                        newproduct.Categoryname = numcategory switch
+                        int.TryParse(Console.ReadLine(), out int numCategory);
+                        newProduct.Categoryname = numCategory switch
                         {
                             0 => CoffeeShop.COFFE_MACHINES,
                             1 => CoffeeShop.CAPSULES,
@@ -86,108 +88,108 @@ internal class Program
                         };
                         Console.WriteLine("Enter the price:");
                         double.TryParse(Console.ReadLine(), out double price);
-                        newproduct.Price = price;
+                        newProduct.Price = price;
                         Console.WriteLine("Enter amount:");
                         int.TryParse(Console.ReadLine(), out int inStock);
-                        newproduct.Instock = inStock;
-                        DalProduct.UpdateProduct(newproduct);
+                        newProduct.Instock = inStock;
+                        DalProduct.UpdateProduct(newProduct); ///go to the function that check if the id is exist update the store.
                         Console.WriteLine("the product has been succsefully update");
 
                     }
                     break;
-                case (int)User.GET:
+                case (int)User.GET: ///input product id and go to the function that return the product.
                     {
                         Console.WriteLine("Enter ID:");
                         int.TryParse(Console.ReadLine(), out int productId);
                         Console.WriteLine(DalProduct.GetProduct(productId));
                     }
                     break;
-                case (int)User.PRINTALL:
+                case (int)User.PRINTALL: /// make new array and put in him the array of the products and print the products.
                     {
-                        Product[] newarray = DalProduct.ProductList();
-                        for (int i = 0; i < newarray.Length; i++)
+                        Product[] newArray = DalProduct.ProductList();
+                        for (int i = 0; i < newArray.Length; i++)
                         {
-                            Console.WriteLine(newarray[i]);
+                            Console.WriteLine(newArray[i]);
                         }
                     }
                     break;
             }
         }
     }
-    public static void OrderOptions()
+    public static void OrderOptions()/// the user input whice active he want to do on the order
     {
         while (true)
         {
             Console.WriteLine("Press your choice \nexit press: 0 \nadd order press: 1 \ndelete order press: 2");
             Console.WriteLine("update order press: 3 \nget order by id press: 4 \nprint all orders press: 5 \n");
-            int.TryParse(Console.ReadLine(), out int user_choice);
-            switch (user_choice)
+            int.TryParse(Console.ReadLine(), out int userChoice);
+            switch (userChoice)
             {
                 case (int)User.EXIT:
                     return;
-                case (int)User.ADD:
+                case (int)User.ADD:  ///add new product and input the customer name, customer email, customer adress, order date, ship date, delivery date.
                     {
-                        Order neworder = new Order();
+                        Order newOrder = new Order();
                         Console.WriteLine("Enter the customer name: ");
-                        neworder.CustomerName = Console.ReadLine();
+                        newOrder.CustomerName = Console.ReadLine();
                         Console.WriteLine("Enter the customer email: ");
-                        neworder.CustomerEmail = Console.ReadLine();
+                        newOrder.CustomerEmail = Console.ReadLine();
                         Console.WriteLine("Enter the customer adress: ");
-                        neworder.CustomerAdress = Console.ReadLine();
-                        neworder.OrderDate = DateTime.Now;
-                        neworder.ShipDate = DateTime.MinValue;
-                        neworder.DeliveryrDate = DateTime.MinValue;
-                        DalOrder.AddOrder(neworder);
+                        newOrder.CustomerAdress = Console.ReadLine();
+                        newOrder.OrderDate = DateTime.Now;
+                        newOrder.ShipDate = DateTime.MinValue;
+                        newOrder.DeliveryrDate = DateTime.MinValue;
+                        DalOrder.AddOrder(newOrder); /// go to the function that add order to array of orders.
                         Console.WriteLine("the order has been succsefully added ");
                     }
                     break;
-                case (int)User.DELETE:
+                case (int)User.DELETE:  ///input id and go to the function that check if the id is exist and delete from the store.
                     {
                         Console.WriteLine("Enter ID: ");
-                        int.TryParse(Console.ReadLine(), out int OrderId);
-                        DalOrder.DeleteOrder(OrderId);
+                        int.TryParse(Console.ReadLine(), out int orderId);
+                        DalOrder.DeleteOrder(orderId);
                         Console.WriteLine("the order has been succsefully deleted ");
                     };
                     break;
-                case (int)User.UPDATE:
+                case (int)User.UPDATE:   ///add new product and input the customer name, customer email, customer adress, order date, ship date, delivery date.
                     {
-                        Order neworder = new Order();
+                        Order newOrder = new Order();
                         Console.WriteLine("Enter ID: ");
                         int.TryParse(Console.ReadLine(), out int id);
-                        neworder.Id = id;
+                        newOrder.Id = id;
                         Console.WriteLine("Enter the customer name: ");
-                        neworder.CustomerName = Console.ReadLine();
+                        newOrder.CustomerName = Console.ReadLine();
                         Console.WriteLine("Enter the customer email: ");
-                        neworder.CustomerEmail = Console.ReadLine();
+                        newOrder.CustomerEmail = Console.ReadLine();
                         Console.WriteLine("Enter the customer adress: ");
-                        neworder.CustomerAdress = Console.ReadLine();
-                        neworder.OrderDate = DateTime.Now;
-                        neworder.ShipDate = DateTime.Now.AddDays(5);
-                        neworder.DeliveryrDate = DateTime.Now.AddDays(10);
-                        DalOrder.UpdateOrder(neworder);
+                        newOrder.CustomerAdress = Console.ReadLine();
+                        newOrder.OrderDate = DateTime.Now;
+                        newOrder.ShipDate = DateTime.Now.AddDays(5);
+                        newOrder.DeliveryrDate = DateTime.Now.AddDays(10);
+                        DalOrder.UpdateOrder(newOrder); ///go to the function that check if the id is exist update the store.
                         Console.WriteLine("the order has been succsefully update ");
                     }
                     break;
-                case (int)User.GET:
+                case (int)User.GET: ///input order id and go to the function that return the order.
                     {
                         Console.WriteLine("Enter ID: ");
-                        int.TryParse(Console.ReadLine(), out int OrderId);
-                        Console.WriteLine(DalOrder.GetOrder(OrderId));
+                        int.TryParse(Console.ReadLine(), out int orderId);
+                        Console.WriteLine(DalOrder.GetOrder(orderId));
                     }
                     break;
-                case (int)User.PRINTALL:
+                case (int)User.PRINTALL: /// make new array and put in him the array of the orders and print the orders.
                     {
-                        Order[] newarray = DalOrder.OrderList();
-                        for (int i = 0; i < newarray.Length; i++)
+                        Order[] newArray = DalOrder.OrderList();
+                        for (int i = 0; i < newArray.Length; i++)
                         {
-                            Console.WriteLine(newarray[i]);
+                            Console.WriteLine(newArray[i]);
                         }
                     }
                     break;
             }
         }
     }
-    public static void OrderItemOptions()
+    public static void OrderItemOptions()/// the user input whice active he want to do on the order item
     {
         while (true)
         {
@@ -195,12 +197,12 @@ internal class Program
             Console.WriteLine("update order item press: 3 \nget order item by id press: 4 \nprint all order items press: 5");
             Console.WriteLine("get order item by order and product id press: 6 \nget list of items by order id press: 7 \n");
 
-            int.TryParse(Console.ReadLine(), out int user_choice);
-            switch (user_choice)
+            int.TryParse(Console.ReadLine(), out int userChoice);
+            switch (userChoice)
             {
-                case (int)User.EXIT:
+                case (int)User.EXIT: 
                     return;
-                case (int)User.ADD:
+                case (int)User.ADD: ///add new product and input the product id, order id, amount, price.
                     {
                         OrderItem newOrderItem = new OrderItem();
                         Console.WriteLine("Enter the product id: ");
@@ -213,11 +215,11 @@ internal class Program
                         int.TryParse(Console.ReadLine(), out int amount);
                         newOrderItem.Amount = amount;
                         newOrderItem.Price = DalProduct.GetProduct(newOrderItem.ProductID).Price;
-                        DalOrederItem.AddOrderItem(newOrderItem);
+                        DalOrederItem.AddOrderItem(newOrderItem); /// go to the function that add order item to array of order items.
                         Console.WriteLine("the orderItem has been succsefully added ");
                     }
                     break;
-                case (int)User.DELETE:
+                case (int)User.DELETE:  ///input id and go to the function that check if the id is exist and delete from the store.
                     {
                         Console.WriteLine("Enter order item ID: ");
                         int.TryParse(Console.ReadLine(), out int orderItemId);
@@ -225,7 +227,7 @@ internal class Program
                         Console.WriteLine("the orderItem has been succsefully deleted ");
                     };
                     break;
-                case (int)User.UPDATE:
+                case (int)User.UPDATE: ///add new product and input the product id, order id, amount, price.
                     {
                         OrderItem newOrderItem = new OrderItem();
                         Console.WriteLine("Enter item ID: ");
@@ -238,43 +240,43 @@ internal class Program
                         int.TryParse(Console.ReadLine(), out  int amount);
                         newOrderItem.Amount= amount;
                         newOrderItem.Price = DalProduct.GetProduct(newOrderItem.ProductID).Price;
-                        DalOrederItem.UpdateOrderItem(newOrderItem);
+                        DalOrederItem.UpdateOrderItem(newOrderItem); ///go to the function that check if the id is exist update the store.
                         Console.WriteLine("the orderItem has been sccessfully update ");
                     }
                     break;
-                case (int)User.GET:
+                case (int)User.GET: ///input order item id and go to the function that return the order item.
                     {
                         Console.WriteLine("Enter item Id: ");
-                        int.TryParse(Console.ReadLine(), out int OrderItemId);
-                        Console.WriteLine(DalOrederItem.GetOrderItem(OrderItemId));
+                        int.TryParse(Console.ReadLine(), out int orderItemId);
+                        Console.WriteLine(DalOrederItem.GetOrderItem(orderItemId));
                     }
                     break;
-                case (int)User.PRINTALL:
+                case (int)User.PRINTALL: /// make new array and put in him the array of the order items and print the order items.
                     {
-                        OrderItem[] newarray = DalOrederItem.OrderItemsList();
-                        for (int i = 0; i < newarray.Length; i++)
+                        OrderItem[] newArray = DalOrederItem.OrderItemsList();
+                        for (int i = 0; i < newArray.Length; i++)
                         {
-                            Console.WriteLine(newarray[i]);
+                            Console.WriteLine(newArray[i]);
                         }
                     }
                     break;
-                case (int)User.BY_ORDER_AND_PRODUCT:
+                case (int)User.BY_ORDER_AND_PRODUCT: ///give the order item by order number and product
                     {
                         Console.WriteLine("Enter order ID: ");
-                        int.TryParse(Console.ReadLine(), out int OrderID);
+                        int.TryParse(Console.ReadLine(), out int orderId);
                         Console.WriteLine("Enter product ID: ");
-                        int.TryParse(Console.ReadLine(), out int ProductID);
-                        Console.WriteLine(DalOrederItem.GetOrderItemByOrderAndProductId(OrderID, ProductID));
+                        int.TryParse(Console.ReadLine(), out int productId);
+                        Console.WriteLine(DalOrederItem.GetOrderItemByOrderAndProductId(orderId, productId));///go to this function
                     }
                     break;
-                case (int)User.ITEM_BY_ORDER_ID:
+                case (int)User.ITEM_BY_ORDER_ID: ///give order item by id number of the order item.
                     {
                         Console.WriteLine("Enter order ID: ");
-                        int.TryParse(Console.ReadLine(), out int OrderID);
-                        OrderItem[] newarray = DalOrederItem.OrderItemsListByOrder(OrderID);
-                        for (int i = 0; i < newarray.Length; i++)
+                        int.TryParse(Console.ReadLine(), out int orderID);
+                        OrderItem[] newArray = DalOrederItem.OrderItemsListByOrder(orderID);
+                        for (int i = 0; i < newArray.Length; i++)
                         {
-                            Console.WriteLine(newarray[i]);
+                            Console.WriteLine(newArray[i]);
                         }
                     }
                     break;
@@ -283,14 +285,14 @@ internal class Program
     }
     static void Main(string[] args)
     {
-        while (true)
+        while (true) ///ask the user until he will put zero.
         {
             Console.WriteLine("Press your choice \nexit press: 0 \nfor product menu press: 1 \nfor order menu press: 2 \nfor order item menu press: 3");
 
-            int.TryParse(Console.ReadLine(), out int user_choice);
+            int.TryParse(Console.ReadLine(), out int userChoice); ///the user must select which entity wants to perform actions
             try
             {
-                switch (user_choice)
+                switch (userChoice)
                 {
                     case (int)UserForMain.EXIT:
                         return;
@@ -305,7 +307,7 @@ internal class Program
                         break;
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) ///make catch to the all throw we have in the program.
             {
                 Console.WriteLine(ex.Message);
             }
