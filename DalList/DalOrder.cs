@@ -3,38 +3,43 @@ using DO;
 
 namespace Dal;
 
+// class for Manage The order database
 public class DalOrder
 {
-   
-    public static int AddOrder(Order NewOrder)
+
+    // Function to add a new order
+    public static int AddOrder(Order newOrder)
     {
-        NewOrder.Id = DataSource.GetOrder;
+        newOrder.Id = DataSource.GetOrder;
         if (DataSource.NextOrder == 100)
             throw new Exception("the storge of order is full\n");
         else
-            DataSource.Orders[DataSource.NextOrder++] = NewOrder;
+            DataSource.Orders[DataSource.NextOrder++] = newOrder;
 
-        return NewOrder.Id;
+        return newOrder.Id;
     }
-    public static void DeleteOrder(int IDToDelete)
+    //Function to delete an order
+    public static void DeleteOrder(int idToDelete)
     {
         for (int i = 0; i < DataSource.NextOrder; i++)
         {
-            if (IDToDelete == DataSource.Orders[i].Id)
+            if (idToDelete == DataSource.Orders[i].Id)
             {
                 if (DataSource.NextOrder == 0)
                     throw new Exception("the storge of order is empty\n");
                 else
                 {
-                    Order Temp = DataSource.Orders[i];
+                    // Replaces with the last one and lowers the size of the array
+                    Order temp = DataSource.Orders[i];
                     DataSource.Orders[i] = DataSource.Orders[DataSource.NextOrder - 1];
-                    DataSource.Orders[DataSource.NextOrder - 1] = Temp;
+                    DataSource.Orders[DataSource.NextOrder - 1] = temp;
                     DataSource.NextOrder--;
                 }
                 break;
             }
         }
     }
+    //Function to update an order
     public static void UpdateOrder(Order newOrder)
     {
         bool exist = false;
@@ -50,17 +55,19 @@ public class DalOrder
         if (!exist)
              throw new Exception("the id is not exist\n");
     }
-    public static Order GetOrder(int IDToGet)
+    // A function that returns an order by id
+    public static Order GetOrder(int idToGet)
     {
         for (int i = 0; i < DataSource.NextOrder; i++)
         {
-            if (IDToGet == DataSource.Orders[i].Id)
+            if (idToGet == DataSource.Orders[i].Id)
             {
                 return DataSource.Orders[i];
             }
         }
         throw new Exception("the Order is not exist\n");
     }
+    // A function that returns an array of the orders in the database
     public static Order[] OrderList()
     {
         Order[] orderList = new Order[DataSource.NextOrder];

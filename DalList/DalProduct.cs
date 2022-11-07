@@ -2,69 +2,74 @@
 using System;
 namespace Dal;
 
+// class for Manage The product database
 public class DalProduct
 {
-   
-    public static int AddProduct(Product NewProduct)
+
+    // Function to add a new product
+    public static int AddProduct(Product newProduct)
     {
         for (int i = 0; i < DataSource.NextProduct; i++)
         {  
-            if (NewProduct.Id == DataSource.Products[i].Id)
+            if (newProduct.Id == DataSource.Products[i].Id)
             throw new Exception("the id is allready exist\n");
         }
         if (DataSource.NextProduct == 50)
             throw new Exception("the storge of proudct is full\n");
         else
-            DataSource.Products[DataSource.NextProduct++] = NewProduct;
+            DataSource.Products[DataSource.NextProduct++] = newProduct;
 
-        return NewProduct.Id;
+        return newProduct.Id;
     }
-    public static void DeleteProduct(int IDToDelete)
+
+    //Function to delete a product
+    public static void DeleteProduct(int idToDelete)
     {
         for (int i = 0; i < DataSource.NextProduct; i++)
         {
-            if (IDToDelete == DataSource.Products[i].Id)
+            if (idToDelete == DataSource.Products[i].Id)
             {
                 if (DataSource.NextProduct == 0)
                     throw new Exception("the storge of proudct is empty\n");
                 else
                 {
-                    Product Temp = DataSource.Products[i];
+                    // Replaces with the last one and lowers the size of the array
+                    Product temp = DataSource.Products[i];
                     DataSource.Products[i] = DataSource.Products[DataSource.NextProduct - 1];
-                    DataSource.Products[DataSource.NextProduct - 1] = Temp;
+                    DataSource.Products[DataSource.NextProduct - 1] = temp;
                     DataSource.NextProduct--;
                 }
                 break;
             }
         }
     }
-    public static void UpdateProduct(Product newproduct)
+    // Function to update a product
+    public static void UpdateProduct(Product newProduct)
     {
         bool exist = false;
         for (int i = 0; i < DataSource.NextProduct; i++)
         {
-            if (newproduct.Id == DataSource.Products[i].Id)
+            if (newProduct.Id == DataSource.Products[i].Id)
             {
-                DataSource.Products[i] = newproduct;
+                DataSource.Products[i] = newProduct;
                 exist = true;
                 break;
             }
-           
         }
         if(!exist)
             throw new Exception("the id is not exist\n");
     }
-    public static Product GetProduct(int IDToGet)
+    // A function that returns a product by id
+    public static Product GetProduct(int idToGet)
     {
         for (int i = 0; i < DataSource.NextProduct; i++)
         {
-            if (IDToGet == DataSource.Products[i].Id)
-            {
+            if (idToGet == DataSource.Products[i].Id)
                 return DataSource.Products[i];
-            }
         }
         throw new Exception("the product is not exist\n");
     }
+    // A function that returns an array of the products in the database
     public static Product[] ProductList()
     {
         Product[] productsList = new Product[DataSource.NextProduct];

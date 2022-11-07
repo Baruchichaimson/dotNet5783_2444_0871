@@ -1,68 +1,73 @@
 ﻿using DO;
+using System.Drawing;
+
 namespace Dal;
+
+// class for Manage The order item database
 public class DalOrederItem
 {
-   
-    public static int AddOrderItem(OrderItem NewOrderItem)
+
+    // Function to add a new order item
+    public static int AddOrderItem(OrderItem newOrderItem)
     {
-        NewOrderItem.Id = DataSource.GetOrderItem;
-        bool existProduct = false;
-        bool existOrder = false;
-        for(int i = 0; i < DataSource.Products.Length; i++)
+        newOrderItem.Id = DataSource.GetOrderItem;
+        bool productExist = false;
+        bool orderExist = false;
+        //Checking if the product exists in the database
+        for (int i = 0; i < DataSource.Products.Length; i++)
         {
-            if(NewOrderItem.ProductID == DataSource.Products[i].Id)
-            {
-                existProduct = true; break;
-            }
+            if(newOrderItem.ProductID == DataSource.Products[i].Id)
+                productExist = true; break;
         }
+        //Checking if the order exists in the database
         for (int i = 0; i < DataSource.Orders.Length; i++)
         {
-            if (NewOrderItem.OredrID == DataSource.Orders[i].Id)
-            {
-                existOrder = true; break;
-            }
+            if (newOrderItem.OredrID == DataSource.Orders[i].Id)
+                orderExist = true; break;
         }
-        if (!existProduct)
-        {
-            throw new Exception("Product id does not exist\n");
-        }
-        if (!existOrder)
-        {
+        if (!productExist)
+           throw new Exception("Product id does not exist\n");
+        
+        if (!orderExist)
             throw new Exception("Order id does not exist\n");
-        }
-        if (OrderItemsListByOrder(NewOrderItem.OredrID).Length >= 4)
-        {
+
+        //Checking if the order is full 
+        if (OrderItemsListByOrder(newOrderItem.OredrID).Length >= 4)
             throw new Exception("too much items in order\n");
-        }
-        for(int i = 0; i < OrderItemsListByOrder(NewOrderItem.OredrID).Length; i++)
+
+        for(int i = 0; i < OrderItemsListByOrder(newOrderItem.OredrID).Length; i++)
         {
-            if (OrderItemsListByOrder(NewOrderItem.OredrID)[i].ProductID == NewOrderItem.ProductID)
+            if (OrderItemsListByOrder(newOrderItem.OredrID)[i].ProductID == newOrderItem.ProductID)
                 throw new Exception("the product is allready exist in the order\n");
         }
+        //Checking if the orderitem database is full 
         if (DataSource.NextOrderItem == 200)
             throw new Exception("the storge of orderitems is full\n");
         else
-            DataSource.OrderItems[DataSource.NextOrderItem++] = NewOrderItem;
+            DataSource.OrderItems[DataSource.NextOrderItem++] = newOrderItem;
 
-        return NewOrderItem.Id;
+        return newOrderItem.Id;
     }
-    public static void DeleteOrderItem(int IDToDelete)
+    //Function to delete an order item
+    public static void DeleteOrderItem(int idToDelete)
     {
         if (DataSource.NextOrderItem == 0)
             throw new Exception("the storge of orderitems is empty\n");
 
         for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
-            if (IDToDelete == DataSource.OrderItems[i].Id)
+            if (idToDelete == DataSource.OrderItems[i].Id)
             {
-                    OrderItem Temp = DataSource.OrderItems[i];
+               // Replaces with the last one and lowers the size of the array
+                    OrderItem temp = DataSource.OrderItems[i];
                     DataSource.OrderItems[i] = DataSource.OrderItems[DataSource.NextOrderItem - 1];
-                    DataSource.OrderItems[DataSource.NextOrderItem - 1] = Temp;
+                    DataSource.OrderItems[DataSource.NextOrderItem - 1] = temp;
                     DataSource.NextOrderItem--;
                 break;
             }
         }
     }
+    //Function to update an order item
     public static void UpdateOrderItem(OrderItem newOrderItem)
     {
         for (int i = 0; i < DataSource.NextOrderItem; i++)
@@ -76,17 +81,19 @@ public class DalOrederItem
         }
         throw new Exception("the id is not exist");
     }
-    public static OrderItem GetOrderItem(int IDToGet)
+    // A function that returns an order item by id
+    public static OrderItem GetOrderItem(int idToGet)
     {
         for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
-            if (IDToGet == DataSource.OrderItems[i].Id)
+            if (idToGet == DataSource.OrderItems[i].Id)
             {
                 return DataSource.OrderItems[i];
             }
         }
         throw new Exception("the OrderItem is not exist");
     }
+    // A function that returns an array of the order items in the database
     public static OrderItem[] OrderItemsList()
     {
         OrderItem[] orderItemsList = new OrderItem[DataSource.NextOrderItem];
@@ -96,38 +103,40 @@ public class DalOrederItem
         }
         return orderItemsList;
     }
-    public static OrderItem GetOrderItemByOrderAndProductId(int OrderId, int ProductId)
+    //A function that returns an order item by prodact and order id;
+    public static OrderItem GetOrderItemByOrderAndProductId(int orderId, int productId)
     {
         for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
-            if(OrderId == DataSource.OrderItems[i].OredrID && ProductId == DataSource.OrderItems[i].ProductID)
+            if(orderId == DataSource.OrderItems[i].OredrID && productId == DataSource.OrderItems[i].ProductID)
             {
                 return DataSource.OrderItems[i];
             }
         }
         throw new Exception("the order item is not exist");
     }
-    public static OrderItem[] OrderItemsListByOrder(int OrderId)
+    // A function that returns an array of the order items by order id
+    public static OrderItem[] OrderItemsListByOrder(int orderId)
     {
         
-        int CounterOfItems = 0;
+        int counterOfItems = 0;
         for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
-           if(OrderId == DataSource.OrderItems[i].OredrID)
+           if(orderId == DataSource.OrderItems[i].OredrID)
             {
-                CounterOfItems++;
+                counterOfItems++;
             }
         }
-        OrderItem[] OrderItemInOrder = new OrderItem[CounterOfItems];
-        CounterOfItems = 0;
+        OrderItem[] orderItemInOrder = new OrderItem[counterOfItems];
+        counterOfItems = 0;
         for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
-            if (OrderId == DataSource.OrderItems[i].OredrID)
+            if (orderId == DataSource.OrderItems[i].OredrID)
             {
-                OrderItemInOrder[CounterOfItems++] = DataSource.OrderItems[i];
+                orderItemInOrder[counterOfItems++] = DataSource.OrderItems[i];
             }
 
         }
-        return OrderItemInOrder;
+        return orderItemInOrder;
     }
 }
