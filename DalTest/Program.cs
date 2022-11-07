@@ -23,7 +23,7 @@ internal class Program
             {
                 case (int)User.EXIT:
                     return;
-                case (int)User.ADD: ///add new product and input the id, name, category, price , amount and add to the store.
+                case (int)User.ADD:///add new product and input the id, name, category, price , amount and add to the store.
 
                     {
                         Product newProduct = new Product(); 

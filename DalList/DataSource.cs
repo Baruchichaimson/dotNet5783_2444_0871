@@ -156,7 +156,7 @@ internal static class DataSource
 
         ///run number that start from number with 6 digits for the id number.
         private static int IdOrder = 1;
-        internal static int GetOrder => IdOrder++; 
+        internal static int GetOrder => IdOrder++;
         private static int IdOrderItem = 1;
         internal static int GetOrderItem => IdOrderItem++;
 }
