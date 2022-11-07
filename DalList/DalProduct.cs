@@ -2,11 +2,11 @@
 using System;
 namespace Dal;
 
-// class for Manage The product database
+/// class for Manage The product database
 public class DalProduct
 {
 
-    // Function to add a new product
+    /// Function to add a new product
     public static int AddProduct(Product newProduct)
     {
         for (int i = 0; i < DataSource.NextProduct; i++)
@@ -22,7 +22,7 @@ public class DalProduct
         return newProduct.Id;
     }
 
-    //Function to delete a product
+    ///Function to delete a product
     public static void DeleteProduct(int idToDelete)
     {
         for (int i = 0; i < DataSource.NextProduct; i++)
@@ -43,7 +43,7 @@ public class DalProduct
             }
         }
     }
-    // Function to update a product
+    /// Function to update a product
     public static void UpdateProduct(Product newProduct)
     {
         bool exist = false;
@@ -59,7 +59,7 @@ public class DalProduct
         if(!exist)
             throw new Exception("the id is not exist\n");
     }
-    // A function that returns a product by id
+    /// A function that returns a product by id
     public static Product GetProduct(int idToGet)
     {
         for (int i = 0; i < DataSource.NextProduct; i++)
@@ -69,7 +69,7 @@ public class DalProduct
         }
         throw new Exception("the product is not exist\n");
     }
-    // A function that returns an array of the products in the database
+    /// A function that returns an array of the products in the database
     public static Product[] ProductList()
     {
         Product[] productsList = new Product[DataSource.NextProduct];

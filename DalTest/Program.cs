@@ -12,11 +12,6 @@ namespace Dal;
 
 internal class Program
 {
-    private DalProduct _DalProduct = new DalProduct();
-    private DalOrder _DalOrder = new DalOrder();
-    private DalOrederItem _DalOrederItem = new DalOrederItem();
-    enum User { EXIT, ADD, DELETE, UPDATE, GET, PRINTALL, BY_ORDER_AND_PRODUCT, ITEM_BY_ORDER_ID };
-    enum UserForMain { EXIT, PRODUCT, ORDER, ORDER_ITEM }
     public static void ProductOptions()/// the user input whice active he want to do on the product.
     {
         while (true)
