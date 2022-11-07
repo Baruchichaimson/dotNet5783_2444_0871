@@ -7,15 +7,13 @@ public class DalProduct
    
     public static int AddProduct(Product NewProduct)
     {
-       
         for (int i = 0; i < DataSource.NextProduct; i++)
-        {
-           
+        {  
             if (NewProduct.Id == DataSource.Products[i].Id)
-            throw new Exception("the id is allready exist");
+            throw new Exception("the id is allready exist\n");
         }
         if (DataSource.NextProduct == 50)
-            throw new Exception("the storge of proudct is full");
+            throw new Exception("the storge of proudct is full\n");
         else
             DataSource.Products[DataSource.NextProduct++] = NewProduct;
 
@@ -28,7 +26,7 @@ public class DalProduct
             if (IDToDelete == DataSource.Products[i].Id)
             {
                 if (DataSource.NextProduct == 0)
-                    throw new Exception("the storge of proudct is empty");
+                    throw new Exception("the storge of proudct is empty\n");
                 else
                 {
                     Product Temp = DataSource.Products[i];
@@ -42,15 +40,19 @@ public class DalProduct
     }
     public static void UpdateProduct(Product newproduct)
     {
+        bool exist = false;
         for (int i = 0; i < DataSource.NextProduct; i++)
         {
             if (newproduct.Id == DataSource.Products[i].Id)
             {
                 DataSource.Products[i] = newproduct;
+                exist = true;
                 break;
             }
+           
         }
-        throw new Exception("the id is not exist");
+        if(!exist)
+            throw new Exception("the id is not exist\n");
     }
     public static Product GetProduct(int IDToGet)
     {
@@ -61,7 +63,7 @@ public class DalProduct
                 return DataSource.Products[i];
             }
         }
-        throw new Exception("the product is not exist");
+        throw new Exception("the product is not exist\n");
     }
     public static Product[] ProductList()
     {

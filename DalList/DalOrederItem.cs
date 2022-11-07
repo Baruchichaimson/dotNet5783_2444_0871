@@ -6,24 +6,41 @@ public class DalOrederItem
     public static int AddOrderItem(OrderItem NewOrderItem)
     {
         NewOrderItem.Id = DataSource.GetOrderItem;
-        bool exist = false;
+        bool existProduct = false;
+        bool existOrder = false;
         for(int i = 0; i < DataSource.Products.Length; i++)
         {
             if(NewOrderItem.ProductID == DataSource.Products[i].Id)
             {
-                exist = true; break;
+                existProduct = true; break;
             }
         }
-        if (!exist)
+        for (int i = 0; i < DataSource.Orders.Length; i++)
         {
-            throw new Exception("Product id does not exist");
+            if (NewOrderItem.OredrID == DataSource.Orders[i].Id)
+            {
+                existOrder = true; break;
+            }
         }
-        if(OrderItemsListByOrder(NewOrderItem.OredrID).Length >= 4)
+        if (!existProduct)
         {
-            throw new Exception("too much items in order");
+            throw new Exception("Product id does not exist\n");
+        }
+        if (!existOrder)
+        {
+            throw new Exception("Order id does not exist\n");
+        }
+        if (OrderItemsListByOrder(NewOrderItem.OredrID).Length >= 4)
+        {
+            throw new Exception("too much items in order\n");
+        }
+        for(int i = 0; i < OrderItemsListByOrder(NewOrderItem.OredrID).Length; i++)
+        {
+            if (OrderItemsListByOrder(NewOrderItem.OredrID)[i].ProductID == NewOrderItem.ProductID)
+                throw new Exception("the product is allready exist in the order\n");
         }
         if (DataSource.NextOrderItem == 200)
-            throw new Exception("the storge of orderitems is full");
+            throw new Exception("the storge of orderitems is full\n");
         else
             DataSource.OrderItems[DataSource.NextOrderItem++] = NewOrderItem;
 
@@ -32,11 +49,11 @@ public class DalOrederItem
     public static void DeleteOrderItem(int IDToDelete)
     {
         if (DataSource.NextOrderItem == 0)
-            throw new Exception("the storge of orderitems is empty");
+            throw new Exception("the storge of orderitems is empty\n");
 
         for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
-            if (IDToDelete == DataSource.Orders[i].Id)
+            if (IDToDelete == DataSource.OrderItems[i].Id)
             {
                     OrderItem Temp = DataSource.OrderItems[i];
                     DataSource.OrderItems[i] = DataSource.OrderItems[DataSource.NextOrderItem - 1];
@@ -109,6 +126,7 @@ public class DalOrederItem
             {
                 OrderItemInOrder[CounterOfItems++] = DataSource.OrderItems[i];
             }
+
         }
         return OrderItemInOrder;
     }

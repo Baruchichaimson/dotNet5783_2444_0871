@@ -10,7 +10,7 @@ public class DalOrder
     {
         NewOrder.Id = DataSource.GetOrder;
         if (DataSource.NextOrder == 100)
-            throw new Exception("the storge of order is full");
+            throw new Exception("the storge of order is full\n");
         else
             DataSource.Orders[DataSource.NextOrder++] = NewOrder;
 
@@ -23,7 +23,7 @@ public class DalOrder
             if (IDToDelete == DataSource.Orders[i].Id)
             {
                 if (DataSource.NextOrder == 0)
-                    throw new Exception("the storge of order is empty");
+                    throw new Exception("the storge of order is empty\n");
                 else
                 {
                     Order Temp = DataSource.Orders[i];
@@ -37,15 +37,18 @@ public class DalOrder
     }
     public static void UpdateOrder(Order newOrder)
     {
+        bool exist = false;
         for (int i = 0; i < DataSource.NextOrder; i++)
         {
             if (newOrder.Id == DataSource.Orders[i].Id)
             {
                 DataSource.Orders[i] = newOrder;
+                exist = true;
                 break;
             }
         }
-        throw new Exception("the id is not exist");
+        if (!exist)
+             throw new Exception("the id is not exist\n");
     }
     public static Order GetOrder(int IDToGet)
     {
@@ -56,7 +59,7 @@ public class DalOrder
                 return DataSource.Orders[i];
             }
         }
-        throw new Exception("the Order is not exist");
+        throw new Exception("the Order is not exist\n");
     }
     public static Order[] OrderList()
     {
