@@ -7,7 +7,7 @@ public class DalProduct
 {
 
     /// Function to add a new product
-    public static int AddProduct(Product newProduct)
+    public int AddProduct(Product newProduct)
     {
         for (int i = 0; i < DataSource.NextProduct; i++)
         {  
@@ -23,7 +23,7 @@ public class DalProduct
     }
 
     ///Function to delete a product
-    public static void DeleteProduct(int idToDelete)
+    public void DeleteProduct(int idToDelete)
     {
         for (int i = 0; i < DataSource.NextProduct; i++)
         {
@@ -44,7 +44,7 @@ public class DalProduct
         }
     }
     /// Function to update a product
-    public static void UpdateProduct(Product newProduct)
+    public void UpdateProduct(Product newProduct)
     {
         bool exist = false;
         for (int i = 0; i < DataSource.NextProduct; i++)
@@ -60,7 +60,7 @@ public class DalProduct
             throw new Exception("the id is not exist\n");
     }
     /// A function that returns a product by id
-    public static Product GetProduct(int idToGet)
+    public Product GetProduct(int idToGet)
     {
         for (int i = 0; i < DataSource.NextProduct; i++)
         {
@@ -70,7 +70,7 @@ public class DalProduct
         throw new Exception("the product is not exist\n");
     }
     /// A function that returns an array of the products in the database
-    public static Product[] ProductList()
+    public Product[] ProductList()
     {
         Product[] productsList = new Product[DataSource.NextProduct];
         for(int i = 0; i < DataSource.NextProduct; i++)

@@ -8,7 +8,7 @@ public class DalOrder
 {
 
     /// Function to add a new order
-    public static int AddOrder(Order newOrder)
+    public int AddOrder(Order newOrder)
     {
         newOrder.Id = DataSource.GetOrder;
         if (DataSource.NextOrder == 100)
@@ -19,7 +19,7 @@ public class DalOrder
         return newOrder.Id;
     }
     ///Function to delete an order
-    public static void DeleteOrder(int idToDelete)
+    public void DeleteOrder(int idToDelete)
     {
         for (int i = 0; i < DataSource.NextOrder; i++)
         {
@@ -40,7 +40,7 @@ public class DalOrder
         }
     }
     ///Function to update an order
-    public static void UpdateOrder(Order newOrder)
+    public void UpdateOrder(Order newOrder)
     {
         bool exist = false;
         for (int i = 0; i < DataSource.NextOrder; i++)
@@ -56,7 +56,7 @@ public class DalOrder
              throw new Exception("the id is not exist\n");
     }
     /// A function that returns an order by id
-    public static Order GetOrder(int idToGet)
+    public Order GetOrder(int idToGet)
     {
         for (int i = 0; i < DataSource.NextOrder; i++)
         {
@@ -68,7 +68,7 @@ public class DalOrder
         throw new Exception("the Order is not exist\n");
     }
     /// A function that returns an array of the orders in the database
-    public static Order[] OrderList()
+    public Order[] OrderList()
     {
         Order[] orderList = new Order[DataSource.NextOrder];
         for (int i = 0; i < DataSource.NextOrder; i++)
