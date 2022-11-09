@@ -23,7 +23,12 @@ internal static class DataSource
     {
         S_Initialize();
     }
-
+    /// <summary>
+    /// if the id number that was chooce is allready 
+    /// in the database return fallse and if not return true.
+    /// </summary>
+    /// <param name="id"></param> the number that chooce.
+    /// <returns></returns>
     private static bool check(int id)
     {
         for (int i = 0; i < NextProduct; i++)
@@ -53,11 +58,11 @@ internal static class DataSource
             for (int j = 0; j < 5; j++)              /// run on the 5 product from one category.
             {
                 int randomIdProducts = randomNumber.Next(100000, 1000000);
-                while(!check(randomIdProducts))
+                while(!check(randomIdProducts)) ///if the number is already in the database, then draw a new number.
                 {
                     randomIdProducts = randomNumber.Next(100000, 1000000);
                 }
-                newProduct.Id = randomIdProducts;   ///the next run number for the id.
+                newProduct.Id = randomIdProducts;   ///put the number for the id.
 
                 ///if the five precent number until bigger from zero that mean that not all the five precent
                 ///is allready zero in the stock so keep put zero in the stock of the product for now but if 

@@ -58,8 +58,7 @@ public class DalProduct
         }
         if(!exist)
             throw new Exception("the id is not exist\n");
-    }
-   
+    }  
     /// A function that returns a product by id
     public Product GetProduct(int idToGet)
     {
