@@ -34,7 +34,7 @@ internal static class DataSource
         string[] Sweets = new string[] { "AMARETTI_COOKIES", "MILK_CHOOCOLATE", "MINI_COOKIES", "ORANGE_COOKIES", "DARK_CHOOCOLATE" };
 
         int fivePrecentProduct = (int)(25 * 0.05);///calculation the five precent of products. 
-        int counterIdProducts = 100000; /// the first run number for the id product.
+        int randomIdProducts = randomNumber.Next(100000, 1000000); /// the first run number for the id product.
 
         for (int i = 0; i < 5; i++) ///run on the five category
         {
@@ -44,7 +44,7 @@ internal static class DataSource
 
             for (int j = 0; j < 5; j++)              /// run on the 5 product from one category.
             {
-                newProduct.Id = counterIdProducts++; ///the next run number for the id.
+                newProduct.Id = randomIdProducts; ///the next run number for the id.
 
             ///if the five precent number until bigger from zero that mean that not all the five precent
             ///is allready zero in the stock so keep put zero in the stock of the product for now but if 

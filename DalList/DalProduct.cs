@@ -54,6 +54,7 @@ public class DalProduct
                 DataSource.Products[i] = newProduct;
                 exist = true;
                 break;
+                
             }
         }
         if(!exist)
