@@ -5,7 +5,6 @@ namespace Dal;
 /// class for Manage The product database
 public class DalProduct
 {
-
     /// Function to add a new product
     public int AddProduct(Product newProduct)
     {
@@ -60,6 +59,7 @@ public class DalProduct
         if(!exist)
             throw new Exception("the id is not exist\n");
     }
+   
     /// A function that returns a product by id
     public Product GetProduct(int idToGet)
     {
@@ -70,7 +70,9 @@ public class DalProduct
         }
         throw new Exception("the product is not exist\n");
     }
+    /// <summary>
     /// A function that returns an array of the products in the database
+    /// <returns> the array with all the products.
     public Product[] ProductList()
     {
         Product[] productsList = new Product[DataSource.NextProduct];

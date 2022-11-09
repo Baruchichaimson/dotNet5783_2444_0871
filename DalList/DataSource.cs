@@ -24,6 +24,15 @@ internal static class DataSource
         S_Initialize();
     }
 
+    private static bool check(int id)
+    {
+        for (int i = 0; i < NextProduct; i++)
+        {
+            if (id == Products[i].Id)
+                return false;
+        }
+        return true;
+    }
     static void AddProductToStore() ///put products in the store.
     {
         ///arrays for all the product ant array to one category etc.
@@ -34,7 +43,6 @@ internal static class DataSource
         string[] Sweets = new string[] { "AMARETTI_COOKIES", "MILK_CHOOCOLATE", "MINI_COOKIES", "ORANGE_COOKIES", "DARK_CHOOCOLATE" };
 
         int fivePrecentProduct = (int)(25 * 0.05);///calculation the five precent of products. 
-        int randomIdProducts = randomNumber.Next(100000, 1000000); /// the first run number for the id product.
 
         for (int i = 0; i < 5; i++) ///run on the five category
         {
@@ -44,12 +52,17 @@ internal static class DataSource
 
             for (int j = 0; j < 5; j++)              /// run on the 5 product from one category.
             {
-                newProduct.Id = randomIdProducts; ///the next run number for the id.
+                int randomIdProducts = randomNumber.Next(100000, 1000000);
+                while(!check(randomIdProducts))
+                {
+                    randomIdProducts = randomNumber.Next(100000, 1000000);
+                }
+                newProduct.Id = randomIdProducts;   ///the next run number for the id.
 
-            ///if the five precent number until bigger from zero that mean that not all the five precent
-            ///is allready zero in the stock so keep put zero in the stock of the product for now but if 
-            ///is allready zero so lest start to put number of stock to the products. 
-                newProduct.Instock = fivePrecentProduct > 0 ? 0 : randomNumber.Next(20, 50); 
+                ///if the five precent number until bigger from zero that mean that not all the five precent
+                ///is allready zero in the stock so keep put zero in the stock of the product for now but if 
+                ///is allready zero so lest start to put number of stock to the products. 
+                newProduct.Instock = fivePrecentProduct > 0 ? 0 : randomNumber.Next(20, 50);
 
                 newProduct.Name = newProduct.Categoryname switch
                 {
@@ -63,11 +76,11 @@ internal static class DataSource
                 };
                 newProduct.Price = randomNumber.Next(100, 300);
 
-            fivePrecentProduct--;///the five precent from product reduce one after we make one product to put in the store. 
+                fivePrecentProduct--;///the five precent from product reduce one after we make one product to put in the store. 
                 Products[NextProduct++] = newProduct; ///put the new product in the store.
             }
         }
-    }   
+    }
     static void AddOrderToStore()  ///put orders in the store.
     {
         ///arrays for all the names and emails
@@ -90,10 +103,10 @@ internal static class DataSource
           "0 Kipling Pass","28 Sundown Crossing","12422 Anderson Plaza","139 Gateway Parkway","99020 Warrior Place",
           "90481 Northfield Pass","41 Kenwood Avenue","7 Pawling Center","4 Derek Plaza","44514 Rieder Crossing",
           "3 Chive Way","4 Sachtjen Trail", "03 Ridge Oak Junction","45 Shelley Junction","98 Calypso Plaza","16826 Vera Street",
-          "7446 Ludington Point","539 Erie Road","7277 Di Loreto Circle","6 Service Park" 
+          "7446 Ludington Point","539 Erie Road","7277 Di Loreto Circle","6 Service Park"
         };
-        string[] costomEremail = new string[] 
-        { 
+        string[] costomEremail = new string[]
+        {
           "vbrownett1@whitehouse.gov","remanueli2@harvard.edu","rcroley3@ycombinator.com","jfrean4@earthlink.net","fwhewell5@nature.com",
           "mbuffery6@tamu.edu","lnorwood7@i2i.jp","pkiernan8@github.com","mplaster9@scientificamerican.com","bdedney0@google.pl",
           "lfillera@pcworld.com","bheaneyb@cafepress.com","aquilkinc@npr.org","awildishd@timesonline.co.uk","rcarlete@sphinn.com",
@@ -101,7 +114,7 @@ internal static class DataSource
           "maickini@unesco.org","ciddisonj@rakuten.co.jp","rsawbridgek@archive.org","ffassl@google.co.uk","medgesonm@wikispaces.com",
           "jdulintyn@soup.io","fmintoffo@reuters.com","mfessionsp@goo.ne.jp","grussq@independent.co.uk","ftrautr@hp.com","egolts@w3.org",
           "lcopsonv@multiply.com","bdolanw@scribd.com","bchaffx@cisco.com","cfoxcrofty@twitter.com","lsimsz@woothemes.com",
-          "bkrolman11@weather.com","eboice12@simplemachines.org","nlingner13@whitehouse.gov","dcochranef@sbwire.com" 
+          "bkrolman11@weather.com","eboice12@simplemachines.org","nlingner13@whitehouse.gov","dcochranef@sbwire.com"
         };
 
         for (int i = 0; i < 20; i++) ///until 20 orders.
@@ -111,7 +124,7 @@ internal static class DataSource
             randomNumber.Next(1, DateTime.Now.Day), randomNumber.Next(0, 24), randomNumber.Next(0, 60), randomNumber.Next(0, 60));
             randomTime.AddMonths(-1); ///just to not make a problem with future time.
 
-            Order newOrder = new Order(); 
+            Order newOrder = new Order();
 
             newOrder.Id = GetOrder; ///id for the orders with the run number that we have in the function config.
             newOrder.CustomerName = costomerName[randomNumber.Next(0, 40)];
@@ -120,12 +133,12 @@ internal static class DataSource
             newOrder.OrderDate = randomTime;
             if (i < 16)
                 ///random number just we make him to be one ot two days after the random date we have.
-                newOrder.ShipDate = newOrder.OrderDate.Add(new TimeSpan(randomNumber.Next(1,3), 0, 0, 0)); 
+                newOrder.ShipDate = newOrder.OrderDate.Add(new TimeSpan(randomNumber.Next(1, 3), 0, 0, 0));
             else
                 newOrder.ShipDate = DateTime.MinValue;
-            if(i < 12)
+            if (i < 12)
                 ///random number just we make him to be one ot two days after the random date we have.
-                newOrder.DeliveryrDate = newOrder.ShipDate.Add(new TimeSpan(randomNumber.Next(4,6), 0, 0, 0));
+                newOrder.DeliveryrDate = newOrder.ShipDate.Add(new TimeSpan(randomNumber.Next(4, 6), 0, 0, 0));
             else
                 newOrder.DeliveryrDate = DateTime.MinValue;
             Orders[NextOrder++] = newOrder; ///put the new order in the store.
@@ -135,8 +148,8 @@ internal static class DataSource
     {
         for (int i = 0; i < 20; i++)  ///until 40 item product (minimum amount of item for one order is two).
         {
-            int randomProduct = randomNumber.Next(0, 21); 
-            for (int j = 0; j < randomNumber.Next(2,5); j++) ///ranum amount of product between 2 and 5. 
+            int randomProduct = randomNumber.Next(0, 21);
+            for (int j = 0; j < randomNumber.Next(2, 5); j++) ///ranum amount of product between 2 and 5. 
             {
                 OrderItem newOrderItem = new OrderItem();
 
@@ -150,13 +163,13 @@ internal static class DataSource
         }
     }
     /// we make class config for all the run number we have here in the data source.
-        internal static int NextOrder = 0;
-        internal static int NextOrderItem = 0;
-        internal static int NextProduct = 0;
+    internal static int NextOrder = 0;
+    internal static int NextOrderItem = 0;
+    internal static int NextProduct = 0;
 
-        ///run number that start from number with 6 digits for the id number.
-        private static int IdOrder = 1;
-        internal static int GetOrder => IdOrder++;
-        private static int IdOrderItem = 1;
-        internal static int GetOrderItem => IdOrderItem++;
+    ///run number that start from number with 6 digits for the id number.
+    private static int IdOrder = 1;
+    internal static int GetOrder => IdOrder++;
+    private static int IdOrderItem = 1;
+    internal static int GetOrderItem => IdOrderItem++;
 }
