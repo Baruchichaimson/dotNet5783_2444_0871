@@ -1,4 +1,5 @@
-﻿using DO;
+﻿using DalApi;
+using DO;
 using System;
 namespace Dal;
 
@@ -6,15 +7,15 @@ namespace Dal;
 public class DalProduct
 {
     /// Function to add a new product
-    public int AddProduct(Product newProduct)
+    public int Add(Product newProduct)
     {
         for (int i = 0; i < DataSource.NextProduct; i++)
         {  
             if (newProduct.Id == DataSource.Products[i].Id)
-            throw new Exception("the id is allready exist\n");
+            throw new AllreadyExist("id");
         }
         if (DataSource.NextProduct == 50)
-            throw new Exception("the storge of proudct is full\n");
+            throw new StorgeIsFull("proudct");
         else
             DataSource.Products[DataSource.NextProduct++] = newProduct;
 
@@ -22,14 +23,14 @@ public class DalProduct
     }
 
     ///Function to delete a product
-    public void DeleteProduct(int idToDelete)
+    public void Delete(int idToDelete)
     {
         for (int i = 0; i < DataSource.NextProduct; i++)
         {
             if (idToDelete == DataSource.Products[i].Id)
             {
                 if (DataSource.NextProduct == 0)
-                    throw new Exception("the storge of proudct is empty\n");
+                    throw new StorgeIsEmpty("proudct");
                 else
                 {
                     // Replaces with the last one and lowers the size of the array
@@ -43,7 +44,7 @@ public class DalProduct
         }
     }
     /// Function to update a product
-    public void UpdateProduct(Product newProduct)
+    public void Update(Product newProduct)
     {
         bool exist = false;
         for (int i = 0; i < DataSource.NextProduct; i++)
@@ -57,22 +58,22 @@ public class DalProduct
             }
         }
         if(!exist)
-            throw new Exception("the id is not exist\n");
+            throw new EntityNotFound("id");
     }  
     /// A function that returns a product by id
-    public Product GetProduct(int idToGet)
+    public Product Get(int idToGet)
     {
         for (int i = 0; i < DataSource.NextProduct; i++)
         {
             if (idToGet == DataSource.Products[i].Id)
                 return DataSource.Products[i];
         }
-        throw new Exception("the product is not exist\n");
+        throw new EntityNotFound("product");
     }
     /// <summary>
     /// A function that returns an array of the products in the database
     /// <returns> the array with all the products.
-    public Product[] ProductList()
+    public Product[] List()
     {
         Product[] productsList = new Product[DataSource.NextProduct];
         for(int i = 0; i < DataSource.NextProduct; i++)

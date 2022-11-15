@@ -1,32 +1,32 @@
 ﻿
 using DO;
+using DalApi;
 
 namespace Dal;
-
 /// class for Manage The order database
 public class DalOrder
 {
 
     /// Function to add a new order
-    public int AddOrder(Order newOrder)
+    public int Add(Order newOrder)
     {
         newOrder.Id = DataSource.GetOrder;
         if (DataSource.NextOrder == 100)
-            throw new Exception("the storge of order is full\n");
+            throw new StorgeIsFull("order");
         else
             DataSource.Orders[DataSource.NextOrder++] = newOrder;
 
         return newOrder.Id;
     }
     ///Function to delete an order
-    public void DeleteOrder(int idToDelete)
+    public void Delete(int idToDelete)
     {
         for (int i = 0; i < DataSource.NextOrder; i++)
         {
             if (idToDelete == DataSource.Orders[i].Id)
             {
                 if (DataSource.NextOrder == 0)
-                    throw new Exception("the storge of order is empty\n");
+                    throw new StorgeIsEmpty("order");
                 else
                 {
                     /// Replaces with the last one and lowers the size of the array
@@ -40,7 +40,7 @@ public class DalOrder
         }
     }
     ///Function to update an order
-    public void UpdateOrder(Order newOrder)
+    public void Update(Order newOrder)
     {
         bool exist = false;
         for (int i = 0; i < DataSource.NextOrder; i++)
@@ -53,10 +53,10 @@ public class DalOrder
             }
         }
         if (!exist)
-             throw new Exception("the id is not exist\n");
+            throw new EntityNotFound("id");
     }
     /// A function that returns an order by id
-    public Order GetOrder(int idToGet)
+    public Order Get(int idToGet)
     {
         for (int i = 0; i < DataSource.NextOrder; i++)
         {
@@ -65,10 +65,10 @@ public class DalOrder
                 return DataSource.Orders[i];
             }
         }
-        throw new Exception("the Order is not exist\n");
+        throw new EntityNotFound("order");
     }
     /// A function that returns an array of the orders in the database
-    public Order[] OrderList()
+    public Order[] List()
     {
         Order[] orderList = new Order[DataSource.NextOrder];
         for (int i = 0; i < DataSource.NextOrder; i++)

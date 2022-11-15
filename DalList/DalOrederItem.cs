@@ -1,4 +1,5 @@
 ﻿using DO;
+using DalApi;
 using System.Drawing;
 
 namespace Dal;
@@ -8,7 +9,7 @@ public class DalOrederItem
 {
 
     /// Function to add a new order item
-    public int AddOrderItem(OrderItem newOrderItem)
+    public int Add(OrderItem newOrderItem)
     {
         newOrderItem.Id = DataSource.GetOrderItem;
         bool productExist = false;
@@ -26,33 +27,33 @@ public class DalOrederItem
                 orderExist = true; break;
         }
         if (!productExist)
-           throw new Exception("Product id does not exist\n");
-        
+            throw new EntityNotFound("Product");
+
         if (!orderExist)
-            throw new Exception("Order id does not exist\n");
+            throw new EntityNotFound("order"); 
 
         ///Checking if the order is full 
         if (OrderItemsListByOrder(newOrderItem.OredrID).Length >= 4)
-            throw new Exception("too much items in order\n");
+            throw new StorgeIsFull("order");
 
         for(int i = 0; i < OrderItemsListByOrder(newOrderItem.OredrID).Length; i++)
         {
             if (OrderItemsListByOrder(newOrderItem.OredrID)[i].ProductID == newOrderItem.ProductID)
-                throw new Exception("the product is allready exist in the order\n");
+                throw new AllreadyExist("product");
         }
         ///Checking if the orderitem database is full 
         if (DataSource.NextOrderItem == 200)
-            throw new Exception("the storge of orderitems is full\n");
+            throw new StorgeIsFull("order items");
         else
             DataSource.OrderItems[DataSource.NextOrderItem++] = newOrderItem;
 
         return newOrderItem.Id;
     }
     ///Function to delete an order item
-    public void DeleteOrderItem(int idToDelete)
+    public void Delete(int idToDelete)
     {
         if (DataSource.NextOrderItem == 0)
-            throw new Exception("the storge of orderitems is empty\n");
+            throw new StorgeIsEmpty("order items");
 
         for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
@@ -68,7 +69,7 @@ public class DalOrederItem
         }
     }
     ///Function to update an order item
-    public void UpdateOrderItem(OrderItem newOrderItem)
+    public void Update(OrderItem newOrderItem)
     {
         for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
@@ -79,10 +80,10 @@ public class DalOrederItem
                 return;         
             }
         }
-        throw new Exception("the id is not exist");
+        throw new EntityNotFound("id");
     }
     /// A function that returns an order item by id
-    public OrderItem GetOrderItem(int idToGet)
+    public OrderItem Get(int idToGet)
     {
         for (int i = 0; i < DataSource.NextOrderItem; i++)
         {
@@ -91,10 +92,10 @@ public class DalOrederItem
                 return DataSource.OrderItems[i];
             }
         }
-        throw new Exception("the OrderItem is not exist");
+        throw new EntityNotFound("Order item");
     }
     /// A function that returns an array of the order items in the database
-    public OrderItem[] OrderItemsList()
+    public OrderItem[] List()
     {
         OrderItem[] orderItemsList = new OrderItem[DataSource.NextOrderItem];
         for (int i = 0; i < DataSource.NextOrderItem; i++)
@@ -113,7 +114,7 @@ public class DalOrederItem
                 return DataSource.OrderItems[i];
             }
         }
-        throw new Exception("the order item is not exist");
+        throw new EntityNotFound("order item");
     }
     /// A function that returns an array of the order items by order id
     public OrderItem[] OrderItemsListByOrder(int orderId)
