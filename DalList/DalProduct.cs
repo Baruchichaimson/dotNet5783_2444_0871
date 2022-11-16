@@ -1,8 +1,6 @@
 ﻿using DalApi;
 using DO;
-using Google.Api.Ads.AdWords.v201809;
 using System;
-using EntityNotFound = DO.EntityNotFound;
 
 namespace Dal;
 
@@ -28,19 +26,18 @@ public class DalProduct
     ///Function to delete a product
     public void Delete(int idToDelete)
     {
+        if (DataSource.Products.Count == 0)
+            throw new StorgeIsEmpty("proudct");
+
         foreach (Product myproduct in DataSource.Products)
         {
             if (idToDelete == myproduct.Id)
             {
-                if (DataSource.Products.Count == 0)
-                    throw new StorgeIsEmpty("proudct");
-                else
-                {
-                    DataSource.Products.Remove(myproduct);
-                }
-                break;
+                DataSource.Products.Remove(myproduct);
+                return; 
             }
         }
+        throw new EntityNotFound("product");
     }
     /// Function to update a product
     public void Update(Product newProduct)

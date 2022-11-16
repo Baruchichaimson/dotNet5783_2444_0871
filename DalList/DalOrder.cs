@@ -1,10 +1,11 @@
 ﻿
 using DO;
 using DalApi;
-
+//using System.Security.Principal;
 namespace Dal;
+
 /// class for Manage The order database
-public class DalOrder
+internal class DalOrder 
 {
 
     /// Function to add a new order
@@ -21,20 +22,20 @@ public class DalOrder
     ///Function to delete an order
     public void Delete(int idToDelete)
     {
+        if (DataSource.Orders.Count == 0)
+            throw new StorgeIsEmpty("order");
+
         foreach (Order myOrder in DataSource.Orders)
         {
             if (idToDelete == myOrder.Id)
             {
-                if (DataSource.Orders.Count == 0)
-                    throw new StorgeIsEmpty("order");
-                else
-                {
-                    /// Replaces with the last one and lowers the size of the array
-                    DataSource.Orders.Remove(myOrder);
-                }
-                break;
+                /// Replaces with the last one and lowers the size of the array
+                DataSource.Orders.Remove(myOrder);
+                return;
+              
             }
         }
+        throw new EntityNotFound("order");
     }
     ///Function to update an order
     public void Update(Order newOrder)

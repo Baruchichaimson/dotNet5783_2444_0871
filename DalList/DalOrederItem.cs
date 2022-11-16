@@ -11,19 +11,18 @@ public class DalOrederItem
     /// Function to add a new order item
     public void Add(OrderItem newOrderItem)
     {
-        newOrderItem.Id = DataSource.GetOrderItem;
         bool productExist = false;
         bool orderExist = false;
         ///Checking if the product exists in the database
-        for (int i = 0; i < DataSource.Products.Length; i++)
+        foreach (Product myProduct in DataSource.Products)
         {
-            if(newOrderItem.ProductID == DataSource.Products[i].Id)
+            if(newOrderItem.ProductID == myProduct.Id)
                 productExist = true; break;
         }
         ///Checking if the order exists in the database
-        for (int i = 0; i < DataSource.Orders.Length; i++)
+        foreach (Order myOrder in DataSource.Orders)
         {
-            if (newOrderItem.OredrID == DataSource.Orders[i].Id)
+            if (newOrderItem.OredrID == myOrder.Id)
                 orderExist = true; break;
         }
         if (!productExist)
@@ -33,40 +32,43 @@ public class DalOrederItem
             throw new EntityNotFound("order"); 
 
         ///Checking if the order is full 
-        if (OrderItemsListByOrder(newOrderItem.OredrID).Length >= 4)
+        if (OrderItemsListByOrder(newOrderItem.OredrID).Count() >= 4)
             throw new StorgeIsFull("order");
 
-        for(int i = 0; i < OrderItemsListByOrder(newOrderItem.OredrID).Length; i++)
-        {
-            if (OrderItemsListByOrder(newOrderItem.OredrID)[i].ProductID == newOrderItem.ProductID)
+        IEnumerator<OrderItem> iter = OrderItemsListByOrder(newOrderItem.OredrID).GetEnumerator();
+
+        while (iter.MoveNext()){ 
+
+            if (iter.Current.ProductID == newOrderItem.ProductID)
                 throw new AllreadyExist("product");
-        }
+        };
+
         ///Checking if the orderitem database is full 
-        if (DataSource.NextOrderItem == 200)
+        if (DataSource.OrderItems.Count >= 200)
             throw new StorgeIsFull("order items");
         else
-            DataSource.OrderItems[DataSource.NextOrderItem++] = newOrderItem;
-
-        return newOrderItem.Id;
+        {
+            newOrderItem.Id = DataSource.GetOrderItem;
+            DataSource.OrderItems.Add(newOrderItem);
+        }
+          
     }
     ///Function to delete an order item
     public void Delete(int idToDelete)
     {
-        if (DataSource.NextOrderItem == 0)
+        if (DataSource.OrderItems.Count == 0)
             throw new StorgeIsEmpty("order items");
 
-        for (int i = 0; i < DataSource.NextOrderItem; i++)
+        foreach (OrderItem myOrderItem in DataSource.OrderItems)
         {
-            if (idToDelete == DataSource.OrderItems[i].Id)
+            if (idToDelete == myOrderItem.Id)
             {
-               /// Replaces with the last one and lowers the size of the array
-                    OrderItem temp = DataSource.OrderItems[i];
-                    DataSource.OrderItems[i] = DataSource.OrderItems[DataSource.NextOrderItem - 1];
-                    DataSource.OrderItems[DataSource.NextOrderItem - 1] = temp;
-                    DataSource.NextOrderItem--;
+                /// Replaces with the last one and lowers the size of the array
+                DataSource.OrderItems.Remove(myOrderItem);
                 break;
             }
         }
+        throw new EntityNotFound("order item");
     }
     ///Function to update an order item
     public void Update(OrderItem newOrderItem)
@@ -86,59 +88,50 @@ public class DalOrederItem
     /// A function that returns an order item by id
     public OrderItem Get(int idToGet)
     {
-        for (int i = 0; i < DataSource.NextOrderItem; i++)
+        foreach (OrderItem myOrderItem in DataSource.OrderItems)
         {
-            if (idToGet == DataSource.OrderItems[i].Id)
+            if (idToGet == myOrderItem.Id)
             {
-                return DataSource.OrderItems[i];
+                return myOrderItem;
             }
         }
         throw new EntityNotFound("Order item");
     }
     /// A function that returns an array of the order items in the database
-    public OrderItem[] List()
+    public IEnumerable<OrderItem> List()
     {
-        OrderItem[] orderItemsList = new OrderItem[DataSource.NextOrderItem];
-        for (int i = 0; i < DataSource.NextOrderItem; i++)
+        var orderItemToPrint = new List<OrderItem>();
+        foreach (OrderItem myOrderItem in DataSource.OrderItems)
         {
-            orderItemsList[i] = DataSource.OrderItems[i];
+            orderItemToPrint.Add(myOrderItem);
+
         }
-        return orderItemsList;
+        return orderItemToPrint;
     }
     ///A function that returns an order item by prodact and order id;
     public OrderItem GetOrderItemByOrderAndProductId(int orderId, int productId)
     {
-        for (int i = 0; i < DataSource.NextOrderItem; i++)
+        foreach (OrderItem myOrderItem in DataSource.OrderItems)
         {
-            if(orderId == DataSource.OrderItems[i].OredrID && productId == DataSource.OrderItems[i].ProductID)
+            if (orderId == myOrderItem.OredrID && productId == myOrderItem.ProductID)
             {
-                return DataSource.OrderItems[i];
+                return myOrderItem;
             }
         }
-        throw new EntityNotFound("order item");
+        throw new EntityNotFound("Order item");
     }
     /// A function that returns an array of the order items by order id
-    public OrderItem[] OrderItemsListByOrder(int orderId)
+    public IEnumerable<OrderItem> OrderItemsListByOrder(int orderId)
     {
-        
-        int counterOfItems = 0;
-        for (int i = 0; i < DataSource.NextOrderItem; i++)
+        var orderItemToPrint = new List<OrderItem>();
+        foreach (OrderItem myOrderItem in DataSource.OrderItems)
         {
-           if(orderId == DataSource.OrderItems[i].OredrID)
+            if (orderId == myOrderItem.OredrID)
             {
-                counterOfItems++;
-            }
-        }
-        OrderItem[] orderItemInOrder = new OrderItem[counterOfItems];
-        counterOfItems = 0;
-        for (int i = 0; i < DataSource.NextOrderItem; i++)
-        {
-            if (orderId == DataSource.OrderItems[i].OredrID)
-            {
-                orderItemInOrder[counterOfItems++] = DataSource.OrderItems[i];
+                orderItemToPrint.Add(myOrderItem);   
             }
 
         }
-        return orderItemInOrder;
+        return orderItemToPrint;
     }
 }
