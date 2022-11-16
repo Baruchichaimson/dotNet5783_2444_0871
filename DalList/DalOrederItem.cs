@@ -9,7 +9,7 @@ public class DalOrederItem
 {
 
     /// Function to add a new order item
-    public int Add(OrderItem newOrderItem)
+    public void Add(OrderItem newOrderItem)
     {
         newOrderItem.Id = DataSource.GetOrderItem;
         bool productExist = false;
@@ -71,12 +71,13 @@ public class DalOrederItem
     ///Function to update an order item
     public void Update(OrderItem newOrderItem)
     {
-        for (int i = 0; i < DataSource.NextOrderItem; i++)
+        foreach (OrderItem myOrderItem in DataSource.OrderItems)
         {
-            if (newOrderItem.Id == DataSource.OrderItems[i].Id)
+            if (newOrderItem.Id == myOrderItem.Id)
             {
-                newOrderItem.OredrID = DataSource.OrderItems[i].OredrID;
-                DataSource.OrderItems[i] = newOrderItem;
+                newOrderItem.OredrID = myOrderItem.OredrID;
+                DataSource.OrderItems.Remove(myOrderItem);
+                DataSource.OrderItems.Add(newOrderItem);
                 return;         
             }
         }

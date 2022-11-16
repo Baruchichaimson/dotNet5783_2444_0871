@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DalApi
+namespace DO
 {
-    public class  AllreadyExist : Exception 
+    public class AllreadyExist : Exception
     {
         public AllreadyExist(string entityName) : base($"the {entityName} is allready exist\n") { }
     }

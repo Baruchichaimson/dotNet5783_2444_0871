@@ -11,29 +11,26 @@ public class DalOrder
     public int Add(Order newOrder)
     {
         newOrder.Id = DataSource.GetOrder;
-        if (DataSource.NextOrder == 100)
+        if (DataSource.Orders.Count >= 100)
             throw new StorgeIsFull("order");
         else
-            DataSource.Orders[DataSource.NextOrder++] = newOrder;
+            DataSource.Orders.Add(newOrder);
 
         return newOrder.Id;
     }
     ///Function to delete an order
     public void Delete(int idToDelete)
     {
-        for (int i = 0; i < DataSource.NextOrder; i++)
+        foreach (Order myOrder in DataSource.Orders)
         {
-            if (idToDelete == DataSource.Orders[i].Id)
+            if (idToDelete == myOrder.Id)
             {
-                if (DataSource.NextOrder == 0)
+                if (DataSource.Orders.Count == 0)
                     throw new StorgeIsEmpty("order");
                 else
                 {
                     /// Replaces with the last one and lowers the size of the array
-                    Order temp = DataSource.Orders[i];
-                    DataSource.Orders[i] = DataSource.Orders[DataSource.NextOrder - 1];
-                    DataSource.Orders[DataSource.NextOrder - 1] = temp;
-                    DataSource.NextOrder--;
+                    DataSource.Orders.Remove(myOrder);
                 }
                 break;
             }
@@ -42,39 +39,37 @@ public class DalOrder
     ///Function to update an order
     public void Update(Order newOrder)
     {
-        bool exist = false;
-        for (int i = 0; i < DataSource.NextOrder; i++)
+        foreach(Order myOrder in DataSource.Orders)
         {
-            if (newOrder.Id == DataSource.Orders[i].Id)
+            if (newOrder.Id == myOrder.Id)
             {
-                DataSource.Orders[i] = newOrder;
-                exist = true;
-                break;
+                DataSource.Orders.Remove(myOrder);
+                DataSource.Orders.Add(newOrder);
+                return;
             }
         }
-        if (!exist)
-            throw new EntityNotFound("id");
+        throw new EntityNotFound("id");
     }
     /// A function that returns an order by id
     public Order Get(int idToGet)
     {
-        for (int i = 0; i < DataSource.NextOrder; i++)
+        foreach(Order myOrder in DataSource.Orders)
         {
-            if (idToGet == DataSource.Orders[i].Id)
+            if (idToGet == myOrder.Id)
             {
-                return DataSource.Orders[i];
+                return myOrder;
             }
         }
         throw new EntityNotFound("order");
     }
     /// A function that returns an array of the orders in the database
-    public Order[] List()
+    public IEnumerable<Order> List()
     {
-        Order[] orderList = new Order[DataSource.NextOrder];
-        for (int i = 0; i < DataSource.NextOrder; i++)
+        var ordersToPrint = new List<Order>();
+        foreach (Order myOrder in DataSource.Orders)
         {
-            orderList[i] = DataSource.Orders[i];
+            ordersToPrint.Add(myOrder);
         }
-        return orderList;
+        return ordersToPrint;
     }
 }

@@ -1,6 +1,9 @@
 ﻿using DalApi;
 using DO;
+using Google.Api.Ads.AdWords.v201809;
 using System;
+using EntityNotFound = DO.EntityNotFound;
+
 namespace Dal;
 
 /// class for Manage The product database
@@ -9,15 +12,15 @@ public class DalProduct
     /// Function to add a new product
     public int Add(Product newProduct)
     {
-        for (int i = 0; i < DataSource.NextProduct; i++)
-        {  
-            if (newProduct.Id == DataSource.Products[i].Id)
-            throw new AllreadyExist("id");
+        foreach (Product myproduct in DataSource.Products)
+        {
+            if (newProduct.Id == myproduct.Id)
+                throw new AllreadyExist("id");
         }
-        if (DataSource.NextProduct == 50)
+        if (DataSource.Products.Count >= 50)
             throw new StorgeIsFull("proudct");
         else
-            DataSource.Products[DataSource.NextProduct++] = newProduct;
+            DataSource.Products.Add(newProduct);
 
         return newProduct.Id;
     }
@@ -25,19 +28,15 @@ public class DalProduct
     ///Function to delete a product
     public void Delete(int idToDelete)
     {
-        for (int i = 0; i < DataSource.NextProduct; i++)
+        foreach (Product myproduct in DataSource.Products)
         {
-            if (idToDelete == DataSource.Products[i].Id)
+            if (idToDelete == myproduct.Id)
             {
-                if (DataSource.NextProduct == 0)
+                if (DataSource.Products.Count == 0)
                     throw new StorgeIsEmpty("proudct");
                 else
                 {
-                    // Replaces with the last one and lowers the size of the array
-                    Product temp = DataSource.Products[i];
-                    DataSource.Products[i] = DataSource.Products[DataSource.NextProduct - 1];
-                    DataSource.Products[DataSource.NextProduct - 1] = temp;
-                    DataSource.NextProduct--;
+                    DataSource.Products.Remove(myproduct);
                 }
                 break;
             }
@@ -46,40 +45,37 @@ public class DalProduct
     /// Function to update a product
     public void Update(Product newProduct)
     {
-        bool exist = false;
-        for (int i = 0; i < DataSource.NextProduct; i++)
+        foreach (Product myproduct in DataSource.Products)
         {
-            if (newProduct.Id == DataSource.Products[i].Id)
+            if (newProduct.Id == myproduct.Id)
             {
-                DataSource.Products[i] = newProduct;
-                exist = true;
-                break;
-                
+                DataSource.Products.Remove(myproduct);
+                DataSource.Products.Add(newProduct);
+                return;
             }
         }
-        if(!exist)
-            throw new EntityNotFound("id");
-    }  
+        throw new EntityNotFound("id");
+    }
     /// A function that returns a product by id
     public Product Get(int idToGet)
     {
-        for (int i = 0; i < DataSource.NextProduct; i++)
+        foreach (Product myproduct in DataSource.Products)
         {
-            if (idToGet == DataSource.Products[i].Id)
-                return DataSource.Products[i];
+            if (idToGet == myproduct.Id)
+                return myproduct;
         }
         throw new EntityNotFound("product");
     }
     /// <summary>
     /// A function that returns an array of the products in the database
     /// <returns> the array with all the products.
-    public Product[] List()
+    public IEnumerable<Product> List()
     {
-        Product[] productsList = new Product[DataSource.NextProduct];
-        for(int i = 0; i < DataSource.NextProduct; i++)
+        var productToPrint = new List<Product>();
+        foreach (Product myproduct in DataSource.Products)
         {
-            productsList[i] = DataSource.Products[i];
+            productToPrint.Add(myproduct);
         }
-        return productsList;
+        return productToPrint;
     }
 }

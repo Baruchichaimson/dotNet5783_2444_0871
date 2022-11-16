@@ -1,4 +1,5 @@
 ﻿using DO;
+using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Net.Http.Headers;
 using System.Reflection.Metadata.Ecma335;
@@ -9,9 +10,9 @@ internal static class DataSource
 {
     static public readonly Random randomNumber = new Random(DateTime.Now.Millisecond); ///initialization random object.
 
-    internal static Product[] Products = new Product[50];        ///initialization three arrays for the three entities.
-    internal static Order[] Orders = new Order[100];
-    internal static OrderItem[] OrderItems = new OrderItem[200];
+    internal static List<Product> Products = new List<Product>();        ///initialization three arrays for the three entities.
+    internal static List<Order> Orders = new List<Order>();
+    internal static List<OrderItem> OrderItems = new List<OrderItem>();
 
     private static void S_Initialize() ///function call to any function that holding the data of the entities.
     {
@@ -31,9 +32,9 @@ internal static class DataSource
     /// <returns></returns>
     private static bool check(int id)
     {
-        for (int i = 0; i < NextProduct; i++)
+        foreach (Product myproduct in Products)
         {
-            if (id == Products[i].Id)
+            if (id == myproduct.Id)
                 return false;
         }
         return true;
@@ -82,7 +83,7 @@ internal static class DataSource
                 newProduct.Price = randomNumber.Next(100, 300);
 
                 fivePrecentProduct--;///the five precent from product reduce one after we make one product to put in the store. 
-                Products[NextProduct++] = newProduct; ///put the new product in the store.
+                Products.Add(newProduct); ///put the new product in the store.
             }
         }
     }
@@ -146,7 +147,7 @@ internal static class DataSource
                 newOrder.DeliveryrDate = newOrder.ShipDate.Add(new TimeSpan(randomNumber.Next(4, 6), 0, 0, 0));
             else
                 newOrder.DeliveryrDate = DateTime.MinValue;
-            Orders[NextOrder++] = newOrder; ///put the new order in the store.
+            Orders.Add(newOrder); ///put the new order in the store.
         }
     }
     static void AddOrderItemsToStore() ///put orderitems in the store.
@@ -163,14 +164,14 @@ internal static class DataSource
                 newOrderItem.OredrID = Orders[i].Id; ///put id order from the array order in the id.
                 newOrderItem.Price = Products[randomProduct + j].Price; ///put price to the itemorder from the array product in the price.
                 newOrderItem.Amount = randomNumber.Next(1, 7); ///we can order from one product just between 1 and 6.
-                OrderItems[NextOrderItem++] = newOrderItem; ///up the run number for the order item.
+                OrderItems.Add(newOrderItem); ///up the run number for the order item.
             }
         }
     }
     /// we make class config for all the run number we have here in the data source.
-    internal static int NextOrder = 0;
-    internal static int NextOrderItem = 0;
-    internal static int NextProduct = 0;
+   // internal static int NextOrder = 0;
+    //internal static int NextOrderItem = 0;
+    //internal static int NextProduct = 0;
 
     ///run number that start from number with 6 digits for the id number.
     private static int IdOrder = 1;
