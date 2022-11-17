@@ -5,11 +5,11 @@ using System.Drawing;
 namespace Dal;
 
 /// class for Manage The order item database
-public class DalOrederItem
+internal class DalOrederItem :IOrderItem
 {
 
     /// Function to add a new order item
-    public void Add(OrderItem newOrderItem)
+    public int Add(OrderItem newOrderItem)
     {
         bool productExist = false;
         bool orderExist = false;
@@ -51,7 +51,7 @@ public class DalOrederItem
             newOrderItem.Id = DataSource.GetOrderItem;
             DataSource.OrderItems.Add(newOrderItem);
         }
-          
+        return newOrderItem.Id;
     }
     ///Function to delete an order item
     public void Delete(int idToDelete)

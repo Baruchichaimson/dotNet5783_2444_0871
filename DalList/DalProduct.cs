@@ -5,7 +5,7 @@ using System;
 namespace Dal;
 
 /// class for Manage The product database
-public class DalProduct
+internal class DalProduct : IProduct
 {
     /// Function to add a new product
     public int Add(Product newProduct)

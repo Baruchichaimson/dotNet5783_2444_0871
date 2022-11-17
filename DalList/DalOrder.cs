@@ -5,7 +5,7 @@ using DalApi;
 namespace Dal;
 
 /// class for Manage The order database
-internal class DalOrder 
+internal class DalOrder : IOrder
 {
 
     /// Function to add a new order

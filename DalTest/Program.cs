@@ -1,4 +1,5 @@
-﻿using DO;
+﻿using DalApi;
+using DO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,9 +13,7 @@ namespace Dal;
 
 internal class Program
 {
-    private static DalProduct S_dalProduct = new DalProduct();
-    private static DalOrder S_dalOrder = new DalOrder();
-    private static DalOrederItem S_dalOrderItem = new DalOrederItem();
+    private static IDal dallist = new DalList();
     private static void ProductOptions()/// the user input whice active he want to do on the product.
     {
         while (true)
@@ -53,7 +52,7 @@ internal class Program
                         Console.WriteLine("Enter amount:");
                         int.TryParse(Console.ReadLine(), out int inStock);
                         newProduct.Instock = inStock;
-                        S_dalProduct.Add(newProduct);/// go to the function that add product to array of products.
+                        dallist.Product.Add(newProduct);/// go to the function that add product to array of products.
                         Console.WriteLine("the product has been succsefully added");
                     }
                     break;
@@ -61,7 +60,7 @@ internal class Program
                     {
                         Console.WriteLine("Enter ID:");
                         int.TryParse(Console.ReadLine(), out int productId);
-                        S_dalProduct.Delete(productId);
+                        dallist.Product.Delete(productId);
                         Console.WriteLine("the product has been succsefully deleted ");
                     };
                     break;
@@ -90,7 +89,7 @@ internal class Program
                         Console.WriteLine("Enter amount:");
                         int.TryParse(Console.ReadLine(), out int inStock);
                         newProduct.Instock = inStock;
-                        S_dalProduct.Update(newProduct); ///go to the function that check if the id is exist update the store.
+                        dallist.Product.Update(newProduct); ///go to the function that check if the id is exist update the store.
                         Console.WriteLine("the product has been succsefully update");
 
                     }
@@ -99,15 +98,15 @@ internal class Program
                     {
                         Console.WriteLine("Enter ID:");
                         int.TryParse(Console.ReadLine(), out int productId);
-                        Console.WriteLine(S_dalProduct.Get(productId));
+                        Console.WriteLine(dallist.Product.Get(productId));
                     }
                     break;
                 case (int)User.PRINTALL: /// make new array and put in him the array of the products and print the products.
                     {
-                        Product[] newArray = S_dalProduct.List();
-                        foreach (Product product in newArray)
+                       // Product[] newArray = (Product[])dallist.Product.List(); //**********************************
+                        foreach (Product myproduct in dallist.Product.List())
                         {
-                            Console.WriteLine(product);
+                            Console.WriteLine(myproduct);
                         }
                     }
                     break;
@@ -137,7 +136,7 @@ internal class Program
                         newOrder.OrderDate = DateTime.Now;
                         newOrder.ShipDate = DateTime.MinValue;
                         newOrder.DeliveryrDate = DateTime.MinValue;
-                        S_dalOrder.Add(newOrder); /// go to the function that add order to array of orders.
+                        dallist.Order.Add(newOrder); /// go to the function that add order to array of orders.
                         Console.WriteLine("the order has been succsefully added ");
                     }
                     break;
@@ -145,7 +144,7 @@ internal class Program
                     {
                         Console.WriteLine("Enter ID: ");
                         int.TryParse(Console.ReadLine(), out int orderId);
-                        S_dalOrder.Delete(orderId);
+                        dallist.Order.Delete(orderId);
                         Console.WriteLine("the order has been succsefully deleted ");
                     };
                     break;
@@ -164,7 +163,7 @@ internal class Program
                         newOrder.OrderDate = DateTime.Now;
                         newOrder.ShipDate = DateTime.Now.AddDays(5);
                         newOrder.DeliveryrDate = DateTime.Now.AddDays(10);
-                        S_dalOrder.Update(newOrder); ///go to the function that check if the id is exist update the store.
+                        dallist.Order.Update(newOrder); ///go to the function that check if the id is exist update the store.
                         Console.WriteLine("the order has been succsefully update ");
                     }
                     break;
@@ -172,15 +171,19 @@ internal class Program
                     {
                         Console.WriteLine("Enter ID: ");
                         int.TryParse(Console.ReadLine(), out int orderId);
-                        Console.WriteLine(S_dalOrder.Get(orderId));
+                        Console.WriteLine(dallist.Order.Get(orderId));
                     }
                     break;
                 case (int)User.PRINTALL: /// make new array and put in him the array of the orders and print the orders.
                     {
-                        Order[] newArray = S_dalOrder.List();
-                        foreach (Order item in newArray)
+                       // Order[] newArray = (Order[])dallist.Order.List(); //*****************************************
+                       // foreach (Order item in newArray)
+                       // {
+                        //    Console.WriteLine(item);
+                        //}
+                        foreach (Order myOrder in dallist.Order.List())
                         {
-                            Console.WriteLine(item);
+                            Console.WriteLine(myOrder);
                         }
                     }
                     break;
@@ -212,8 +215,8 @@ internal class Program
                         Console.WriteLine("Enter the amount: ");
                         int.TryParse(Console.ReadLine(), out int amount);
                         newOrderItem.Amount = amount;
-                        newOrderItem.Price = S_dalProduct.Get(newOrderItem.ProductID).Price;
-                        S_dalOrderItem.Add(newOrderItem); /// go to the function that add order item to array of order items.
+                        newOrderItem.Price = dallist.OrderItem.Get(newOrderItem.ProductID).Price;
+                        dallist.OrderItem.Add(newOrderItem); /// go to the function that add order item to array of order items.
                         Console.WriteLine("the orderItem has been succsefully added ");
                     }
                     break;
@@ -221,7 +224,7 @@ internal class Program
                     {
                         Console.WriteLine("Enter order item ID: ");
                         int.TryParse(Console.ReadLine(), out int orderItemId);
-                        S_dalOrderItem.Delete(orderItemId);
+                        dallist.OrderItem.Delete(orderItemId);
                         Console.WriteLine("the orderItem has been succsefully deleted ");
                     };
                     break;
@@ -237,8 +240,8 @@ internal class Program
                         Console.WriteLine("Enter the amount: ");
                         int.TryParse(Console.ReadLine(), out  int amount);
                         newOrderItem.Amount= amount;
-                        newOrderItem.Price = S_dalProduct.Get(newOrderItem.ProductID).Price;
-                        S_dalOrderItem.Update(newOrderItem); ///go to the function that check if the id is exist update the store.
+                        newOrderItem.Price = dallist.OrderItem.Get(newOrderItem.ProductID).Price;
+                        dallist.OrderItem.Update(newOrderItem); ///go to the function that check if the id is exist update the store.
                         Console.WriteLine("the orderItem has been sccessfully update ");
                     }
                     break;
@@ -246,15 +249,19 @@ internal class Program
                     {
                         Console.WriteLine("Enter item Id: ");
                         int.TryParse(Console.ReadLine(), out int orderItemId);
-                        Console.WriteLine(S_dalOrderItem.Get(orderItemId));
+                        Console.WriteLine(dallist.OrderItem.Get(orderItemId));
                     }
                     break;
                 case (int)User.PRINTALL: /// make new array and put in him the array of the order items and print the order items.
                     {
-                        OrderItem[] newArray = S_dalOrderItem.List();
-                        foreach (OrderItem item in newArray)
+                        //OrderItem[] newArray = (OrderItem[])dallist.OrderItem.List(); //************************************
+                        //foreach (OrderItem item in newArray)
+                        //{
+                        //    Console.WriteLine(item);
+                        //}
+                        foreach (OrderItem myOrderItem in dallist.OrderItem.List())
                         {
-                            Console.WriteLine(item);
+                            Console.WriteLine(myOrderItem);
                         }
                     }
                     break;
@@ -264,17 +271,21 @@ internal class Program
                         int.TryParse(Console.ReadLine(), out int orderId);
                         Console.WriteLine("Enter product ID: ");
                         int.TryParse(Console.ReadLine(), out int productId);
-                        Console.WriteLine(S_dalOrderItem.GetOrderItemByOrderAndProductId(orderId, productId));///go to this function
+                        Console.WriteLine(dallist.OrderItem.GetOrderItemByOrderAndProductId(orderId, productId));///go to this function
                     }
                     break;
                 case (int)User.ITEM_BY_ORDER_ID: ///give order item by id number of the order item.
                     {
                         Console.WriteLine("Enter order ID: ");
                         int.TryParse(Console.ReadLine(), out int orderID);
-                        OrderItem[] newArray = S_dalOrderItem.OrderItemsListByOrder(orderID);
-                        foreach (OrderItem item in newArray)
+                        //OrderItem[] newArray = (OrderItem[])dallist.OrderItem.OrderItemsListByOrder(orderID); //*********************************
+                        //foreach (OrderItem item in newArray)
+                        //{
+                        //    Console.WriteLine(item);
+                        //}
+                        foreach (OrderItem myOrderItem in dallist.OrderItem.OrderItemsListByOrder(orderID))
                         {
-                            Console.WriteLine(item);
+                            Console.WriteLine(myOrderItem);
                         }
                     }
                     break;
