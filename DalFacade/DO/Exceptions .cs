@@ -6,20 +6,24 @@ using System.Threading.Tasks;
 
 namespace DO
 {
-    public class AllreadyExist : Exception
+    [Serializable]
+    public class AllreadyExistException : Exception
     {
-        public AllreadyExist(string entityName) : base($"the {entityName} is allready exist\n") { }
+        public AllreadyExistException(string entityName) : base($"the {entityName} is allready exist\n") { }
     }
-    public class EntityNotFound : Exception
+    [Serializable]
+    public class EntityNotFoundException : Exception
     {
-        public EntityNotFound(string entityName) : base($"the {entityName} is not exist\n") { }
+        public EntityNotFoundException(string entityName) : base($"the {entityName} is not exist\n") { }
     }
-    public class StorgeIsFull : Exception
+    [Serializable]
+    public class StorgeIsFullException : Exception
     {
-        public StorgeIsFull(string entityName) : base($"the storge of {entityName} is full\n") { }
+        public StorgeIsFullException(string entityName) : base($"the storge of {entityName} is full\n") { }
     }
-    public class StorgeIsEmpty : Exception
+    [Serializable]
+    public class StorgeIsEmptyException: Exception
     {
-        public StorgeIsEmpty(string entityName) : base($"the storge of {entityName} is empty\n") { }
+        public StorgeIsEmptyException(string entityName) : base($"the storge of {entityName} is empty\n") { }
     }
 }

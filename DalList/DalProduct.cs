@@ -13,10 +13,10 @@ internal class DalProduct : IProduct
         foreach (Product myproduct in DataSource.Products)
         {
             if (newProduct.Id == myproduct.Id)
-                throw new AllreadyExist("id");
+                throw new AllreadyExistException("id");
         }
         if (DataSource.Products.Count >= 50)
-            throw new StorgeIsFull("proudct");
+            throw new StorgeIsFullException("proudct");
         else
             DataSource.Products.Add(newProduct);
 
@@ -27,7 +27,7 @@ internal class DalProduct : IProduct
     public void Delete(int idToDelete)
     {
         if (DataSource.Products.Count == 0)
-            throw new StorgeIsEmpty("proudct");
+            throw new StorgeIsEmptyException("proudct");
 
         foreach (Product myproduct in DataSource.Products)
         {
@@ -37,7 +37,7 @@ internal class DalProduct : IProduct
                 return; 
             }
         }
-        throw new EntityNotFound("product");
+        throw new EntityNotFoundException("product");
     }
     /// Function to update a product
     public void Update(Product newProduct)
@@ -51,9 +51,14 @@ internal class DalProduct : IProduct
                 return;
             }
         }
-        throw new EntityNotFound("id");
+        throw new EntityNotFoundException("id");
     }
+    /// <summary>
     /// A function that returns a product by id
+    /// </summary>
+    /// <param name="idToGet"> its id we got from the user </param>
+    /// <returns> return my product with this id </returns>
+    /// <exception cref="EntityNotFoundException"></exception>
     public Product Get(int idToGet)
     {
         foreach (Product myproduct in DataSource.Products)
@@ -61,7 +66,7 @@ internal class DalProduct : IProduct
             if (idToGet == myproduct.Id)
                 return myproduct;
         }
-        throw new EntityNotFound("product");
+        throw new EntityNotFoundException("product");
     }
     /// <summary>
     /// A function that returns an array of the products in the database

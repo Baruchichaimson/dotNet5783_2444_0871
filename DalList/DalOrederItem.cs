@@ -26,26 +26,26 @@ internal class DalOrederItem :IOrderItem
                 orderExist = true; break;
         }
         if (!productExist)
-            throw new EntityNotFound("Product");
+            throw new EntityNotFoundException("Product");
 
         if (!orderExist)
-            throw new EntityNotFound("order"); 
+            throw new EntityNotFoundException("order"); 
 
         ///Checking if the order is full 
         if (OrderItemsListByOrder(newOrderItem.OredrID).Count() >= 4)
-            throw new StorgeIsFull("order");
+            throw new StorgeIsFullException("order");
 
         IEnumerator<OrderItem> iter = OrderItemsListByOrder(newOrderItem.OredrID).GetEnumerator();
 
         while (iter.MoveNext()){ 
 
             if (iter.Current.ProductID == newOrderItem.ProductID)
-                throw new AllreadyExist("product");
+                throw new AllreadyExistException("product");
         };
 
         ///Checking if the orderitem database is full 
         if (DataSource.OrderItems.Count >= 200)
-            throw new StorgeIsFull("order items");
+            throw new StorgeIsFullException("order items");
         else
         {
             newOrderItem.Id = DataSource.GetOrderItem;
@@ -57,7 +57,7 @@ internal class DalOrederItem :IOrderItem
     public void Delete(int idToDelete)
     {
         if (DataSource.OrderItems.Count == 0)
-            throw new StorgeIsEmpty("order items");
+            throw new StorgeIsEmptyException("order items");
 
         foreach (OrderItem myOrderItem in DataSource.OrderItems)
         {
@@ -68,7 +68,7 @@ internal class DalOrederItem :IOrderItem
                 break;
             }
         }
-        throw new EntityNotFound("order item");
+        throw new EntityNotFoundException("order item");
     }
     ///Function to update an order item
     public void Update(OrderItem newOrderItem)
@@ -83,7 +83,7 @@ internal class DalOrederItem :IOrderItem
                 return;         
             }
         }
-        throw new EntityNotFound("id");
+        throw new EntityNotFoundException("id");
     }
     /// A function that returns an order item by id
     public OrderItem Get(int idToGet)
@@ -95,7 +95,7 @@ internal class DalOrederItem :IOrderItem
                 return myOrderItem;
             }
         }
-        throw new EntityNotFound("Order item");
+        throw new EntityNotFoundException("Order item");
     }
     /// A function that returns an array of the order items in the database
     public IEnumerable<OrderItem> List()
@@ -118,7 +118,7 @@ internal class DalOrederItem :IOrderItem
                 return myOrderItem;
             }
         }
-        throw new EntityNotFound("Order item");
+        throw new EntityNotFoundException("Order item");
     }
     /// A function that returns an array of the order items by order id
     public IEnumerable<OrderItem> OrderItemsListByOrder(int orderId)
