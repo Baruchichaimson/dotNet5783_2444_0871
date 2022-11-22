@@ -1,12 +1,11 @@
-﻿using DalApi;
-using BlApi;
+﻿using BlApi;
 using Google.Api.Ads.AdWords.v201809;
 
 namespace BlImplementation
 {
     internal class Product : IProduct
     {
-        private IDal Dal = new DO.DalList();
+        private DalApi.IDal Dal = new DO.DalList();
         private DO.Product products = new();
         public List<BO.ProductForList> GetList()
         {
@@ -25,8 +24,8 @@ namespace BlImplementation
         }
         public BO.Product GetData(int id)
         {
-            DO.Product product = new DO.Product();
-            BO.Product newProduct = new BO.Product();
+            DO.Product product = new();
+            BO.Product newProduct = new();
             try
             {
                 if (id > 0)
@@ -40,7 +39,7 @@ namespace BlImplementation
                     newProduct.Category = (BO.CoffeeShop)product.Categoryname;
                     return newProduct;
                 }
-                else throw new Exception("the id is negtive");
+                throw new Exception("the id is negtive");
             }
             catch (DO.EntityNotFoundException ex)
             {
@@ -49,8 +48,8 @@ namespace BlImplementation
         }
         public BO.ProductItem GetData(int id, BO.Cart cart)
         {
-            DO.Product product = new DO.Product();
-            BO.ProductItem newProductItem = new BO.ProductItem();
+            DO.Product product = new();
+            BO.ProductItem newProductItem = new();
             try
             {
                 if (id > 0)
@@ -65,28 +64,28 @@ namespace BlImplementation
 
                     BO.OrderItem orderItem = cart.Items.First(orderItem => orderItem.ID == id);
 
-                    if(orderItem is not null)
+                    if (orderItem is not null)
                     {
                         newProductItem.Amount = orderItem.Amount;
                     }
                     return newProductItem;
                 }
-                else throw new Exception("the id is negtive");
+                throw new Exception("the id is negtive");
             }
             catch (DO.EntityNotFoundException ex)
             {
                 throw new BO.EntityNotFoundException("product", ex);
             }
         }
-    public void Add(Product product)
+        public void Add(BO.Product product)
         {
 
         }
-        public Product Delete(int id)
+        public BO.Product Delete(int id)
         {
 
         }
-        public void Update(Product product)
+        public void Update(BO.Product product)
         {
 
         }

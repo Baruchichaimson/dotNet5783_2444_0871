@@ -9,11 +9,11 @@ namespace BlApi
 {
     public interface IProduct
     {
-        public List<ProductForList> GetList();
-        public Product GetData(int id);
-        public Product GetData(int id, Cart cart);
+        public List<BO.ProductForList> GetList();
+        public BO.Product GetData(int id);
+        public BO.ProductItem GetData(int id, Cart cart);
         public void Add(Product product);
-        public Product Delete(int id);
+        public BO.Product Delete(int id);
         public void Update(Product product);
     }
 }
