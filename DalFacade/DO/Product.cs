@@ -1,5 +1,4 @@
-﻿using static DO.Enums;
-namespace DO;
+﻿namespace DO;
 public struct Product
 {
     public int Id { get; set; }

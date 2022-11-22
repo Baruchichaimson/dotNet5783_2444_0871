@@ -103,7 +103,6 @@ internal class Program
                     break;
                 case (int)User.PRINTALL: /// make new array and put in him the array of the products and print the products.
                     {
-                       // Product[] newArray = (Product[])dallist.Product.List(); //**********************************
                         foreach (Product myproduct in dallist.Product.List())
                         {
                             Console.WriteLine(myproduct);
@@ -176,11 +175,6 @@ internal class Program
                     break;
                 case (int)User.PRINTALL: /// make new array and put in him the array of the orders and print the orders.
                     {
-                       // Order[] newArray = (Order[])dallist.Order.List(); //*****************************************
-                       // foreach (Order item in newArray)
-                       // {
-                        //    Console.WriteLine(item);
-                        //}
                         foreach (Order myOrder in dallist.Order.List())
                         {
                             Console.WriteLine(myOrder);
@@ -254,11 +248,6 @@ internal class Program
                     break;
                 case (int)User.PRINTALL: /// make new array and put in him the array of the order items and print the order items.
                     {
-                        //OrderItem[] newArray = (OrderItem[])dallist.OrderItem.List(); //************************************
-                        //foreach (OrderItem item in newArray)
-                        //{
-                        //    Console.WriteLine(item);
-                        //}
                         foreach (OrderItem myOrderItem in dallist.OrderItem.List())
                         {
                             Console.WriteLine(myOrderItem);
@@ -278,11 +267,6 @@ internal class Program
                     {
                         Console.WriteLine("Enter order ID: ");
                         int.TryParse(Console.ReadLine(), out int orderID);
-                        //OrderItem[] newArray = (OrderItem[])dallist.OrderItem.OrderItemsListByOrder(orderID); //*********************************
-                        //foreach (OrderItem item in newArray)
-                        //{
-                        //    Console.WriteLine(item);
-                        //}
                         foreach (OrderItem myOrderItem in dallist.OrderItem.OrderItemsListByOrder(orderID))
                         {
                             Console.WriteLine(myOrderItem);
