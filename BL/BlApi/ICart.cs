@@ -11,6 +11,6 @@ namespace BlApi
     {
         public BO.Cart AddProduct(Cart cart, int id);
         public BO.Cart UpdateProductAmount(Cart cart, int id, int newAmount);
-        public void OrderConfirmation(Cart cart, string name, string mail, string addres);
+        public void OrderConfirmation(Cart cart);
     }
 }

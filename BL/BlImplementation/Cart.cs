@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DalApi;
 using System.Text.RegularExpressions;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlImplementation
 {
@@ -42,7 +42,7 @@ namespace BlImplementation
                                 if (orderItem.ProductID == id)
                                 {
                                     orderItem.Amount++;
-                                    orderItem.Price += prodact.Price;
+                                    orderItem.TotalPrice += prodact.Price;
                                     break;
                                 }
                             }
@@ -56,7 +56,7 @@ namespace BlImplementation
             throw new Exception("the id is negtive");
         }
 
-        public void OrderConfirmation(BO.Cart cart, string name, string mail, string addres)
+        public void OrderConfirmation(BO.Cart cart)
         {
             foreach (BO.OrderItem orderItem in cart.Items)
             {
@@ -68,13 +68,39 @@ namespace BlImplementation
             }
             if(cart.CustomerEmail != null && cart.CustomerAddress != null && cart.CustomerName != null)
             {
-
+                throw new Exception("Invalid input");
             }
-            
+            string strRegex = @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
 
+            Regex re = new Regex(strRegex, RegexOptions.IgnoreCase);
 
+            if (!re.IsMatch(cart.CustomerEmail))
+                throw new Exception("the email is not exist");
+            DO.Order order = new()
+            {
+                CustomerName = cart.CustomerName,
+                CustomerAdress = cart.CustomerAddress,
+                CustomerEmail = cart.CustomerEmail,
+                OrderDate = DateTime.Now,
+                ShipDate = DateTime.MinValue,
+                DeliveryrDate = DateTime.MinValue
+            };
+            int idOrder = Dal.Order.Add(order);
+            foreach (var item in cart.Items)
+            {
+                DO.OrderItem orderItem = new()
+                {
+                    ProductID = item.ProductID,
+                    Price = item.Price,
+                    Amount = item.Amount,
+                    OredrID = idOrder
+                };
+                Dal.OrderItem.Add(orderItem);
+                DO.Product product = Dal.Product.Get(item.ProductID);
+                product.Instock -= item.Amount;
+                Dal.Product.Update(product);
+            }
         }
-
         public BO.Cart UpdateProductAmount(BO.Cart cart, int id, int newAmount)
         {
             

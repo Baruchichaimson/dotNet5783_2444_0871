@@ -1,12 +1,13 @@
 ﻿using BlApi;
+using BO;
 using Google.Api.Ads.AdWords.v201809;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BlImplementation
 {
     internal class Product : IProduct
     {
         private DalApi.IDal Dal = new DO.DalList();
-        private DO.Product products = new();
         public List<BO.ProductForList> GetList()
         {
             BO.ProductForList productForList = new BO.ProductForList();
@@ -24,19 +25,19 @@ namespace BlImplementation
         }
         public BO.Product GetData(int id)
         {
-            DO.Product product = new();
-            BO.Product newProduct = new();
             try
             {
                 if (id > 0)
                 {
-                    product = Dal.Product.Get(id);
-
-                    newProduct.ID = product.Id;
-                    newProduct.Name = product.Name;
-                    newProduct.Price = product.Price;
-                    newProduct.InStock = product.Instock;
-                    newProduct.Category = (BO.CoffeeShop)product.Categoryname;
+                    DO.Product product = Dal.Product.Get(id);
+                    BO.Product newProduct = new()
+                    {
+                        ID = product.Id,
+                        Name = product.Name,
+                        Price = product.Price,
+                        InStock = product.Instock,
+                        Category = (BO.CoffeeShop)product.Categoryname
+                    };
                     return newProduct;
                 }
                 throw new Exception("the id is negtive");
@@ -79,16 +80,47 @@ namespace BlImplementation
         }
         public void Add(BO.Product product)
         {
-
+            
+            if (product.ID > 0 && product.Name is not null && product.Price > 0 && product.InStock > 0)
+            {
+                DO.Product newProduct = new()
+                {
+                    Id = product.ID,
+                    Name = product.Name,
+                    Price = product.Price,
+                    Instock = product.InStock,
+                    Categoryname = (DO.CoffeeShop)product.Category
+                };
+                Dal.Product.Add(newProduct);
+            }
+            else
+                throw new Exception("product not exsit");
         }
-        public BO.Product Delete(int id)
+        public void Delete(int id)
         {
-
+            bool exsit = Dal.OrderItem.List().Any(x => x.ProductID == id);
+            if (!exsit)
+                Dal.Product.Delete(id);
+            else
+                throw new Exception("product not exsit");
         }
         public void Update(BO.Product product)
         {
-
+            if (product.ID > 0 && product.Name is not null && product.Price > 0 && product.InStock > 0)
+            {
+                DO.Product newProduct = new()
+                {
+                    Id = product.ID,
+                    Name = product.Name,
+                    Price = product.Price,
+                    Instock = product.InStock,
+                    Categoryname = (DO.CoffeeShop)product.Category
+                };
+                Dal.Product.Update(newProduct);
+            }
+            else
+                throw new Exception("product not exsit");
         }
     }
 }
-}
+

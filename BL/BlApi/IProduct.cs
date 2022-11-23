@@ -13,7 +13,7 @@ namespace BlApi
         public BO.Product GetData(int id);
         public BO.ProductItem GetData(int id, Cart cart);
         public void Add(Product product);
-        public BO.Product Delete(int id);
+        public void Delete(int id);
         public void Update(Product product);
     }
 }

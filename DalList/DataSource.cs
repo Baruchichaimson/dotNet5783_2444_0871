@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Net.Http.Headers;
 using System.Reflection.Metadata.Ecma335;
-using static DO.Enums;
-
 namespace Dal;
 internal static class DataSource
 {
