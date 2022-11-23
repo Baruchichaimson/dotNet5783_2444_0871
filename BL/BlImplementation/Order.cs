@@ -44,6 +44,8 @@ namespace BlImplementation
             }
             return list;
         }
+        //***************************************************************************************
+        //***************************************************************************************
         public List<BO.OrderForList> GetList()
         {     
             List<BO.OrderForList> newList = new List<BO.OrderForList>();
@@ -99,28 +101,38 @@ namespace BlImplementation
                 DO.Order updateOrders = Dal.Order.Get(id);
                 updateOrders.ShipDate = DateTime.Now;
                 Dal.Order.Update(updateOrders);
-                BO.Order order = new()
-                {
-                    ID = id,
-                    CustomerName = updateOrders.CustomerName,
-                    CustomerAdress = updateOrders.CustomerAdress,
-                    CustomerEmail = updateOrders.CustomerEmail,
-                    DeliveryrDate = updateOrders.DeliveryrDate,
-                    ShipDate = updateOrders.ShipDate,
-                    OrderDate = updateOrders.OrderDate,
-                    Status = Status(updateOrders),
-                    Items = GiveList(updateOrders)
-                };
+
+                BO.Order updorder = GetData(id);
+                updorder.ShipDate = updateOrders.ShipDate;
+
+                return updorder;
             }
             throw new Exception("not exsit");
         }
         public BO.Order DeliveryUpdate(int id)
         {
+            bool exsit = Dal.Order.List().Any(x => x.Id == id);
+            if (exsit && Dal.Order.Get(id).ShipDate != DateTime.MinValue && Dal.Order.Get(id).DeliveryrDate == DateTime.MinValue)
+            {
+                DO.Order updateOrders = Dal.Order.Get(id);
+                updateOrders.ShipDate = DateTime.Now;
+                Dal.Order.Update(updateOrders);
 
+                BO.Order updorder = GetData(id);
+                updorder.ShipDate = updateOrders.ShipDate;
+
+                return updorder;
+            }
+            throw new Exception("not exsit");
         }
         public BO.OrderTracking OrderTracking(int id)
         {
+            BO.OrderTracking tracking = new(); 
+            bool exsit = Dal.Order.List().Any(x => x.Id == id);
+            if (exsit)
+            {
 
+            }
         }
         public BO.Order UpdateAdmin(int id)
         {

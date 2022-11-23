@@ -17,7 +17,7 @@ namespace BlImplementation
         public BO.Cart AddProduct(BO.Cart cart, int id)
         {
             bool prodactExistInCart = cart.Items.Any(x => x.ProductID == id);
-       
+
             foreach (DO.Product prodact in Dal.Product.List())
             {
                 if (prodact.Id == id)
@@ -66,7 +66,7 @@ namespace BlImplementation
                     throw new Exception("not have in the storge");
                 }
             }
-            if(cart.CustomerEmail != null && cart.CustomerAddress != null && cart.CustomerName != null)
+            if (cart.CustomerEmail != null && cart.CustomerAddress != null && cart.CustomerName != null)
             {
                 throw new Exception("Invalid input");
             }
@@ -103,7 +103,11 @@ namespace BlImplementation
         }
         public BO.Cart UpdateProductAmount(BO.Cart cart, int id, int newAmount)
         {
-            
+            if (newAmount > 0)
+            {
+               
+            }
+
         }
     }
 }
