@@ -1,4 +1,5 @@
 ﻿using BlApi;
+using BO;
 using Google.Api.Ads.AdWords.v201809;
 using System.Security.Cryptography.X509Certificates;
 
@@ -24,9 +25,9 @@ namespace BlImplementation
         }
         public BO.Product GetData(int id)
         {
-            try
+            if (id > 0)
             {
-                if (id > 0)
+                try
                 {
                     DO.Product product = Dal.Product.Get(id);
                     BO.Product newProduct = new()
@@ -39,33 +40,29 @@ namespace BlImplementation
                     };
                     return newProduct;
                 }
-                throw new Exception("the id is negtive");
-            }
-            catch (DO.EntityNotFoundException ex)
-            {
-                throw new BO.EntityNotFoundException("Error", ex);
-            }
-            catch(BO.EntityNotFoundException ex)
-            {
-                Console.WriteLine(ex.Message + ex.InnerException.Message);
-            }
+                catch (DO.EntityNotFoundException ex)
+                {
+                    throw new BO.EntityNotFoundException(ex.Message);
+                };
+            };
+            throw new IdNotExsitException("the id is negtive");
         }
         public BO.ProductItem GetData(int id, BO.Cart cart)
         {
-            DO.Product product = new();
-            BO.ProductItem newProductItem = new();
+            DO.Product product = Dal.Product.Get(id);
+            
             try
             {
                 if (id > 0)
                 {
-                    product = Dal.Product.Get(id);
-
-                    newProductItem.ID = product.Id;
-                    newProductItem.Name = product.Name;
-                    newProductItem.Price = product.Price;
-                    newProductItem.InStock = product.Instock > 0;
-                    newProductItem.Category = (BO.CoffeeShop)product.Categoryname;
-
+                    BO.ProductItem newProductItem = new()
+                    {
+                        ID = product.Id,
+                        Name = product.Name,
+                        Price = product.Price,
+                        InStock = product.Instock > 0,
+                        Category = (BO.CoffeeShop)product.Categoryname
+                    };
                     BO.OrderItem orderItem = cart.Items.First(orderItem => orderItem.ID == id);
 
                     if (orderItem is not null)
@@ -74,7 +71,7 @@ namespace BlImplementation
                     }
                     return newProductItem;
                 }
-                throw new Exception("the id is negtive");
+                throw new ("the id is negtive");
             }
             catch (DO.EntityNotFoundException ex)
             {

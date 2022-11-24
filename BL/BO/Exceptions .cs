@@ -9,7 +9,7 @@ namespace BO
     [Serializable]
     public class EntityNotFoundException : Exception
     {
-        public EntityNotFoundException(string entityName, Exception innerexception) : base($"the {entityName} is not exist\n", innerexception) { }
+        public EntityNotFoundException(string messege) : base(messege) { }
     }
     [Serializable]
     public class NotEnoughInStockException : Exception
@@ -17,8 +17,8 @@ namespace BO
         public NotEnoughInStockException(string messege) : base(messege) { }
     }
     [Serializable]
-    public class NotExsitException : Exception
+    public class IdNotExsitException : Exception
     {
-        public NotExsitException(string entityName) : base($"the {entityName} is not exist\n") { }
+        public IdNotExsitException(string messege) : base(messege) { }
     }
 }
