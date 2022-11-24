@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static BO.Enums;
 
 namespace BO
 {
@@ -11,8 +10,10 @@ namespace BO
     {
         public int ID { get; set; }
         public OrderStatus Status { get; set; }
+        public List<string> orderDetails { get; set; }
         public override string ToString() => $@"
         ID = {ID}
+        orderDetails: {orderDetails.ToString()}
         Status: {Status}";
     }
 }

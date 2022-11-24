@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DO;
-using BO;
+using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace BlImplementation
 {
     internal class Order : IOrder
     {
         private DalApi.IDal Dal = new DO.DalList();
-        private OrderStatus Status(DO.Order item)
+        private BO.OrderStatus Status(DO.Order item)
         {
             BO.OrderStatus currentStatus = new BO.OrderStatus();
             if (item.DeliveryrDate == DateTime.MinValue)
@@ -44,12 +44,18 @@ namespace BlImplementation
             }
             return list;
         }
+        private string GiveOrderDate(DateTime date , string text)
+        {
+
+            string tempString = $@"in {date}: the order is {text}";
+            return tempString;
+        }
         //***************************************************************************************
         //***************************************************************************************
         public List<BO.OrderForList> GetList()
-        {     
+        {
             List<BO.OrderForList> newList = new List<BO.OrderForList>();
-            foreach(DO.Order item in Dal.Order.List())
+            foreach (DO.Order item in Dal.Order.List())
             {
                 int totalamount = 0;
                 double totalPrice = 0;
@@ -58,7 +64,7 @@ namespace BlImplementation
                     totalPrice += it.Price;
                     totalamount++;
                 }
-                
+
                 BO.OrderForList orderForList = new()
                 {
                     ID = item.Id,
@@ -74,9 +80,9 @@ namespace BlImplementation
         public BO.Order GetData(int id)
         {
             if (id > 0)
-            {         
-                DO.Order dataOrder = Dal.Order.Get(id);  
-                
+            {
+                DO.Order dataOrder = Dal.Order.Get(id);
+
                 BO.Order order = new()
                 {
                     ID = id,
@@ -114,29 +120,85 @@ namespace BlImplementation
             bool exsit = Dal.Order.List().Any(x => x.Id == id);
             if (exsit && Dal.Order.Get(id).ShipDate != DateTime.MinValue && Dal.Order.Get(id).DeliveryrDate == DateTime.MinValue)
             {
-                DO.Order updateOrders = Dal.Order.Get(id);
-                updateOrders.ShipDate = DateTime.Now;
-                Dal.Order.Update(updateOrders);
+                DO.Order updateOrdersData = Dal.Order.Get(id);
+                updateOrdersData.ShipDate = DateTime.Now;
+                Dal.Order.Update(updateOrdersData);
 
-                BO.Order updorder = GetData(id);
-                updorder.ShipDate = updateOrders.ShipDate;
+                BO.Order updateOrderLogic = GetData(id);
+                updateOrderLogic.ShipDate = updateOrderLogic.ShipDate;
 
-                return updorder;
+                return updateOrderLogic;
             }
             throw new Exception("not exsit");
         }
         public BO.OrderTracking OrderTracking(int id)
         {
-            BO.OrderTracking tracking = new(); 
-            bool exsit = Dal.Order.List().Any(x => x.Id == id);
-            if (exsit)
+            DO.Order order = Dal.Order.Get(id);
+            
+            List<string> templist = new();
+            templist.Add(GiveOrderDate(order.OrderDate, "created"));
+            if (order.ShipDate != DateTime.MinValue)
             {
-
+                templist.Add(GiveOrderDate(order.ShipDate, "shipped"));
+                if (order.DeliveryrDate != DateTime.MinValue)
+                    templist.Add(GiveOrderDate(order.DeliveryrDate, "deliverd"));
             }
-        }
-        public BO.Order UpdateAdmin(int id)
-        {
 
+            BO.OrderTracking tracking = new()
+            {
+                ID = id,
+                Status = Status(order),
+                orderDetails = templist
+            };
+            return tracking;
+        }
+        public void UpdateAdmin(int orderId, int productId ,int amount)
+        {
+            DO.Product product = Dal.Product.Get(productId);
+            if (amount > product.Instock)
+                throw new Exception("the amount is not exsit");
+            int id = 0;
+            if (Dal.Order.Get(orderId).ShipDate == DateTime.MinValue)
+            {
+                foreach (DO.OrderItem orderItems in Dal.OrderItem.OrderItemsListByOrder(orderId))
+                {
+                    if(productId == orderItems.ProductID)
+                    {
+                       id = orderItems.Id;
+                        break;   
+                    }
+                }
+                if (id == 0)
+                {
+                    if (amount > 0)
+                    {
+                        DO.OrderItem item = new()
+                        {
+                            ProductID = productId,
+                            OredrID = orderId,
+                            Amount = amount,
+                            Price = product.Price * amount
+                        };
+                        Dal.OrderItem.Add(item);
+                    }
+                    else
+                        throw new Exception("the amount is not positive");
+                }
+                else
+                { 
+                    DO.OrderItem item = Dal.OrderItem.Get(id);
+                    if(item.Amount + amount >= 0)
+                        item.Amount += amount;
+                    else
+                        throw new Exception("reduce to much");
+                    if(item.Amount == 0)
+                        Dal.OrderItem.Delete(item.Id);
+                    else
+                        Dal.OrderItem.Update(item);
+                }
+                product.Instock -= amount;
+                Dal.Product.Update(product);
+            }
         }
     }
 }

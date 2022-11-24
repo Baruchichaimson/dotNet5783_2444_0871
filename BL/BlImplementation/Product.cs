@@ -1,5 +1,4 @@
 ﻿using BlApi;
-using BO;
 using Google.Api.Ads.AdWords.v201809;
 using System.Security.Cryptography.X509Certificates;
 
@@ -44,7 +43,11 @@ namespace BlImplementation
             }
             catch (DO.EntityNotFoundException ex)
             {
-                throw new BO.EntityNotFoundException("product", ex);
+                throw new BO.EntityNotFoundException("Error", ex);
+            }
+            catch(BO.EntityNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message + ex.InnerException.Message);
             }
         }
         public BO.ProductItem GetData(int id, BO.Cart cart)

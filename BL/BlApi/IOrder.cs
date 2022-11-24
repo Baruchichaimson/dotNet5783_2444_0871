@@ -14,7 +14,7 @@ namespace BlApi
         public BO.Order UpdateShippingDate(int id);
         public BO.Order DeliveryUpdate(int id);
         public BO.OrderTracking OrderTracking(int id);
-        public BO.Order UpdateAdmin(int id);
+        public void UpdateAdmin(int orderId, int productId, int amount);
 
     }
 }

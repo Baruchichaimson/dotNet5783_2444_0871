@@ -103,11 +103,31 @@ namespace BlImplementation
         }
         public BO.Cart UpdateProductAmount(BO.Cart cart, int id, int newAmount)
         {
-            if (newAmount > 0)
+            foreach (BO.OrderItem item in cart.Items)
             {
-               
+                if(item.ProductID == id)
+                {
+                    if(newAmount > item.Amount)
+                    {
+                        item.TotalPrice = item.Price * newAmount;
+                        cart.TotalPrice += item.Price * (newAmount - item.Amount);
+                        item.Amount = newAmount;
+                    }
+                    else if(newAmount < item.Amount)
+                    {
+                        item.TotalPrice = item.Price * newAmount;
+                        cart.TotalPrice -= item.Price * (item.Amount - newAmount);
+                        item.Amount = newAmount;
+                    }
+                    else if(item.Amount == newAmount)
+                    {
+                        cart.Items.Remove(item);
+                        cart.TotalPrice -= item.Price * item.Amount;
+                    }
+                    return cart;
+                }
             }
-
+            throw new Exception("the product is not exist in the cart");
         }
     }
 }
