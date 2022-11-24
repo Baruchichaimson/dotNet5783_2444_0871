@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using DalApi;
 using System.Text.RegularExpressions;
 using System.ComponentModel.DataAnnotations.Schema;
+using BO;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlImplementation
 {
@@ -50,32 +52,30 @@ namespace BlImplementation
                         cart.TotalPrice += prodact.Price;
                         return cart;
                     }
-                    throw new Exception("the id is negtive");
+                    throw new NotEnoughInStockException("not enough products in stock");
                 }
             }
-            throw new Exception("the id is negtive");
+            throw new NotExsitException("id");
         }
 
         public void OrderConfirmation(BO.Cart cart)
         {
             foreach (BO.OrderItem orderItem in cart.Items)
             {
-                DO.Product prodact = Dal.Product.Get(orderItem.ProductID);
-                if (orderItem.Amount > prodact.Instock || orderItem.Amount <= 0)
-                {
-                    throw new Exception("not have in the storge");
-                }
+               
+                    DO.Product product = Dal.Product.Get(orderItem.ProductID);
+
+                    if (orderItem.Amount > product.Instock || orderItem.Amount <= 0)
+                    {
+                        throw new Exception("not have in the storge");
+                    }
             }
             if (cart.CustomerEmail != null && cart.CustomerAddress != null && cart.CustomerName != null)
             {
                 throw new Exception("Invalid input");
             }
-            string strRegex = @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
-
-            Regex re = new Regex(strRegex, RegexOptions.IgnoreCase);
-
-            if (!re.IsMatch(cart.CustomerEmail))
-                throw new Exception("the email is not exist");
+            if (!new EmailAddressAttribute().IsValid(cart.CustomerEmail))
+                 throw new NotExsitException("email");
             DO.Order order = new()
             {
                 CustomerName = cart.CustomerName,
