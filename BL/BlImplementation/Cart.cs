@@ -15,7 +15,6 @@ namespace BlImplementation
     internal class Cart : ICart
     {
         private IDal Dal = new DO.DalList();
-
         public BO.Cart AddProduct(BO.Cart cart, int id)
         {
             bool prodactExistInCart = cart.Items.Any(x => x.ProductID == id);
@@ -28,7 +27,7 @@ namespace BlImplementation
                     {
                         if (!prodactExistInCart)
                         {
-                            cart.Items.Add(new BO.OrderItem()
+                            cart.Items.Add(new OrderItem()
                             {
                                 ProductID = prodact.Id,
                                 Name = prodact.Name,
@@ -39,7 +38,7 @@ namespace BlImplementation
                         }
                         else
                         {
-                            foreach (BO.OrderItem orderItem in cart.Items)
+                            foreach (OrderItem orderItem in cart.Items)
                             {
                                 if (orderItem.ProductID == id)
                                 {
@@ -52,58 +51,65 @@ namespace BlImplementation
                         cart.TotalPrice += prodact.Price;
                         return cart;
                     }
-                    throw new NotEnoughInStockException("not enough products in stock");
+                    throw new IncorrectAmountException("not enough amount in stock");
                 }
             }
-            throw new NotExsitException("id");
+            throw new EntityNotFoundException("product not found");
         }
 
         public void OrderConfirmation(BO.Cart cart)
         {
-            foreach (BO.OrderItem orderItem in cart.Items)
+            try
             {
-               
+                foreach (OrderItem orderItem in cart.Items)
+                {
+
                     DO.Product product = Dal.Product.Get(orderItem.ProductID);
 
                     if (orderItem.Amount > product.Instock || orderItem.Amount <= 0)
                     {
-                        throw new Exception("not have in the storge");
+                        throw new IncorrectAmountException("not enough amount in stock");
                     }
-            }
-            if (cart.CustomerEmail != null && cart.CustomerAddress != null && cart.CustomerName != null)
-            {
-                throw new Exception("Invalid input");
-            }
-            if (!new EmailAddressAttribute().IsValid(cart.CustomerEmail))
-                 throw new NotExsitException("email");
-            DO.Order order = new()
-            {
-                CustomerName = cart.CustomerName,
-                CustomerAdress = cart.CustomerAddress,
-                CustomerEmail = cart.CustomerEmail,
-                OrderDate = DateTime.Now,
-                ShipDate = DateTime.MinValue,
-                DeliveryrDate = DateTime.MinValue
-            };
-            int idOrder = Dal.Order.Add(order);
-            foreach (var item in cart.Items)
-            {
-                DO.OrderItem orderItem = new()
+                }
+                if (cart.CustomerEmail != null && cart.CustomerAddress != null && cart.CustomerName != null)
                 {
-                    ProductID = item.ProductID,
-                    Price = item.Price,
-                    Amount = item.Amount,
-                    OredrID = idOrder
+                    throw new EntityDetailsWrongException("missing Customer details");
+                }
+                if (!new EmailAddressAttribute().IsValid(cart.CustomerEmail))
+                    throw new EntityDetailsWrongException("Invalid email");
+                DO.Order order = new()
+                {
+                    CustomerName = cart.CustomerName,
+                    CustomerAdress = cart.CustomerAddress,
+                    CustomerEmail = cart.CustomerEmail,
+                    OrderDate = DateTime.Now,
+                    ShipDate = DateTime.MinValue,
+                    DeliveryrDate = DateTime.MinValue
                 };
-                Dal.OrderItem.Add(orderItem);
-                DO.Product product = Dal.Product.Get(item.ProductID);
-                product.Instock -= item.Amount;
-                Dal.Product.Update(product);
+                int idOrder = Dal.Order.Add(order);
+                foreach (var item in cart.Items)
+                {
+                    DO.OrderItem orderItem = new()
+                    {
+                        ProductID = item.ProductID,
+                        Price = item.Price,
+                        Amount = item.Amount,
+                        OredrID = idOrder
+                    };
+                    Dal.OrderItem.Add(orderItem);
+                    DO.Product product = Dal.Product.Get(item.ProductID);
+                    product.Instock -= item.Amount;
+                    Dal.Product.Update(product);
+                }
+            }
+            catch (DO.EntityNotFoundException ex)
+            {
+                throw new EntityNotFoundException(ex.Message);
             }
         }
         public BO.Cart UpdateProductAmount(BO.Cart cart, int id, int newAmount)
         {
-            foreach (BO.OrderItem item in cart.Items)
+            foreach (OrderItem item in cart.Items)
             {
                 if(item.ProductID == id)
                 {
@@ -127,7 +133,7 @@ namespace BlImplementation
                     return cart;
                 }
             }
-            throw new Exception("the product is not exist in the cart");
+            throw new EntityNotFoundException("the product is not exist in the cart");
         }
     }
 }

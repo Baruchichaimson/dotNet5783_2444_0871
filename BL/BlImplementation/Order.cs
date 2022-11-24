@@ -6,32 +6,33 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using BO;
 
 namespace BlImplementation
 {
     internal class Order : IOrder
     {
         private DalApi.IDal Dal = new DO.DalList();
-        private BO.OrderStatus Status(DO.Order item)
+        private OrderStatus Status(DO.Order item)
         {
-            BO.OrderStatus currentStatus = new BO.OrderStatus();
+            OrderStatus currentStatus = new OrderStatus();
             if (item.DeliveryrDate == DateTime.MinValue)
             {
                 if (item.ShipDate == DateTime.MinValue)
-                    currentStatus = BO.OrderStatus.CONFIRMED;
+                    currentStatus = OrderStatus.CONFIRMED;
                 else
-                    currentStatus = BO.OrderStatus.SHIPPED;
+                    currentStatus = OrderStatus.SHIPPED;
             }
             else
-                currentStatus = BO.OrderStatus.PROVIDED;
+                currentStatus = OrderStatus.PROVIDED;
             return currentStatus;
         }
-        private List<BO.OrderItem> GiveList(DO.Order idOrder)
+        private List<OrderItem> GiveList(DO.Order idOrder)
         {
-            List<BO.OrderItem> list = new List<BO.OrderItem>();
+            List<OrderItem> list = new List<OrderItem>();
             foreach (DO.OrderItem item in Dal.OrderItem.OrderItemsListByOrder(idOrder.Id))
             {
-                BO.OrderItem dataItem = new()
+                OrderItem dataItem = new()
                 {
                     ID = item.OredrID,
                     ProductID = item.ProductID,
@@ -52,9 +53,9 @@ namespace BlImplementation
         }
         //***************************************************************************************
         //***************************************************************************************
-        public List<BO.OrderForList> GetList()
+        public List<OrderForList> GetList()
         {
-            List<BO.OrderForList> newList = new List<BO.OrderForList>();
+            List<OrderForList> newList = new List<OrderForList>();
             foreach (DO.Order item in Dal.Order.List())
             {
                 int totalamount = 0;
@@ -65,7 +66,7 @@ namespace BlImplementation
                     totalamount++;
                 }
 
-                BO.OrderForList orderForList = new()
+                OrderForList orderForList = new()
                 {
                     ID = item.Id,
                     CustomerName = item.CustomerName,
@@ -81,124 +82,152 @@ namespace BlImplementation
         {
             if (id > 0)
             {
-                DO.Order dataOrder = Dal.Order.Get(id);
-
-                BO.Order order = new()
+                try
                 {
-                    ID = id,
-                    CustomerName = dataOrder.CustomerName,
-                    CustomerAdress = dataOrder.CustomerAdress,
-                    CustomerEmail = dataOrder.CustomerEmail,
-                    DeliveryrDate = dataOrder.DeliveryrDate,
-                    ShipDate = dataOrder.ShipDate,
-                    OrderDate = dataOrder.OrderDate,
-                    Status = Status(dataOrder),
-                    Items = GiveList(dataOrder)
-                };
-                return order;
+                    DO.Order dataOrder = Dal.Order.Get(id);
+                    BO.Order order = new()
+                    {
+                        ID = id,
+                        CustomerName = dataOrder.CustomerName,
+                        CustomerAdress = dataOrder.CustomerAdress,
+                        CustomerEmail = dataOrder.CustomerEmail,
+                        DeliveryrDate = dataOrder.DeliveryrDate,
+                        ShipDate = dataOrder.ShipDate,
+                        OrderDate = dataOrder.OrderDate,
+                        Status = Status(dataOrder),
+                        Items = GiveList(dataOrder)
+                    };
+                    return order;
+                }
+                catch (DO.EntityNotFoundException ex)
+                {
+                    throw new EntityNotFoundException(ex.Message);
+                }
             }
-            throw new Exception("id not exist");
+            throw new EntityNotFoundException("Order not found");
         }
         public BO.Order UpdateShippingDate(int id)
         {
             bool exsit = Dal.Order.List().Any(x => x.Id == id);
             if (exsit && Dal.Order.Get(id).ShipDate == DateTime.MinValue)
             {
-                DO.Order updateOrders = Dal.Order.Get(id);
-                updateOrders.ShipDate = DateTime.Now;
-                Dal.Order.Update(updateOrders);
-
-                BO.Order updorder = GetData(id);
-                updorder.ShipDate = updateOrders.ShipDate;
-
-                return updorder;
+                try
+                {
+                    DO.Order updateOrders = Dal.Order.Get(id);
+                    updateOrders.ShipDate = DateTime.Now;
+                    Dal.Order.Update(updateOrders);
+                    BO.Order updorder = GetData(id);
+                    updorder.ShipDate = updateOrders.ShipDate;
+                    return updorder;
+                }
+                catch (DO.EntityNotFoundException ex)
+                {
+                    throw new EntityNotFoundException(ex.Message);
+                }
             }
-            throw new Exception("not exsit");
+            throw new EntityNotFoundException("Order not found");
         }
         public BO.Order DeliveryUpdate(int id)
         {
             bool exsit = Dal.Order.List().Any(x => x.Id == id);
-            if (exsit && Dal.Order.Get(id).ShipDate != DateTime.MinValue && Dal.Order.Get(id).DeliveryrDate == DateTime.MinValue)
+            try
             {
-                DO.Order updateOrdersData = Dal.Order.Get(id);
-                updateOrdersData.ShipDate = DateTime.Now;
-                Dal.Order.Update(updateOrdersData);
-
-                BO.Order updateOrderLogic = GetData(id);
-                updateOrderLogic.ShipDate = updateOrderLogic.ShipDate;
-
-                return updateOrderLogic;
+                if (exsit && Dal.Order.Get(id).ShipDate != DateTime.MinValue && Dal.Order.Get(id).DeliveryrDate == DateTime.MinValue)
+                {
+                    DO.Order updateOrdersData = Dal.Order.Get(id);
+                    updateOrdersData.ShipDate = DateTime.Now;
+                    Dal.Order.Update(updateOrdersData);
+                    BO.Order updateOrderLogic = GetData(id);
+                    updateOrderLogic.ShipDate = updateOrderLogic.ShipDate;
+                    return updateOrderLogic;
+                }
             }
-            throw new Exception("not exsit");
+            catch (DO.EntityNotFoundException ex)
+            {
+                throw new EntityNotFoundException(ex.Message);
+            }
+            throw new EntityNotFoundException("Order not found");
         }
-        public BO.OrderTracking OrderTracking(int id)
+        public OrderTracking OrderTracking(int id)
         {
-            DO.Order order = Dal.Order.Get(id);
-            
-            List<string> templist = new();
-            templist.Add(GiveOrderDate(order.OrderDate, "created"));
-            if (order.ShipDate != DateTime.MinValue)
+            try
             {
-                templist.Add(GiveOrderDate(order.ShipDate, "shipped"));
-                if (order.DeliveryrDate != DateTime.MinValue)
-                    templist.Add(GiveOrderDate(order.DeliveryrDate, "deliverd"));
+                DO.Order order = Dal.Order.Get(id);
+                List<string> templist = new();
+                templist.Add(GiveOrderDate(order.OrderDate, "created"));
+                if (order.ShipDate != DateTime.MinValue)
+                {
+                    templist.Add(GiveOrderDate(order.ShipDate, "shipped"));
+                    if (order.DeliveryrDate != DateTime.MinValue)
+                        templist.Add(GiveOrderDate(order.DeliveryrDate, "deliverd"));
+                }
+                OrderTracking tracking = new()
+                {
+                    ID = id,
+                    Status = Status(order),
+                    orderDetails = templist
+                };
+                return tracking;
             }
-
-            BO.OrderTracking tracking = new()
+            catch (DO.EntityNotFoundException ex)
             {
-                ID = id,
-                Status = Status(order),
-                orderDetails = templist
-            };
-            return tracking;
+                throw new EntityNotFoundException(ex.Message);
+            }
         }
         public void UpdateAdmin(int orderId, int productId ,int amount)
         {
-            DO.Product product = Dal.Product.Get(productId);
-            if (amount > product.Instock)
-                throw new Exception("the amount is not exsit");
-            int id = 0;
-            if (Dal.Order.Get(orderId).ShipDate == DateTime.MinValue)
+            try
             {
-                foreach (DO.OrderItem orderItems in Dal.OrderItem.OrderItemsListByOrder(orderId))
+                DO.Product product = Dal.Product.Get(productId);
+                if (amount > product.Instock)
+                    throw new IncorrectAmountException("Not enough amount in stock");
+                int id = 0;
+                if (Dal.Order.Get(orderId).ShipDate == DateTime.MinValue)
                 {
-                    if(productId == orderItems.ProductID)
+                    foreach (DO.OrderItem orderItems in Dal.OrderItem.OrderItemsListByOrder(orderId))
                     {
-                       id = orderItems.Id;
-                        break;   
-                    }
-                }
-                if (id == 0)
-                {
-                    if (amount > 0)
-                    {
-                        DO.OrderItem item = new()
+                        if (productId == orderItems.ProductID)
                         {
-                            ProductID = productId,
-                            OredrID = orderId,
-                            Amount = amount,
-                            Price = product.Price * amount
-                        };
-                        Dal.OrderItem.Add(item);
+                            id = orderItems.Id;
+                            break;
+                        }
+                    }
+                    if (id == 0)
+                    {
+                        if (amount > 0)
+                        {
+                            DO.OrderItem item = new()
+                            {
+                                ProductID = productId,
+                                OredrID = orderId,
+                                Amount = amount,
+                                Price = product.Price * amount
+                            };
+                            Dal.OrderItem.Add(item);
+                        }
+                        else
+                            throw new IncorrectAmountException("the amount is not positive");
                     }
                     else
-                        throw new Exception("the amount is not positive");
+                    {
+                        DO.OrderItem item = Dal.OrderItem.Get(id);
+                        if (item.Amount + amount >= 0)
+                            item.Amount += amount;
+                        else
+                            throw new IncorrectAmountException("reduce amount to much");
+                        if (item.Amount == 0)
+                            Dal.OrderItem.Delete(item.Id);
+                        else
+                            Dal.OrderItem.Update(item);
+                    }
+                    product.Instock -= amount;
+                    Dal.Product.Update(product);
                 }
-                else
-                { 
-                    DO.OrderItem item = Dal.OrderItem.Get(id);
-                    if(item.Amount + amount >= 0)
-                        item.Amount += amount;
-                    else
-                        throw new Exception("reduce to much");
-                    if(item.Amount == 0)
-                        Dal.OrderItem.Delete(item.Id);
-                    else
-                        Dal.OrderItem.Update(item);
-                }
-                product.Instock -= amount;
-                Dal.Product.Update(product);
             }
+            catch (DO.EntityNotFoundException ex)
+            {
+                throw new EntityNotFoundException(ex.Message);
+            };
         }
     }
 }

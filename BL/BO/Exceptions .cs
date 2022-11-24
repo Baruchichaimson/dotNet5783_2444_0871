@@ -21,4 +21,14 @@ namespace BO
     {
         public IdNotExsitException(string messege) : base(messege) { }
     }
+    [Serializable]
+    public class EntityDetailsWrongException : Exception
+    {
+        public EntityDetailsWrongException(string messege) : base(messege) { }
+    }
+    [Serializable]
+    public class IncorrectAmountException : Exception
+    {
+        public IncorrectAmountException(string messege) : base(messege) { }
+    }
 }

@@ -13,22 +13,15 @@ internal class DalProduct : IProduct
         foreach (Product myproduct in DataSource.Products)
         {
             if (newProduct.Id == myproduct.Id)
-                throw new AllreadyExistException("id");
+                throw new AllreadyExistException("Product");
         }
-        if (DataSource.Products.Count >= 50)
-            throw new StorgeIsFullException("proudct");
-        else
             DataSource.Products.Add(newProduct);
-
         return newProduct.Id;
     }
 
     ///Function to delete a product
     public void Delete(int idToDelete)
     {
-        if (DataSource.Products.Count == 0)
-            throw new StorgeIsEmptyException("proudct");
-
         foreach (Product myproduct in DataSource.Products)
         {
             if (idToDelete == myproduct.Id)
@@ -51,7 +44,7 @@ internal class DalProduct : IProduct
                 return;
             }
         }
-        throw new EntityNotFoundException("id");
+        throw new EntityNotFoundException("product");
     }
     /// <summary>
     /// A function that returns a product by id

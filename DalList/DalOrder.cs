@@ -7,7 +7,6 @@ namespace Dal;
 /// class for Manage The order database
 internal class DalOrder : IOrder
 {
-
     /// Function to add a new order
     public int Add(Order newOrder)
     {
@@ -22,9 +21,6 @@ internal class DalOrder : IOrder
     ///Function to delete an order
     public void Delete(int idToDelete)
     {
-        if (DataSource.Orders.Count == 0)
-            throw new StorgeIsEmptyException("order");
-
         foreach (Order myOrder in DataSource.Orders)
         {
             if (idToDelete == myOrder.Id)
@@ -49,7 +45,7 @@ internal class DalOrder : IOrder
                 return;
             }
         }
-        throw new EntityNotFoundException("id");
+        throw new EntityNotFoundException("order");
     }
     /// A function that returns an order by id
     public Order Get(int idToGet)

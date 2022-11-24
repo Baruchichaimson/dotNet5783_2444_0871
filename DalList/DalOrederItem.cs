@@ -1,7 +1,6 @@
 ﻿using DO;
 using DalApi;
 using System.Drawing;
-
 namespace Dal;
 
 /// class for Manage The order item database
@@ -31,10 +30,6 @@ internal class DalOrederItem :IOrderItem
         if (!orderExist)
             throw new EntityNotFoundException("order"); 
 
-        ///Checking if the order is full 
-        if (OrderItemsListByOrder(newOrderItem.OredrID).Count() >= 4)
-            throw new StorgeIsFullException("order");
-
         IEnumerator<OrderItem> iter = OrderItemsListByOrder(newOrderItem.OredrID).GetEnumerator();
 
         while (iter.MoveNext()){ 
@@ -43,22 +38,13 @@ internal class DalOrederItem :IOrderItem
                 throw new AllreadyExistException("product");
         };
 
-        ///Checking if the orderitem database is full 
-        if (DataSource.OrderItems.Count >= 200)
-            throw new StorgeIsFullException("order items");
-        else
-        {
-            newOrderItem.Id = DataSource.GetOrderItem;
-            DataSource.OrderItems.Add(newOrderItem);
-        }
+        newOrderItem.Id = DataSource.GetOrderItem;
+        DataSource.OrderItems.Add(newOrderItem);
         return newOrderItem.Id;
     }
     ///Function to delete an order item
     public void Delete(int idToDelete)
     {
-        if (DataSource.OrderItems.Count == 0)
-            throw new StorgeIsEmptyException("order items");
-
         foreach (OrderItem myOrderItem in DataSource.OrderItems)
         {
             if (idToDelete == myOrderItem.Id)
@@ -83,7 +69,7 @@ internal class DalOrederItem :IOrderItem
                 return;         
             }
         }
-        throw new EntityNotFoundException("id");
+        throw new EntityNotFoundException("Order item");
     }
     /// A function that returns an order item by id
     public OrderItem Get(int idToGet)
@@ -130,7 +116,6 @@ internal class DalOrederItem :IOrderItem
             {
                 orderItemToPrint.Add(myOrderItem);   
             }
-
         }
         return orderItemToPrint;
     }

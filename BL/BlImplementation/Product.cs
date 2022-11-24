@@ -8,10 +8,10 @@ namespace BlImplementation
     internal class Product : IProduct
     {
         private DalApi.IDal Dal = new DO.DalList();
-        public List<BO.ProductForList> GetList()
+        public List<ProductForList> GetList()
         {
-            BO.ProductForList productForList = new BO.ProductForList();
-            List<BO.ProductForList> newList = new();
+            ProductForList productForList = new ProductForList();
+            List<ProductForList> newList = new();
             foreach (DO.Product item in Dal.Product.List())
             {
                 productForList.ID = item.Id;
@@ -42,20 +42,19 @@ namespace BlImplementation
                 }
                 catch (DO.EntityNotFoundException ex)
                 {
-                    throw new BO.EntityNotFoundException(ex.Message);
+                    throw new EntityNotFoundException(ex.Message);
                 };
             };
             throw new IdNotExsitException("the id is negtive");
         }
-        public BO.ProductItem GetData(int id, BO.Cart cart)
+        public ProductItem GetData(int id, BO.Cart cart)
         {
-            DO.Product product = Dal.Product.Get(id);
-            
             try
             {
                 if (id > 0)
                 {
-                    BO.ProductItem newProductItem = new()
+                    DO.Product product = Dal.Product.Get(id);
+                    ProductItem newProductItem = new()
                     {
                         ID = product.Id,
                         Name = product.Name,
@@ -63,7 +62,7 @@ namespace BlImplementation
                         InStock = product.Instock > 0,
                         Category = (BO.CoffeeShop)product.Categoryname
                     };
-                    BO.OrderItem orderItem = cart.Items.First(orderItem => orderItem.ID == id);
+                    OrderItem orderItem = cart.Items.First(orderItem => orderItem.ID == id);
 
                     if (orderItem is not null)
                     {
@@ -71,17 +70,16 @@ namespace BlImplementation
                     }
                     return newProductItem;
                 }
-                throw new ("the id is negtive");
             }
             catch (DO.EntityNotFoundException ex)
             {
-                throw new BO.EntityNotFoundException("product", ex);
+                throw new EntityNotFoundException(ex.Message);
             }
+            throw new IdNotExsitException("the id is negtive");
         }
         public void Add(BO.Product product)
-        {
-            
-            if (product.ID > 0 && product.Name is not null && product.Price > 0 && product.InStock > 0)
+        {   
+            if (product.ID >= 100000 && product.ID < 1000000 && product.Name is not null && product.Price > 0 && product.InStock > 0)
             {
                 DO.Product newProduct = new()
                 {
@@ -91,16 +89,31 @@ namespace BlImplementation
                     Instock = product.InStock,
                     Categoryname = (DO.CoffeeShop)product.Category
                 };
-                Dal.Product.Add(newProduct);
+                try
+                {
+                    Dal.Product.Add(newProduct);
+                }
+                catch(DO.AllreadyExistException ex)
+                {
+                    throw new EntityDetailsWrongException(ex.Message);
+                }
             }
             else
-                throw new Exception("product not exsit");
+                throw new EntityDetailsWrongException("The product data is incorrect");
         }
         public void Delete(int id)
         {
             bool exsit = Dal.OrderItem.List().Any(x => x.ProductID == id);
             if (!exsit)
-                Dal.Product.Delete(id);
+                try
+                {
+                    Dal.Product.Delete(id);
+                }
+                 catch (DO.EntityNotFoundException ex)
+                {
+                    throw new EntityNotFoundException(ex.Message);
+                }
+          
             else
                 throw new Exception("product not exsit");
         }
@@ -116,10 +129,17 @@ namespace BlImplementation
                     Instock = product.InStock,
                     Categoryname = (DO.CoffeeShop)product.Category
                 };
-                Dal.Product.Update(newProduct);
+                try
+                {
+                    Dal.Product.Update(newProduct);
+                }
+                catch (DO.EntityNotFoundException ex)
+                {
+                    throw new EntityNotFoundException(ex.Message);
+                }
             }
             else
-                throw new Exception("product not exsit");
+                throw new EntityNotFoundException("product not exsit");
         }
     }
 }
