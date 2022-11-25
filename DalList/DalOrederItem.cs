@@ -16,13 +16,18 @@ internal class DalOrederItem :IOrderItem
         foreach (Product myProduct in DataSource.Products)
         {
             if(newOrderItem.ProductID == myProduct.Id)
+            {
                 productExist = true; break;
+            }                
         }
         ///Checking if the order exists in the database
         foreach (Order myOrder in DataSource.Orders)
         {
             if (newOrderItem.OredrID == myOrder.Id)
+            {
                 orderExist = true; break;
+
+            }    
         }
         if (!productExist)
             throw new EntityNotFoundException("Product");
