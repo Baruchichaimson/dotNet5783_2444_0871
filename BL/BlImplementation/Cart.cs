@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using DalApi;
 using System.Text.RegularExpressions;
 using System.ComponentModel.DataAnnotations.Schema;
-using BO;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlImplementation
@@ -17,17 +16,18 @@ namespace BlImplementation
         private IDal Dal = new DO.DalList();
         public BO.Cart AddProduct(BO.Cart cart, int id)
         {
-            bool prodactExistInCart = cart.Items.Any(x => x.ProductID == id);
-
+            bool prodactExistInCart = false;
+            if (cart.Items is not null)
+                prodactExistInCart = cart.Items.Any(x => x.ProductID == id);
             foreach (DO.Product product in Dal.Product.List())
             {
                 if (product.Id == id)
                 {
                     if (product.Instock > 0)
                     {
-                        if (!prodactExistInCart)
+                        if (!prodactExistInCart || cart.Items is null)
                         {
-                            cart.Items.Add(new OrderItem()
+                            cart.Items.Add(new BO.OrderItem()
                             {
                                 ProductID = product.Id,
                                 Name = product.Name,
@@ -38,7 +38,7 @@ namespace BlImplementation
                         }
                         else
                         {
-                            foreach (OrderItem orderItem in cart.Items)
+                            foreach (BO.OrderItem orderItem in cart.Items)
                             {
                                 if (orderItem.ProductID == id)
                                 {
@@ -48,35 +48,41 @@ namespace BlImplementation
                                 }
                             }
                         }
-                        cart.TotalPrice += product.Price;
+                        if (cart.TotalPrice > 0)
+                            cart.TotalPrice += product.Price;
+                        else
+                            cart.TotalPrice = product.Price;
                         return cart;
                     }
-                    throw new IncorrectAmountException("not enough amount in stock");
+                    throw new BO.IncorrectAmountException("not enough amount in stock");
                 }
             }
-            throw new EntityNotFoundException("product not found");
+            throw new BO.EntityNotFoundException("product not found");
         }
 
         public void OrderConfirmation(BO.Cart cart)
         {
             try
             {
-                foreach (OrderItem orderItem in cart.Items)
+                if (cart.Items is not null)
                 {
-
-                    DO.Product product = Dal.Product.Get(orderItem.ProductID);
-
-                    if (orderItem.Amount > product.Instock || orderItem.Amount <= 0)
+                    foreach (BO.OrderItem orderItem in cart.Items)
                     {
-                        throw new IncorrectAmountException("not enough amount in stock");
+
+                        DO.Product product = Dal.Product.Get(orderItem.ProductID);
+
+                        if (orderItem.Amount > product.Instock || orderItem.Amount <= 0)
+                        {
+                            throw new BO.IncorrectAmountException("not enough amount in stock");
+                        }
                     }
                 }
                 if (cart.CustomerEmail == null || cart.CustomerAddress == null || cart.CustomerName == null)
                 {
-                    throw new EntityDetailsWrongException("missing Customer details");
+                    throw new BO.EntityDetailsWrongException("missing Customer details");
                 }
                 if (!new EmailAddressAttribute().IsValid(cart.CustomerEmail))
-                    throw new EntityDetailsWrongException("Invalid email");
+                    throw new BO.EntityDetailsWrongException("Invalid email");
                 DO.Order order = new()
                 {
                     CustomerName = cart.CustomerName,
@@ -87,49 +93,52 @@ namespace BlImplementation
                     DeliveryrDate = DateTime.MinValue
                 };
                 int idOrder = Dal.Order.Add(order);
-                foreach (var item in cart.Items)
+                if (cart.Items is not null)
                 {
-                    DO.OrderItem orderItem = new()
+                    foreach (var item in cart.Items)
                     {
-                        ProductID = item.ProductID,
-                        Price = item.Price,
-                        Amount = item.Amount,
-                        OredrID = idOrder
-                    };
-                    Dal.OrderItem.Add(orderItem);
-                    DO.Product product = Dal.Product.Get(item.ProductID);
-                    product.Instock -= item.Amount;
-                    Dal.Product.Update(product);
+                        DO.OrderItem orderItem = new()
+                        {
+                            ProductID = item.ProductID,
+                            Price = item.Price,
+                            Amount = item.Amount,
+                            OredrID = idOrder
+                        };
+                        Dal.OrderItem.Add(orderItem);
+                        DO.Product product = Dal.Product.Get(item.ProductID);
+                        product.Instock -= item.Amount;
+                        Dal.Product.Update(product);
+                    }
                 }
             }
             catch (DO.EntityNotFoundException ex)
             {
-                throw new EntityNotFoundException(ex.Message);
+                throw new BO.EntityNotFoundException(ex.Message);
             }
-            catch(DO.AllreadyExistException ex)
+            catch (DO.AllreadyExistException ex)
             {
-                throw new AllreadyExistException(ex.Message);
+                throw new BO.AllreadyExistException(ex.Message);
             }
         }
         public BO.Cart UpdateProductAmount(BO.Cart cart, int id, int newAmount)
         {
-            foreach (OrderItem item in cart.Items)
+            foreach (BO.OrderItem item in cart.Items)
             {
-                if(item.ProductID == id)
+                if (item.ProductID == id)
                 {
-                    if(newAmount > item.Amount)
+                    if (newAmount > item.Amount)
                     {
                         item.TotalPrice = item.Price * newAmount;
                         cart.TotalPrice += item.Price * (newAmount - item.Amount);
                         item.Amount = newAmount;
                     }
-                    else if(newAmount < item.Amount)
+                    else if (newAmount < item.Amount)
                     {
                         item.TotalPrice = item.Price * newAmount;
                         cart.TotalPrice -= item.Price * (item.Amount - newAmount);
                         item.Amount = newAmount;
                     }
-                    else if(item.Amount == newAmount)
+                    else if (item.Amount == newAmount)
                     {
                         cart.Items.Remove(item);
                         cart.TotalPrice -= item.Price * item.Amount;
@@ -137,7 +146,7 @@ namespace BlImplementation
                     return cart;
                 }
             }
-            throw new EntityNotFoundException("the product is not exist in the cart");
+            throw new BO.EntityNotFoundException("the product is not exist in the cart");
         }
     }
 }

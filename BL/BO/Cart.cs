@@ -11,13 +11,13 @@ namespace BO
         public string CustomerName { get; set; }
         public string CustomerEmail { get; set; }
         public string CustomerAddress { get; set; }
-        public List<OrderItem> Items { get; set; }
+        public List<OrderItem> Items = new List<OrderItem>();
         public double TotalPrice { get; set; }
         public override string ToString() => $@"
         CustomerName: {CustomerName}
         CustomerEmail: {CustomerEmail}
         CustomerAdress: {CustomerAddress}
-        Items: {Items}
+        Items: {string.Join(Environment.NewLine, Items)}
         TotalPrice: {TotalPrice}";
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using BO;
+using System.Xml.Schema;
 
 namespace BlImplementation
 {
@@ -45,7 +46,7 @@ namespace BlImplementation
             }
             return list;
         }
-        private string GiveOrderDate(DateTime date , string text)
+        private string GiveOrderDate(DateTime date, string text)
         {
             string tempString = $@"in {date}: the order is {text}";
             return tempString;
@@ -79,6 +80,11 @@ namespace BlImplementation
         }
         public BO.Order GetData(int id)
         {
+            double totalPrice = 0;
+            foreach (DO.OrderItem it in Dal.OrderItem.OrderItemsListByOrder(id))
+            {
+                totalPrice += it.Price * it.Amount;
+            }
             if (id > 0)
             {
                 try
@@ -94,7 +100,8 @@ namespace BlImplementation
                         ShipDate = dataOrder.ShipDate,
                         OrderDate = dataOrder.OrderDate,
                         Status = Status(dataOrder),
-                        Items = GiveList(dataOrder)
+                        Items = GiveList(dataOrder),
+                        TotalPrice = totalPrice
                     };
                     return order;
                 }
@@ -189,7 +196,7 @@ namespace BlImplementation
                 throw new AllreadyExistException(ex.Message);
             }
         }
-        public void UpdateAdmin(int orderId, int productId ,int amount)
+        public void UpdateAdmin(int orderId, int productId, int amount)
         {
             try
             {

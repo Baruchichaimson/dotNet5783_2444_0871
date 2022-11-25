@@ -65,7 +65,9 @@ namespace BlImplementation
                         InStock = product.Instock > 0,
                         Category = (BO.CoffeeShop)product.Categoryname
                     };
-                    OrderItem orderItem = cart.Items.First(orderItem => orderItem.ID == id);
+                    OrderItem orderItem = new();
+                    if (cart.Items is not null)
+                        orderItem = cart.Items.First(orderItem => orderItem.ID == id);
 
                     if (orderItem is not null)
                     {

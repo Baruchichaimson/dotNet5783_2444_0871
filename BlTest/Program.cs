@@ -216,6 +216,15 @@ internal class Program
                     }
                 case (int)UserCart.ORDER_CONFIRMATION:
                     {
+                        Console.WriteLine("enter name:");
+                        string input = Console.ReadLine();
+                        cart.CustomerName = input;
+                        Console.WriteLine("enter address:");
+                        input = Console.ReadLine();
+                        cart.CustomerAddress = input;
+                        Console.WriteLine("enter email:");
+                        input = Console.ReadLine();
+                        cart.CustomerEmail = input;
                         bl.Cart.OrderConfirmation(cart);
                         break;
                     }

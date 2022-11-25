@@ -26,6 +26,8 @@ namespace BO
         status: {Status}
         Order Date: {OrderDate}
         Ship Date: {ShipDate}
-        Deliveryr Date: {DeliveryrDate}";
+        Deliveryr Date: {DeliveryrDate}
+        Items: {string.Join(Environment.NewLine, Items)}
+        Total price order: {TotalPrice}";
     }
 }

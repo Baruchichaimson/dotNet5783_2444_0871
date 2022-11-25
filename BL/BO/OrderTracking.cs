@@ -14,6 +14,7 @@ namespace BO
         public override string ToString() => $@"
         ID: {ID}
         Status: {Status}
-        order Details: {string.Join(Environment.NewLine, orderDetails)}";
+        order Details:
+        {string.Join(Environment.NewLine, orderDetails)}";
     }
 }
