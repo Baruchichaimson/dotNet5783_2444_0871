@@ -11,10 +11,7 @@ internal class DalOrder : IOrder
     public int Add(Order newOrder)
     {
         newOrder.Id = DataSource.GetOrder;
-        if (DataSource.Orders.Count >= 100)
-            throw new StorgeIsFullException("order");
-        else
-            DataSource.Orders.Add(newOrder);
+        DataSource.Orders.Add(newOrder);
 
         return newOrder.Id;
     }

@@ -12,6 +12,11 @@ namespace BO
         public EntityNotFoundException(string messege) : base(messege) { }
     }
     [Serializable]
+    public class AllreadyExistException : Exception
+    {
+        public AllreadyExistException(string messege) : base(messege) { }
+    }
+    [Serializable]
     public class NotEnoughInStockException : Exception
     {
         public NotEnoughInStockException(string messege) : base(messege) { }

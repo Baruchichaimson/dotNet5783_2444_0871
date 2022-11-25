@@ -71,7 +71,7 @@ namespace BlImplementation
                         throw new IncorrectAmountException("not enough amount in stock");
                     }
                 }
-                if (cart.CustomerEmail != null && cart.CustomerAddress != null && cart.CustomerName != null)
+                if (cart.CustomerEmail == null || cart.CustomerAddress == null || cart.CustomerName == null)
                 {
                     throw new EntityDetailsWrongException("missing Customer details");
                 }
@@ -105,6 +105,10 @@ namespace BlImplementation
             catch (DO.EntityNotFoundException ex)
             {
                 throw new EntityNotFoundException(ex.Message);
+            }
+            catch(DO.AllreadyExistException ex)
+            {
+                throw new AllreadyExistException(ex.Message);
             }
         }
         public BO.Cart UpdateProductAmount(BO.Cart cart, int id, int newAmount)

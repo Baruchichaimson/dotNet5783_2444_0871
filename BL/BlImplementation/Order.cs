@@ -47,7 +47,6 @@ namespace BlImplementation
         }
         private string GiveOrderDate(DateTime date , string text)
         {
-
             string tempString = $@"in {date}: the order is {text}";
             return tempString;
         }
@@ -103,6 +102,10 @@ namespace BlImplementation
                 {
                     throw new EntityNotFoundException(ex.Message);
                 }
+                catch (DO.AllreadyExistException ex)
+                {
+                    throw new AllreadyExistException(ex.Message);
+                }
             }
             throw new EntityNotFoundException("Order not found");
         }
@@ -123,6 +126,10 @@ namespace BlImplementation
                 catch (DO.EntityNotFoundException ex)
                 {
                     throw new EntityNotFoundException(ex.Message);
+                }
+                catch (DO.AllreadyExistException ex)
+                {
+                    throw new AllreadyExistException(ex.Message);
                 }
             }
             throw new EntityNotFoundException("Order not found");
@@ -145,6 +152,10 @@ namespace BlImplementation
             catch (DO.EntityNotFoundException ex)
             {
                 throw new EntityNotFoundException(ex.Message);
+            }
+            catch (DO.AllreadyExistException ex)
+            {
+                throw new AllreadyExistException(ex.Message);
             }
             throw new EntityNotFoundException("Order not found");
         }
@@ -172,6 +183,10 @@ namespace BlImplementation
             catch (DO.EntityNotFoundException ex)
             {
                 throw new EntityNotFoundException(ex.Message);
+            }
+            catch (DO.AllreadyExistException ex)
+            {
+                throw new AllreadyExistException(ex.Message);
             }
         }
         public void UpdateAdmin(int orderId, int productId ,int amount)
@@ -227,7 +242,11 @@ namespace BlImplementation
             catch (DO.EntityNotFoundException ex)
             {
                 throw new EntityNotFoundException(ex.Message);
-            };
+            }
+            catch (DO.AllreadyExistException ex)
+            {
+                throw new AllreadyExistException(ex.Message);
+            }
         }
     }
 }

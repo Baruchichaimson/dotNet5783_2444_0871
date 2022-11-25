@@ -42,7 +42,11 @@ namespace BlImplementation
                 catch (DO.EntityNotFoundException ex)
                 {
                     throw new EntityNotFoundException(ex.Message);
-                };
+                }
+                catch (DO.AllreadyExistException ex)
+                {
+                    throw new AllreadyExistException(ex.Message);
+                }
             };
             throw new IdNotExsitException("the id is not valid");
         }
@@ -74,6 +78,10 @@ namespace BlImplementation
             {
                 throw new EntityNotFoundException(ex.Message);
             }
+            catch (DO.AllreadyExistException ex)
+            {
+                throw new AllreadyExistException(ex.Message);
+            }
             throw new IdNotExsitException("the id is negtive");
         }
         public void Add(BO.Product product)
@@ -96,6 +104,10 @@ namespace BlImplementation
                 {
                     throw new EntityDetailsWrongException(ex.Message);
                 }
+                catch (DO.EntityNotFoundException ex)
+                {
+                    throw new AllreadyExistException(ex.Message);
+                }
             }
             else
                 throw new EntityDetailsWrongException("The product data is incorrect");
@@ -112,7 +124,11 @@ namespace BlImplementation
                 {
                     throw new EntityNotFoundException(ex.Message);
                 }
-          
+                catch (DO.AllreadyExistException ex)
+                {
+                    throw new AllreadyExistException(ex.Message);
+                }
+
             else
                 throw new Exception("product not exsit");
         }
@@ -135,6 +151,10 @@ namespace BlImplementation
                 catch (DO.EntityNotFoundException ex)
                 {
                     throw new EntityNotFoundException(ex.Message);
+                }
+                catch (DO.AllreadyExistException ex)
+                {
+                    throw new AllreadyExistException(ex.Message);
                 }
             }
             else
