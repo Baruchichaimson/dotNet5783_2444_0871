@@ -16,7 +16,7 @@ namespace BO
         public int Amount { get; set; }
         public bool InStock { get; set; }
         public override string ToString() => $@"
-        ID = {ID}
+        ID : {ID}
         Name: {Name}
         Price: {Price}
         Category: {Category}

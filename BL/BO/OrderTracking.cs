@@ -10,10 +10,10 @@ namespace BO
     {
         public int ID { get; set; }
         public OrderStatus Status { get; set; }
-        public List<string> orderDetails { get; set; }
+        public List<(DateTime? date,string? description)>? orderDetails { get; set; }
         public override string ToString() => $@"
-        ID = {ID}
-        orderDetails: {orderDetails.ToString()}
-        Status: {Status}";
+        ID: {ID}
+        Status: {Status}
+        order Details: {string.Join(Environment.NewLine, orderDetails)}";
     }
 }

@@ -19,21 +19,21 @@ namespace BlImplementation
         {
             bool prodactExistInCart = cart.Items.Any(x => x.ProductID == id);
 
-            foreach (DO.Product prodact in Dal.Product.List())
+            foreach (DO.Product product in Dal.Product.List())
             {
-                if (prodact.Id == id)
+                if (product.Id == id)
                 {
-                    if (prodact.Instock > 0)
+                    if (product.Instock > 0)
                     {
                         if (!prodactExistInCart)
                         {
                             cart.Items.Add(new OrderItem()
                             {
-                                ProductID = prodact.Id,
-                                Name = prodact.Name,
-                                Price = prodact.Price,
+                                ProductID = product.Id,
+                                Name = product.Name,
+                                Price = product.Price,
                                 Amount = 1,
-                                TotalPrice = prodact.Price
+                                TotalPrice = product.Price
                             });
                         }
                         else
@@ -43,12 +43,12 @@ namespace BlImplementation
                                 if (orderItem.ProductID == id)
                                 {
                                     orderItem.Amount++;
-                                    orderItem.TotalPrice += prodact.Price;
+                                    orderItem.TotalPrice += product.Price;
                                     break;
                                 }
                             }
                         }
-                        cart.TotalPrice += prodact.Price;
+                        cart.TotalPrice += product.Price;
                         return cart;
                     }
                     throw new IncorrectAmountException("not enough amount in stock");

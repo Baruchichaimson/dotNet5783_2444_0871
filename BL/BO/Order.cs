@@ -19,13 +19,13 @@ namespace BO
         public List<OrderItem> Items { get; set; }
         public double TotalPrice { get; set; }
         public override string ToString() => $@"
-        ID = {ID}
-        CustomerName: {CustomerName}
-        CustomerEmail: {CustomerEmail}
-        CustomerAdress: {CustomerAdress}
+        Order ID: {ID}
+        Customer Name: {CustomerName}
+        Customer Email: {CustomerEmail}
+        Customer Adress: {CustomerAdress}
         status: {Status}
-        OrderDate: {OrderDate}
-        ShipDate: {ShipDate}
-        DeliveryrDate: {DeliveryrDate}";
+        Order Date: {OrderDate}
+        Ship Date: {ShipDate}
+        Deliveryr Date: {DeliveryrDate}";
     }
 }

@@ -10,10 +10,10 @@ namespace BlImplementation
         private DalApi.IDal Dal = new DO.DalList();
         public List<ProductForList> GetList()
         {
-            ProductForList productForList = new ProductForList();
             List<ProductForList> newList = new();
             foreach (DO.Product item in Dal.Product.List())
             {
+                ProductForList productForList = new ProductForList();
                 productForList.ID = item.Id;
                 productForList.Name = item.Name;
                 productForList.Price = item.Price;
@@ -21,7 +21,6 @@ namespace BlImplementation
                 newList.Add(productForList);
             }
             return newList;
-
         }
         public BO.Product GetData(int id)
         {
@@ -45,7 +44,7 @@ namespace BlImplementation
                     throw new EntityNotFoundException(ex.Message);
                 };
             };
-            throw new IdNotExsitException("the id is negtive");
+            throw new IdNotExsitException("the id is not valid");
         }
         public ProductItem GetData(int id, BO.Cart cart)
         {

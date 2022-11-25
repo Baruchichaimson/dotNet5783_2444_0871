@@ -15,7 +15,7 @@ namespace BO
         public CoffeeShop Category { get; set; }
         public int InStock { get; set; }
         public override string ToString() => $@"
-        ID = {ID}
+        Product ID : {ID}
         Name: {Name}
         Price: {Price}
         Category: {Category}

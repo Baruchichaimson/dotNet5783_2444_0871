@@ -135,7 +135,7 @@ namespace BlImplementation
                 if (exsit && Dal.Order.Get(id).ShipDate != DateTime.MinValue && Dal.Order.Get(id).DeliveryrDate == DateTime.MinValue)
                 {
                     DO.Order updateOrdersData = Dal.Order.Get(id);
-                    updateOrdersData.ShipDate = DateTime.Now;
+                    updateOrdersData.DeliveryrDate = DateTime.Now;
                     Dal.Order.Update(updateOrdersData);
                     BO.Order updateOrderLogic = GetData(id);
                     updateOrderLogic.ShipDate = updateOrderLogic.ShipDate;
