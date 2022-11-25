@@ -233,7 +233,7 @@ internal class Program
         {
             Console.WriteLine("Press your choice \nexit press: 0 \nfor product menu press: 1 \nfor order menu press: 2 \nfor cart menu press: 3");
 
-            int.TryParse(Console.ReadLine(), out int userChoice); 
+            int.TryParse(Console.ReadLine(), out int userChoice);
             try
             {
                 switch (userChoice)
@@ -251,10 +251,30 @@ internal class Program
                         break;
                 }
             }
-            catch (Exception ex) 
+            catch (EntityNotFoundException ex)
             {
                 Console.WriteLine(ex.Message);
             }
+            catch (AllreadyExistException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (NotEnoughInStockException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (IdNotExsitException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (IncorrectAmountException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (EntityDetailsWrongException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }      
         }
     }
 }
