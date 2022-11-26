@@ -71,6 +71,8 @@ namespace BlImplementation
             string tempString = $@"in {date}: the order is {text}";
             return tempString;
         }
+        // **********************************************************************************************************************
+        // **********************************************************************************************************************
         /// <summary>
         /// A function that converts a list of order from the data layer
         /// to a list of order  from the logical layer
@@ -85,7 +87,7 @@ namespace BlImplementation
                 double totalPrice = 0;
                 foreach (DO.OrderItem it in Dal.OrderItem.OrderItemsListByOrder(item.Id))
                 {
-                    totalPrice += it.Price;
+                    totalPrice += it.Price * it.Amount;
                     totalAmount++;
                 }
 

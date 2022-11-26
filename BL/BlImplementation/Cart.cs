@@ -83,7 +83,7 @@ namespace BlImplementation
         /// <exception cref="BO.IncorrectAmountException"> the exception say we dont have ehough in the stock for put this amount of product in the basket shopping</exception>
         /// <exception cref="BO.EntityDetailsWrongException"> the exception say that we miss details in the order or myabe the email is not valid</exception>
         /// <exception cref="BO.EntityNotFoundException">is take the exception fron the data layer and say that </exception>
-        /// <exception cref="BO.AllreadyExistException"></exception>
+        /// <exception cref="BO.AllreadyExistException">throw exception when the id is all ready exsit </exception>
         public void OrderConfirmation(BO.Cart cart)
         {
             if (cart.Items is null || cart.Items.Count == 0)

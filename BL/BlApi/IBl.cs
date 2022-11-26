@@ -15,21 +15,18 @@ namespace BlApi
     public interface IBl
     {
         /// <summary>
-        /// Creating an attribute from its interface type in order 
-        /// to use this instance to receive into it the logical functions
-        /// that we used on that entity and transfer it to the display layer
+        /// Creating an instance of an interface for a logical 
+        /// entity that we will work with in the lower layer
         /// </summary>
         public IProduct Product { get; }
         /// <summary>
-        /// Creating an attribute from its interface type in order 
-        /// to use this instance to receive into it the logical functions
-        /// that we used on that entity and transfer it to the display layer
+        /// Creating an instance of an interface for a logical 
+        /// entity that we will work with in the lower layer
         /// </summary>
         public IOrder Order { get; }
         /// <summary>
-        /// Creating an attribute from its interface type in order 
-        /// to use this instance to receive into it the logical functions
-        /// that we used on that entity and transfer it to the display layer
+        ///Creating an instance of an interface for a logical 
+        /// entity that we will work with in the lower layer
         /// </summary>
         public ICart Cart { get; }
 

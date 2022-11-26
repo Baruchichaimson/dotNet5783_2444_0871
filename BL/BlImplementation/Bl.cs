@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace BlImplementation
 {
     /// <summary>
-    /// 
+    /// Implementation of the interface IBl
     /// </summary>
     sealed public class Bl : IBl
     {

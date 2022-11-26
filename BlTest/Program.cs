@@ -7,11 +7,23 @@ using System.Threading.Channels;
 
 
 namespace BlTest;
-
+/// <summary>
+/// program test
+/// </summary>
 internal class Program
 {
+    /// <summary>
+    /// An arttitube of the interface that contains all the logical entities
+    /// </summary>
     private static IBl bl = new Bl();
+    /// <summary>
+    /// cart for user
+    /// </summary>
     private static Cart cart = new Cart();
+    /// <summary>
+    /// to check if the number is correct
+    /// </summary>
+    /// <returns></returns>
     private static int tryParseInt()
     {
         int num;
@@ -21,6 +33,9 @@ internal class Program
         }
         return num;
     }
+    /// <summary>
+    /// The function allows actions on the products that exist in the store.
+    /// </summary>
     private static void ProductOptions()
     {
         while (true)
@@ -62,8 +77,12 @@ internal class Program
                         Console.WriteLine("Enter the name of product:");
                         newProduct.Name = Console.ReadLine();
                         Console.WriteLine("Enter category number:");
-                        Console.WriteLine("for COFFE_MACHINES press  0 \nfor CAPSULES press 1 \nfor ACCESSORIES press 2 \nfor FROTHERS press 3 \nfor SWEETS press 4");
-                        int numCategory = tryParseInt();
+                        int numCategory;
+                        do
+                        {
+                            Console.WriteLine("for COFFE_MACHINES press  0 \nfor CAPSULES press 1 \nfor ACCESSORIES press 2 \nfor FROTHERS press 3 \nfor SWEETS press 4");
+                            numCategory = tryParseInt();
+                        } while (numCategory < 0 || numCategory > 4);
                         newProduct.Category = numCategory switch
                         {
                             0 => CoffeeShop.COFFE_MACHINES,
@@ -98,8 +117,12 @@ internal class Program
                         Console.WriteLine("Enter the name of product:");
                         newProduct.Name = Console.ReadLine();
                         Console.WriteLine("Enter category number:");
-                        Console.WriteLine("for COFFE_MACHINES press  0 \nfor CAPSULES press 1 \nfor ACCESSORIES press 2 \nfor FROTHERS press 3 \nfor SWEETS press 4");
-                        int numCategory = tryParseInt();
+                        int numCategory;
+                        do
+                        {
+                            Console.WriteLine("for COFFE_MACHINES press  0 \nfor CAPSULES press 1 \nfor ACCESSORIES press 2 \nfor FROTHERS press 3 \nfor SWEETS press 4");
+                            numCategory = tryParseInt();
+                        } while (numCategory < 0 || numCategory > 4);
                         newProduct.Category = numCategory switch
                         {
                             0 => CoffeeShop.COFFE_MACHINES,
@@ -126,6 +149,9 @@ internal class Program
             }
         }
     }
+    /// <summary>
+    ///  The function allows actions on the orders that we going to get.
+    /// </summary>
     private static void OrderOptions()
     {
         while (true)
@@ -190,6 +216,9 @@ internal class Program
             }
         }
     }
+    /// <summary>
+    ///  The function allows actions on the cart of the customer have.
+    /// </summary>
     private static void CartOptions()
     {
         while (true)
@@ -239,6 +268,10 @@ internal class Program
             }
         }
     }
+    /// <summary>
+    /// the main program to test all the part of the logic and the data layers togther.
+    /// </summary>
+    /// <param name="args"></param>
     static void Main(string[] args)
     {
         while (true) 
