@@ -36,4 +36,9 @@ namespace BO
     {
         public IncorrectAmountException(string messege) : base(messege) { }
     }
+    [Serializable]
+    public class CartEmptyException : Exception
+    {
+        public CartEmptyException(string messege) : base(messege) { }
+    }
 }

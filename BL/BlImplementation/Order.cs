@@ -245,12 +245,12 @@ namespace BlImplementation
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="orderId"></param>
-        /// <param name="productId"></param>
-        /// <param name="amount"></param>
-        /// <exception cref="IncorrectAmountException"></exception>
-        /// <exception cref="EntityNotFoundException"></exception>
-        /// <exception cref="AllreadyExistException"></exception>
+        /// <param name="orderId"> checking order id with data base</param>
+        /// <param name="productId"> checking product id with data base</param>
+        /// <param name="amount"> to know how much to updat the order item</param>
+        /// <exception cref="IncorrectAmountException">throwing exception when the amount is not  </exception>
+        /// <exception cref="EntityNotFoundException"> </exception>
+        /// <exception cref="AllreadyExistException"> </exception>
         public void UpdateAdmin(int orderId, int productId, int amount)
         {
             try

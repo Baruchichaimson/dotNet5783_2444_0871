@@ -12,6 +12,9 @@ using BO;
 
 namespace BlImplementation
 {
+    /// <summary>
+    /// 
+    /// </summary>
     internal class Cart : ICart
     {
         private IDal Dal = new DO.DalList();
@@ -26,8 +29,12 @@ namespace BlImplementation
         public BO.Cart AddProduct(BO.Cart cart, int id)
         {
             bool prodactExistInCart = false;
-            if (cart.Items is not null)
-                prodactExistInCart = cart.Items.Any(x => x.ProductID == id);
+            if (cart.Items is null)
+            {
+                cart.Items = new();
+            }
+            prodactExistInCart = cart.Items.Any(x => x.ProductID == id);
+
             foreach (DO.Product product in Dal.Product.List())
             {
                 if (product.Id == id)
@@ -78,21 +85,23 @@ namespace BlImplementation
         /// <exception cref="BO.AllreadyExistException"></exception>
         public void OrderConfirmation(BO.Cart cart)
         {
+            if (cart.Items is null || cart.Items.Count == 0)
+            {
+                throw new CartEmptyException("the cart is empty");
+            }
             try
             {
-                if (cart.Items is not null)
+                foreach (BO.OrderItem orderItem in cart.Items)
                 {
-                    foreach (BO.OrderItem orderItem in cart.Items)
+
+                    DO.Product product = Dal.Product.Get(orderItem.ProductID);
+
+                    if (orderItem.Amount > product.Instock || orderItem.Amount <= 0)
                     {
-
-                        DO.Product product = Dal.Product.Get(orderItem.ProductID);
-
-                        if (orderItem.Amount > product.Instock || orderItem.Amount <= 0)
-                        {
-                            throw new BO.IncorrectAmountException("not enough amount in stock");
-                        }
+                        throw new BO.IncorrectAmountException("not enough amount in stock");
                     }
                 }
+
                 if (cart.CustomerEmail == null || cart.CustomerAddress == null || cart.CustomerName == null)
                 {
                     throw new BO.EntityDetailsWrongException("missing Customer details");
@@ -109,22 +118,19 @@ namespace BlImplementation
                     DeliveryrDate = DateTime.MinValue
                 };
                 int idOrder = Dal.Order.Add(order);
-                if (cart.Items is not null)
+                foreach (var item in cart.Items)
                 {
-                    foreach (var item in cart.Items)
+                    DO.OrderItem orderItem = new()
                     {
-                        DO.OrderItem orderItem = new()
-                        {
-                            ProductID = item.ProductID,
-                            Price = item.Price,
-                            Amount = item.Amount,
-                            OredrID = idOrder
-                        };
-                        Dal.OrderItem.Add(orderItem);
-                        DO.Product product = Dal.Product.Get(item.ProductID);
-                        product.Instock -= item.Amount;
-                        Dal.Product.Update(product);
-                    }
+                        ProductID = item.ProductID,
+                        Price = item.Price,
+                        Amount = item.Amount,
+                        OredrID = idOrder
+                    };
+                    Dal.OrderItem.Add(orderItem);
+                    DO.Product product = Dal.Product.Get(item.ProductID);
+                    product.Instock -= item.Amount;
+                    Dal.Product.Update(product);
                 }
             }
             catch (DO.EntityNotFoundException ex)
@@ -146,6 +152,10 @@ namespace BlImplementation
         /// <exception cref="BO.EntityNotFoundException"></exception>
         public BO.Cart UpdateProductAmount(BO.Cart cart, int id, int newAmount)
         {
+            if(cart.Items is null)
+            {
+                throw new CartEmptyException("the cart is empty");
+            }
             foreach (BO.OrderItem item in cart.Items)
             {
                 if (item.ProductID == id)

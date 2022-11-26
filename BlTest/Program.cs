@@ -228,8 +228,7 @@ internal class Program
                         input = Console.ReadLine();
                         cart.CustomerEmail = input;
                         bl.Cart.OrderConfirmation(cart);
-                        Cart newcart = new Cart();
-                        cart = newcart;
+                        cart = new();
                         break;
                     }
                 default:
@@ -287,7 +286,11 @@ internal class Program
             catch (EntityDetailsWrongException ex)
             {
                 Console.WriteLine(ex.Message);
-            }      
+            }   
+            catch(CartEmptyException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

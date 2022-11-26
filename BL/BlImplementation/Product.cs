@@ -5,6 +5,9 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace BlImplementation
 {
+    /// <summary>
+    /// 
+    /// </summary>
     internal class Product : IProduct
     {
         private DalApi.IDal Dal = new DO.DalList();
@@ -86,11 +89,13 @@ namespace BlImplementation
                         InStock = product.Instock > 0,
                         Category = (BO.CoffeeShop)product.Categoryname
                     };
-
-                    OrderItem orderItem = cart.Items.Find(orderItem => orderItem.ProductID == id);
-                    if (orderItem is not null)
+                    if (cart.Items is not null)
                     {
-                        newProductItem.Amount = orderItem.Amount;
+                        OrderItem orderItem = cart.Items.Find(orderItem => orderItem.ProductID == id);
+                        if (orderItem is not null)
+                        {
+                            newProductItem.Amount = orderItem.Amount;
+                        } 
                     }
                     return newProductItem;
                 }
