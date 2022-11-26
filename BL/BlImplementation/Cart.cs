@@ -8,12 +8,21 @@ using DalApi;
 using System.Text.RegularExpressions;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using BO;
 
 namespace BlImplementation
 {
     internal class Cart : ICart
     {
         private IDal Dal = new DO.DalList();
+        /// <summary>
+        /// the function add product from the store to the cart .
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="BO.IncorrectAmountException"></exception>
+        /// <exception cref="BO.EntityNotFoundException"></exception>
         public BO.Cart AddProduct(BO.Cart cart, int id)
         {
             bool prodactExistInCart = false;
@@ -59,7 +68,14 @@ namespace BlImplementation
             }
             throw new BO.EntityNotFoundException("product not found");
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <exception cref="BO.IncorrectAmountException"></exception>
+        /// <exception cref="BO.EntityDetailsWrongException"></exception>
+        /// <exception cref="BO.EntityNotFoundException"></exception>
+        /// <exception cref="BO.AllreadyExistException"></exception>
         public void OrderConfirmation(BO.Cart cart)
         {
             try
@@ -120,13 +136,26 @@ namespace BlImplementation
                 throw new BO.AllreadyExistException(ex.Message);
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <param name="id"></param>
+        /// <param name="newAmount"></param>
+        /// <returns></returns>
+        /// <exception cref="BO.EntityNotFoundException"></exception>
         public BO.Cart UpdateProductAmount(BO.Cart cart, int id, int newAmount)
         {
             foreach (BO.OrderItem item in cart.Items)
             {
                 if (item.ProductID == id)
                 {
-                    if (newAmount > item.Amount)
+                    if (newAmount == 0)
+                    {
+                        cart.Items.Remove(item);
+                        cart.TotalPrice -= item.Price * item.Amount;
+                    }
+                    else if (newAmount > item.Amount)
                     {
                         item.TotalPrice = item.Price * newAmount;
                         cart.TotalPrice += item.Price * (newAmount - item.Amount);
@@ -134,14 +163,13 @@ namespace BlImplementation
                     }
                     else if (newAmount < item.Amount)
                     {
+                        if (newAmount < 0)
+                        {
+                            throw new IncorrectAmountException("the amount can't be negative number");
+                        }
                         item.TotalPrice = item.Price * newAmount;
                         cart.TotalPrice -= item.Price * (item.Amount - newAmount);
                         item.Amount = newAmount;
-                    }
-                    else if (item.Amount == newAmount)
-                    {
-                        cart.Items.Remove(item);
-                        cart.TotalPrice -= item.Price * item.Amount;
                     }
                     return cart;
                 }

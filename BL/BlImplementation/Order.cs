@@ -11,6 +11,9 @@ using System.Xml.Schema;
 
 namespace BlImplementation
 {
+    /// <summary>
+    /// 
+    /// </summary>
     internal class Order : IOrder
     {
         private DalApi.IDal Dal = new DO.DalList();
@@ -28,6 +31,11 @@ namespace BlImplementation
                 currentStatus = OrderStatus.PROVIDED;
             return currentStatus;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idOrder"></param>
+        /// <returns></returns>
         private List<OrderItem> GiveList(DO.Order idOrder)
         {
             List<OrderItem> list = new List<OrderItem>();
@@ -46,6 +54,12 @@ namespace BlImplementation
             }
             return list;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
         private string GiveOrderDate(DateTime date, string text)
         {
             string tempString = $@"in {date}: the order is {text}";
@@ -53,6 +67,10 @@ namespace BlImplementation
         }
         //***************************************************************************************
         //***************************************************************************************
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<OrderForList> GetList()
         {
             List<OrderForList> newList = new List<OrderForList>();
@@ -78,6 +96,13 @@ namespace BlImplementation
             }
             return newList;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="AllreadyExistException"></exception>
         public BO.Order GetData(int id)
         {
             double totalPrice = 0;
@@ -116,6 +141,13 @@ namespace BlImplementation
             }
             throw new EntityNotFoundException("Order not found");
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="AllreadyExistException"></exception>
         public BO.Order UpdateShippingDate(int id)
         {
             bool exsit = Dal.Order.List().Any(x => x.Id == id);
@@ -141,6 +173,13 @@ namespace BlImplementation
             }
             throw new EntityNotFoundException("Order not found");
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="AllreadyExistException"></exception>
         public BO.Order DeliveryUpdate(int id)
         {
             bool exsit = Dal.Order.List().Any(x => x.Id == id);
@@ -166,6 +205,13 @@ namespace BlImplementation
             }
             throw new EntityNotFoundException("Order not found");
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="AllreadyExistException"></exception>
         public OrderTracking OrderTracking(int id)
         {
             try
@@ -196,6 +242,15 @@ namespace BlImplementation
                 throw new AllreadyExistException(ex.Message);
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="productId"></param>
+        /// <param name="amount"></param>
+        /// <exception cref="IncorrectAmountException"></exception>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="AllreadyExistException"></exception>
         public void UpdateAdmin(int orderId, int productId, int amount)
         {
             try
@@ -245,6 +300,8 @@ namespace BlImplementation
                     product.Instock -= amount;
                     Dal.Product.Update(product);
                 }
+                else
+                    throw new EntityDetailsWrongException("the order is allready been sent");
             }
             catch (DO.EntityNotFoundException ex)
             {

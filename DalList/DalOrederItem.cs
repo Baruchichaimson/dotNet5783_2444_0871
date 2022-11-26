@@ -56,7 +56,7 @@ internal class DalOrederItem :IOrderItem
             {
                 /// Replaces with the last one and lowers the size of the array
                 DataSource.OrderItems.Remove(myOrderItem);
-                break;
+                return;
             }
         }
         throw new EntityNotFoundException("order item");

@@ -8,6 +8,10 @@ namespace BlImplementation
     internal class Product : IProduct
     {
         private DalApi.IDal Dal = new DO.DalList();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<ProductForList> GetList()
         {
             List<ProductForList> newList = new();
@@ -22,6 +26,14 @@ namespace BlImplementation
             }
             return newList;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="AllreadyExistException"></exception>
+        /// <exception cref="IdNotExsitException"></exception>
         public BO.Product GetData(int id)
         {
             if (id > 0)
@@ -50,6 +62,15 @@ namespace BlImplementation
             };
             throw new IdNotExsitException("the id is not valid");
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cart"></param>
+        /// <returns></returns>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="AllreadyExistException"></exception>
+        /// <exception cref="IdNotExsitException"></exception>
         public ProductItem GetData(int id, BO.Cart cart)
         {
             try
@@ -65,10 +86,8 @@ namespace BlImplementation
                         InStock = product.Instock > 0,
                         Category = (BO.CoffeeShop)product.Categoryname
                     };
-                    OrderItem orderItem = new();
-                    if (cart.Items is not null)
-                        orderItem = cart.Items.First(orderItem => orderItem.ID == id);
 
+                    OrderItem orderItem = cart.Items.Find(orderItem => orderItem.ProductID == id);
                     if (orderItem is not null)
                     {
                         newProductItem.Amount = orderItem.Amount;
@@ -86,6 +105,12 @@ namespace BlImplementation
             }
             throw new IdNotExsitException("the id is negtive");
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="product"></param>
+        /// <exception cref="EntityDetailsWrongException"></exception>
+        /// <exception cref="AllreadyExistException"></exception>
         public void Add(BO.Product product)
         {   
             if (product.ID >= 100000 && product.ID < 1000000 && product.Name is not null && product.Price > 0 && product.InStock > 0)
@@ -114,6 +139,13 @@ namespace BlImplementation
             else
                 throw new EntityDetailsWrongException("The product data is incorrect");
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="AllreadyExistException"></exception>
+        /// <exception cref="Exception"></exception>
         public void Delete(int id)
         {
             bool exsit = Dal.OrderItem.List().Any(x => x.ProductID == id);
@@ -134,6 +166,12 @@ namespace BlImplementation
             else
                 throw new Exception("product not exsit");
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="product"></param>
+        /// <exception cref="EntityNotFoundException"></exception>
+        /// <exception cref="AllreadyExistException"></exception>
         public void Update(BO.Product product)
         {
             if (product.ID > 0 && product.Name is not null && product.Price > 0 && product.InStock > 0)

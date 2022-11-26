@@ -115,6 +115,7 @@ internal class Program
                         int inStock = tryParseInt();
                         newProduct.InStock = inStock;
                         bl.Product.Update(newProduct);
+                        Console.WriteLine("the product has been succsefully update");
                         break;
                     }
                 default:
@@ -154,6 +155,7 @@ internal class Program
                         Console.WriteLine("enter amount");
                         int amount = tryParseInt();
                         bl.Order.UpdateAdmin(orderId, productId, amount);
+                        Console.WriteLine("the order has been succsefully update");
                         break;
                     }
                 case (int)UserOrder.DETAILS_REQUEST:
@@ -226,6 +228,8 @@ internal class Program
                         input = Console.ReadLine();
                         cart.CustomerEmail = input;
                         bl.Cart.OrderConfirmation(cart);
+                        Cart newcart = new Cart();
+                        cart = newcart;
                         break;
                     }
                 default:
