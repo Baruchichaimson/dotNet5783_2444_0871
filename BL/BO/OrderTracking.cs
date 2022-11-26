@@ -12,7 +12,7 @@ namespace BO
     public class OrderTracking
     {
         /// <summary>
-        /// osder id
+        /// order id
         /// </summary>
         public int ID { get; set; }
         /// <summary>

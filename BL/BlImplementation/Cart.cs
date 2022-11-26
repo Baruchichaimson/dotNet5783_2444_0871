@@ -13,19 +13,19 @@ using BO;
 namespace BlImplementation
 {
     /// <summary>
-    /// 
+    /// the class cart have the all function logic the we need in the basket shopping in the shop.
     /// </summary>
     internal class Cart : ICart
     {
         private IDal Dal = new DO.DalList();
         /// <summary>
-        /// the function add product from the store to the cart .
+        /// the function add product from the store to the basket shopping .
         /// </summary>
-        /// <param name="cart"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="BO.IncorrectAmountException"></exception>
-        /// <exception cref="BO.EntityNotFoundException"></exception>
+        /// <param name="cart"> We receive a cart  initialized shopping basket entity </param>
+        /// <param name="id"> the id is for the user that want to add id specific </param>
+        /// <returns> return the basket shopping with the new product we put in him </returns>
+        /// <exception cref="BO.IncorrectAmountException"> the exception say we dont have ehough in the stock for put this amount of product in the basket shopping</exception>
+        /// <exception cref="BO.EntityNotFoundException"> the id product is not correct and we can't search this product in the stock </exception>
         public BO.Cart AddProduct(BO.Cart cart, int id)
         {
             bool prodactExistInCart = false;
@@ -76,12 +76,13 @@ namespace BlImplementation
             throw new BO.EntityNotFoundException("product not found");
         }
         /// <summary>
-        /// 
+        /// the function check that all the details on the order is 
+        /// correct and confirmation the order after that and put him in the list order and update the stock if we by someting.
         /// </summary>
-        /// <param name="cart"></param>
-        /// <exception cref="BO.IncorrectAmountException"></exception>
-        /// <exception cref="BO.EntityDetailsWrongException"></exception>
-        /// <exception cref="BO.EntityNotFoundException"></exception>
+        /// <param name="cart"> We receive a cart  initialized shopping basket entity </param>
+        /// <exception cref="BO.IncorrectAmountException"> the exception say we dont have ehough in the stock for put this amount of product in the basket shopping</exception>
+        /// <exception cref="BO.EntityDetailsWrongException"> the exception say that we miss details in the order or myabe the email is not valid</exception>
+        /// <exception cref="BO.EntityNotFoundException">is take the exception fron the data layer and say that </exception>
         /// <exception cref="BO.AllreadyExistException"></exception>
         public void OrderConfirmation(BO.Cart cart)
         {
@@ -143,13 +144,13 @@ namespace BlImplementation
             }
         }
         /// <summary>
-        /// 
+        /// the function is check if the order item is correct and if wh have it we can update is amount.
         /// </summary>
-        /// <param name="cart"></param>
-        /// <param name="id"></param>
-        /// <param name="newAmount"></param>
-        /// <returns></returns>
-        /// <exception cref="BO.EntityNotFoundException"></exception>
+        /// <param name="cart"> We receive a cart  initialized shopping basket entity </param>
+        /// <param name="id"> the id is for the user that want to add id specific </param>
+        /// <param name="newAmount"> the user put amount that he want to update in the order that we have in the basket shopping</param>
+        /// <returns> return the basket shopping with new oder </returns>
+        /// <exception cref="BO.EntityNotFoundException"> the exception say that the prouct we wanted to change is not exist in the basket shopping</exception>
         public BO.Cart UpdateProductAmount(BO.Cart cart, int id, int newAmount)
         {
             if(cart.Items is null)
