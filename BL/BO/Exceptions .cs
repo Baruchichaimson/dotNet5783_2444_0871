@@ -41,4 +41,10 @@ namespace BO
     {
         public CartEmptyException(string messege) : base(messege) { }
     }
+
+    [Serializable]
+    public class ProductIsOnOrderException : Exception
+    {
+        public ProductIsOnOrderException(string messege) : base(messege) { }
+    }
 }

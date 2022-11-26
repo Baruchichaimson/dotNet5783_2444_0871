@@ -12,11 +12,16 @@ using System.Xml.Schema;
 namespace BlImplementation
 {
     /// <summary>
-    /// 
+    /// class for Order Management
     /// </summary>
     internal class Order : IOrder
     {
         private DalApi.IDal Dal = new DO.DalList();
+        /// <summary>
+        /// A helper function that returns an order status
+        /// </summary>
+        /// <param name="item">order from data layer</param>
+        /// <returns>order status</returns>
         private OrderStatus Status(DO.Order item)
         {
             OrderStatus currentStatus = new OrderStatus();
@@ -32,10 +37,11 @@ namespace BlImplementation
             return currentStatus;
         }
         /// <summary>
-        /// 
+        /// A helper function that converts a list of orderitem details from the data layer to a
+        /// list of orderitem details from the logical layer
         /// </summary>
-        /// <param name="idOrder"></param>
-        /// <returns></returns>
+        /// <param name="idOrder">order id from data layer</param>
+        /// <returns>A list of orderItem of the logical layer</returns>
         private List<OrderItem> GiveList(DO.Order idOrder)
         {
             List<OrderItem> list = new List<OrderItem>();
@@ -55,20 +61,19 @@ namespace BlImplementation
             return list;
         }
         /// <summary>
-        /// 
+        /// Helper function that returns a string with the order details
         /// </summary>
-        /// <param name="date"></param>
-        /// <param name="text"></param>
+        /// <param name="date">date</param>
+        /// <param name="text">Description</param>
         /// <returns></returns>
         private string GiveOrderDate(DateTime date, string text)
         {
             string tempString = $@"in {date}: the order is {text}";
             return tempString;
         }
-        //***************************************************************************************
-        //***************************************************************************************
         /// <summary>
-        /// 
+        /// A function that converts a list of order from the data layer
+        /// to a list of order  from the logical layer
         /// </summary>
         /// <returns></returns>
         public List<OrderForList> GetList()
@@ -76,12 +81,12 @@ namespace BlImplementation
             List<OrderForList> newList = new List<OrderForList>();
             foreach (DO.Order item in Dal.Order.List())
             {
-                int totalamount = 0;
+                int totalAmount = 0;
                 double totalPrice = 0;
                 foreach (DO.OrderItem it in Dal.OrderItem.OrderItemsListByOrder(item.Id))
                 {
                     totalPrice += it.Price;
-                    totalamount++;
+                    totalAmount++;
                 }
 
                 OrderForList orderForList = new()
@@ -89,7 +94,7 @@ namespace BlImplementation
                     ID = item.Id,
                     CustomerName = item.CustomerName,
                     TotalPrice = totalPrice,
-                    AmountOfItems = totalamount,
+                    AmountOfItems = totalAmount,
                     Status = Status(item),
                 };
                 newList.Add(orderForList);
@@ -97,12 +102,11 @@ namespace BlImplementation
             return newList;
         }
         /// <summary>
-        /// 
+        /// A function that returns an order by ID number
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="EntityNotFoundException"></exception>
-        /// <exception cref="AllreadyExistException"></exception>
+        /// <param name="id"> order id</param>
+        /// <returns> Order  </returns>
+        /// <exception cref="EntityNotFoundException"> trow an Exception when the order was not found in the database</exception>
         public BO.Order GetData(int id)
         {
             double totalPrice = 0;
@@ -134,20 +138,15 @@ namespace BlImplementation
                 {
                     throw new EntityNotFoundException(ex.Message);
                 }
-                catch (DO.AllreadyExistException ex)
-                {
-                    throw new AllreadyExistException(ex.Message);
-                }
             }
             throw new EntityNotFoundException("Order not found");
         }
         /// <summary>
-        /// 
+        /// A function that updates shipping time
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="EntityNotFoundException"></exception>
-        /// <exception cref="AllreadyExistException"></exception>
+        /// <param name="id"> order id</param>
+        /// <returns>Updated order </returns>
+        /// <exception cref="EntityNotFoundException">Throws an exception when the order was not found in the database</exception>
         public BO.Order UpdateShippingDate(int id)
         {
             bool exsit = Dal.Order.List().Any(x => x.Id == id);
@@ -166,20 +165,15 @@ namespace BlImplementation
                 {
                     throw new EntityNotFoundException(ex.Message);
                 }
-                catch (DO.AllreadyExistException ex)
-                {
-                    throw new AllreadyExistException(ex.Message);
-                }
             }
             throw new EntityNotFoundException("Order not found");
         }
         /// <summary>
-        /// 
+        /// A function that updates Delivery time
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="EntityNotFoundException"></exception>
-        /// <exception cref="AllreadyExistException"></exception>
+        /// <param name="id"> order id</param>
+        /// <returns>Updated order </returns>
+        /// <exception cref="EntityNotFoundException">Throws an exception when the order was not found in the database</exception>
         public BO.Order DeliveryUpdate(int id)
         {
             bool exsit = Dal.Order.List().Any(x => x.Id == id);
@@ -199,19 +193,14 @@ namespace BlImplementation
             {
                 throw new EntityNotFoundException(ex.Message);
             }
-            catch (DO.AllreadyExistException ex)
-            {
-                throw new AllreadyExistException(ex.Message);
-            }
             throw new EntityNotFoundException("Order not found");
         }
         /// <summary>
-        /// 
+        /// A function that returns an order tracking
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="EntityNotFoundException"></exception>
-        /// <exception cref="AllreadyExistException"></exception>
+        /// <param name="id"> order id</param>
+        /// <returns>Updated orderTracking </returns>
+        /// <exception cref="EntityNotFoundException">Throws an exception when the order was not found in the database</exception>
         public OrderTracking OrderTracking(int id)
         {
             try
@@ -243,14 +232,14 @@ namespace BlImplementation
             }
         }
         /// <summary>
-        /// 
+        /// A function for the store manager to update the quantity of a product in an order that has not been shipped
         /// </summary>
-        /// <param name="orderId"> checking order id with data base</param>
-        /// <param name="productId"> checking product id with data base</param>
-        /// <param name="amount"> to know how much to updat the order item</param>
-        /// <exception cref="IncorrectAmountException">throwing exception when the amount is not  </exception>
-        /// <exception cref="EntityNotFoundException"> </exception>
-        /// <exception cref="AllreadyExistException"> </exception>
+        /// <param name="orderId">order id for data base</param>
+        /// <param name="productId">product id for data base</param>
+        /// <param name="amount">how much more\less to update the order item</param>
+        /// <exception cref="IncorrectAmountException">throwing exception when the amount is Invalid</exception>
+        /// <exception cref="EntityNotFoundException">Throws an exception when the order was not found in the database </exception>
+        /// <exception cref="AllreadyExistException">Throws an exception when adding order when is Allready Exist in the database </exception>
         public void UpdateAdmin(int orderId, int productId, int amount)
         {
             try

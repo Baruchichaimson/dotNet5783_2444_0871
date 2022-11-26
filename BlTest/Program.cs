@@ -291,6 +291,11 @@ internal class Program
             {
                 Console.WriteLine(ex.Message);
             }
+            catch (ProductIsOnOrderException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
         }
     }
 }

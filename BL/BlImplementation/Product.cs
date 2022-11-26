@@ -12,7 +12,8 @@ namespace BlImplementation
     {
         private DalApi.IDal Dal = new DO.DalList();
         /// <summary>
-        /// 
+        /// A function that converts a list of products from the data 
+        /// layer to a list of products of the logical layer
         /// </summary>
         /// <returns></returns>
         public List<ProductForList> GetList()
@@ -30,13 +31,12 @@ namespace BlImplementation
             return newList;
         }
         /// <summary>
-        /// 
+        /// A function that returns a product by ID number
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">product id</param>
         /// <returns></returns>
-        /// <exception cref="EntityNotFoundException"></exception>
-        /// <exception cref="AllreadyExistException"></exception>
-        /// <exception cref="IdNotExsitException"></exception>
+        /// <exception cref="EntityNotFoundException"> throw an Exception when the product was not found in the database</exception>
+        /// <exception cref="IdNotExsitException"> throw an Exception when the id is invalid</exception>
         public BO.Product GetData(int id)
         {
             if (id > 0)
@@ -58,22 +58,17 @@ namespace BlImplementation
                 {
                     throw new EntityNotFoundException(ex.Message);
                 }
-                catch (DO.AllreadyExistException ex)
-                {
-                    throw new AllreadyExistException(ex.Message);
-                }
             };
             throw new IdNotExsitException("the id is not valid");
         }
         /// <summary>
-        /// 
+        ///  A function that returns a product by ID number and checks whether and how much is in the cart
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="cart"></param>
+        /// <param name="id">product id</param>
+        /// <param name="cart"> costumer cart</param>
         /// <returns></returns>
-        /// <exception cref="EntityNotFoundException"></exception>
-        /// <exception cref="AllreadyExistException"></exception>
-        /// <exception cref="IdNotExsitException"></exception>
+        /// <exception cref="EntityNotFoundException"> throw an Exception when the product was not found in the database</exception>
+        /// <exception cref="IdNotExsitException"> throw an Exception when the id is invalid</exception>
         public ProductItem GetData(int id, BO.Cart cart)
         {
             try
@@ -104,18 +99,14 @@ namespace BlImplementation
             {
                 throw new EntityNotFoundException(ex.Message);
             }
-            catch (DO.AllreadyExistException ex)
-            {
-                throw new AllreadyExistException(ex.Message);
-            }
             throw new IdNotExsitException("the id is negtive");
         }
         /// <summary>
-        /// 
+        /// A function to add a product to the database
         /// </summary>
-        /// <param name="product"></param>
-        /// <exception cref="EntityDetailsWrongException"></exception>
-        /// <exception cref="AllreadyExistException"></exception>
+        /// <param name="product">A logical entity of a product</param>
+        /// <exception cref="EntityDetailsWrongException">Incorrect product details</exception>
+        /// <exception cref="AllreadyExistException">Product id already exists</exception>
         public void Add(BO.Product product)
         {   
             if (product.ID >= 100000 && product.ID < 1000000 && product.Name is not null && product.Price > 0 && product.InStock > 0)
@@ -145,12 +136,11 @@ namespace BlImplementation
                 throw new EntityDetailsWrongException("The product data is incorrect");
         }
         /// <summary>
-        /// 
+        ///  A function to deleting a product from the database
         /// </summary>
-        /// <param name="id"></param>
-        /// <exception cref="EntityNotFoundException"></exception>
-        /// <exception cref="AllreadyExistException"></exception>
-        /// <exception cref="Exception"></exception>
+        /// <param name="id">product id</param>
+        /// <exception cref="EntityNotFoundException"> throw an Exception when the product was not found in the database</exception>
+        /// <exception cref="ProductIsOnOrderException">It is not possible to delete a product that exists in one of the orders</exception>
         public void Delete(int id)
         {
             bool exsit = Dal.OrderItem.List().Any(x => x.ProductID == id);
@@ -163,20 +153,15 @@ namespace BlImplementation
                 {
                     throw new EntityNotFoundException(ex.Message);
                 }
-                catch (DO.AllreadyExistException ex)
-                {
-                    throw new AllreadyExistException(ex.Message);
-                }
-
             else
-                throw new Exception("product not exsit");
+                throw new ProductIsOnOrderException("product exsit in order");
         }
         /// <summary>
-        /// 
+        /// Function to update product details
         /// </summary>
-        /// <param name="product"></param>
-        /// <exception cref="EntityNotFoundException"></exception>
-        /// <exception cref="AllreadyExistException"></exception>
+        /// <param name="product">Receives a logic layer product</param>
+        /// <exception cref="EntityNotFoundException"> throw an Exception when the product was not found in the database</exception>
+        /// <exception cref="AllreadyExistException">Product id already exists</exception>
         public void Update(BO.Product product)
         {
             if (product.ID > 0 && product.Name is not null && product.Price > 0 && product.InStock > 0)
