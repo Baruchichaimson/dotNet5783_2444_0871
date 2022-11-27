@@ -138,24 +138,24 @@ namespace BlImplementation
                 }
                 catch (DO.EntityNotFoundException ex)
                 {
-                    throw new EntityNotFoundException(ex.Message);
+                    throw new BO.EntityNotFoundException(ex);
                 }
             }
-            throw new EntityNotFoundException("Order not found");
+            throw new BO.IdNotExsitException("Order id not valid");
         }
         /// <summary>
         /// A function that updates shipping time
         /// </summary>
         /// <param name="id"> order id</param>
         /// <returns>Updated order </returns>
-        /// <exception cref="EntityNotFoundException">Throws an exception when the order was not found in the database</exception>
+        /// <exception cref="EntityDetailsWrongException">Throws an exception when the order was allredy shiped</exception>
         public BO.Order UpdateShippingDate(int id)
         {
-            bool exsit = Dal.Order.List().Any(x => x.Id == id);
-            if (exsit && Dal.Order.Get(id).ShipDate == DateTime.MinValue)
+            try
             {
-                try
-                {
+                if (Dal.Order.Get(id).ShipDate == DateTime.MinValue)
+            {
+               
                     DO.Order updateOrders = Dal.Order.Get(id);
                     updateOrders.ShipDate = DateTime.Now;
                     Dal.Order.Update(updateOrders);
@@ -163,25 +163,25 @@ namespace BlImplementation
                     updorder.ShipDate = updateOrders.ShipDate;
                     return updorder;
                 }
-                catch (DO.EntityNotFoundException ex)
-                {
-                    throw new EntityNotFoundException(ex.Message);
-                }
+               
             }
-            throw new EntityNotFoundException("Order not found");
+            catch (DO.EntityNotFoundException ex)
+            {
+                throw new BO.EntityNotFoundException(ex);
+            }
+            throw new BO.EntityDetailsWrongException("Order allredy shiped");
         }
         /// <summary>
         /// A function that updates Delivery time
         /// </summary>
         /// <param name="id"> order id</param>
         /// <returns>Updated order </returns>
-        /// <exception cref="EntityNotFoundException">Throws an exception when the order was not found in the database</exception>
+        /// <exception cref="EntityDetailsWrongException">Throws an exception when the order deliverd or not shiped </exception>
         public BO.Order DeliveryUpdate(int id)
         {
-            bool exsit = Dal.Order.List().Any(x => x.Id == id);
             try
             {
-                if (exsit && Dal.Order.Get(id).ShipDate != DateTime.MinValue && Dal.Order.Get(id).DeliveryrDate == DateTime.MinValue)
+                if (Dal.Order.Get(id).ShipDate != DateTime.MinValue && Dal.Order.Get(id).DeliveryrDate == DateTime.MinValue)
                 {
                     DO.Order updateOrdersData = Dal.Order.Get(id);
                     updateOrdersData.DeliveryrDate = DateTime.Now;
@@ -193,9 +193,9 @@ namespace BlImplementation
             }
             catch (DO.EntityNotFoundException ex)
             {
-                throw new EntityNotFoundException(ex.Message);
+                throw new BO.EntityNotFoundException(ex);
             }
-            throw new EntityNotFoundException("Order not found");
+            throw new BO.EntityDetailsWrongException("delivery time cannot be updated");
         }
         /// <summary>
         /// A function that returns an order tracking
@@ -226,11 +226,11 @@ namespace BlImplementation
             }
             catch (DO.EntityNotFoundException ex)
             {
-                throw new EntityNotFoundException(ex.Message);
+                throw new BO.EntityNotFoundException(ex);
             }
             catch (DO.AllreadyExistException ex)
             {
-                throw new AllreadyExistException(ex.Message);
+                throw new BO.AllreadyExistException(ex);
             }
         }
         /// <summary>
@@ -248,7 +248,7 @@ namespace BlImplementation
             {
                 DO.Product product = Dal.Product.Get(productId);
                 if (amount > product.Instock)
-                    throw new IncorrectAmountException("Not enough amount in stock");
+                    throw new BO.IncorrectAmountException("Not enough amount in stock");
                 int id = 0;
                 if (Dal.Order.Get(orderId).ShipDate == DateTime.MinValue)
                 {
@@ -274,7 +274,7 @@ namespace BlImplementation
                             Dal.OrderItem.Add(item);
                         }
                         else
-                            throw new IncorrectAmountException("the amount is not positive");
+                            throw new BO.IncorrectAmountException("the amount is not positive");
                     }
                     else
                     {
@@ -282,7 +282,7 @@ namespace BlImplementation
                         if (item.Amount + amount >= 0)
                             item.Amount += amount;
                         else
-                            throw new IncorrectAmountException("reduce amount to much");
+                            throw new BO.IncorrectAmountException("reduce amount to much");
                         if (item.Amount == 0)
                             Dal.OrderItem.Delete(item.Id);
                         else
@@ -292,15 +292,15 @@ namespace BlImplementation
                     Dal.Product.Update(product);
                 }
                 else
-                    throw new EntityDetailsWrongException("the order is allready been sent");
+                    throw new BO.EntityDetailsWrongException("the order is allready been sent");
             }
             catch (DO.EntityNotFoundException ex)
             {
-                throw new EntityNotFoundException(ex.Message);
+                throw new BO.EntityNotFoundException(ex);
             }
             catch (DO.AllreadyExistException ex)
             {
-                throw new AllreadyExistException(ex.Message);
+                throw new BO.AllreadyExistException(ex);
             }
         }
     }

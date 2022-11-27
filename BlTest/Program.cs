@@ -298,11 +298,11 @@ internal class Program
             }
             catch (EntityNotFoundException ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.InnerException.Message);
             }
             catch (AllreadyExistException ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.InnerException.Message);
             }
             catch (NotEnoughInStockException ex)
             {
@@ -320,7 +320,7 @@ internal class Program
             {
                 Console.WriteLine(ex.Message);
             }   
-            catch(CartEmptyException ex)
+            catch(CartException ex)
             {
                 Console.WriteLine(ex.Message);
             }

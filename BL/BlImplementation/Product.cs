@@ -56,10 +56,10 @@ namespace BlImplementation
                 }
                 catch (DO.EntityNotFoundException ex)
                 {
-                    throw new EntityNotFoundException(ex.Message);
+                    throw new BO.EntityNotFoundException(ex);
                 }
             };
-            throw new IdNotExsitException("the id is not valid");
+            throw new BO.IdNotExsitException("the id is not valid");
         }
         /// <summary>
         ///  A function that returns a product by ID number and checks whether and how much is in the cart
@@ -97,7 +97,7 @@ namespace BlImplementation
             }
             catch (DO.EntityNotFoundException ex)
             {
-                throw new EntityNotFoundException(ex.Message);
+                throw new BO.EntityNotFoundException(ex);
             }
             throw new IdNotExsitException("the id is negtive");
         }
@@ -125,11 +125,11 @@ namespace BlImplementation
                 }
                 catch(DO.AllreadyExistException ex)
                 {
-                    throw new EntityDetailsWrongException(ex.Message);
+                    throw new BO.AllreadyExistException(ex);
                 }
                 catch (DO.EntityNotFoundException ex)
                 {
-                    throw new AllreadyExistException(ex.Message);
+                    throw new BO.EntityNotFoundException(ex);
                 }
             }
             else
@@ -151,7 +151,7 @@ namespace BlImplementation
                 }
                  catch (DO.EntityNotFoundException ex)
                 {
-                    throw new EntityNotFoundException(ex.Message);
+                    throw new BO.EntityNotFoundException(ex);
                 }
             else
                 throw new ProductIsOnOrderException("product exsit in order");
@@ -180,15 +180,15 @@ namespace BlImplementation
                 }
                 catch (DO.EntityNotFoundException ex)
                 {
-                    throw new EntityNotFoundException(ex.Message);
+                    throw new BO.EntityNotFoundException(ex);
                 }
                 catch (DO.AllreadyExistException ex)
                 {
-                    throw new AllreadyExistException(ex.Message);
+                    throw new BO.AllreadyExistException(ex);
                 }
             }
             else
-                throw new EntityNotFoundException("product not exsit");
+                throw new BO.EntityDetailsWrongException("product not exsit");
         }
     }
 }

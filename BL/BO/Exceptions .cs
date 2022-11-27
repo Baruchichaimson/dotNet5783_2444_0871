@@ -9,12 +9,12 @@ namespace BO
     [Serializable]
     public class EntityNotFoundException : Exception
     {
-        public EntityNotFoundException(string messege) : base(messege) { }
+        public EntityNotFoundException(Exception inner, string messege = "") : base(messege , inner) { }
     }
     [Serializable]
     public class AllreadyExistException : Exception
     {
-        public AllreadyExistException(string messege) : base(messege) { }
+        public AllreadyExistException(Exception inner, string messege = "") : base(messege, inner) { }
     }
     [Serializable]
     public class NotEnoughInStockException : Exception
@@ -37,9 +37,9 @@ namespace BO
         public IncorrectAmountException(string messege) : base(messege) { }
     }
     [Serializable]
-    public class CartEmptyException : Exception
+    public class CartException : Exception
     {
-        public CartEmptyException(string messege) : base(messege) { }
+        public CartException(string messege) : base(messege) { }
     }
 
     [Serializable]

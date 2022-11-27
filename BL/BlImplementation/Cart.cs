@@ -73,7 +73,7 @@ namespace BlImplementation
                     throw new BO.IncorrectAmountException("not enough amount in stock");
                 }
             }
-            throw new BO.EntityNotFoundException("product not found");
+            throw new BO.EntityDetailsWrongException("product not found");
         }
         /// <summary>
         /// the function check that all the details on the order is 
@@ -84,11 +84,12 @@ namespace BlImplementation
         /// <exception cref="BO.EntityDetailsWrongException"> the exception say that we miss details in the order or myabe the email is not valid</exception>
         /// <exception cref="BO.EntityNotFoundException">is take the exception fron the data layer and say that </exception>
         /// <exception cref="BO.AllreadyExistException">throw exception when the id is all ready exsit </exception>
+        /// <exception cref="BO.CartException">throw exception when cart empty </exception>
         public void OrderConfirmation(BO.Cart cart)
         {
             if (cart.Items is null || cart.Items.Count == 0)
             {
-                throw new CartEmptyException("the cart is empty");
+                throw new BO.CartException("the cart is empty");
             }
             try
             {
@@ -136,11 +137,11 @@ namespace BlImplementation
             }
             catch (DO.EntityNotFoundException ex)
             {
-                throw new BO.EntityNotFoundException(ex.Message);
+                throw new BO.EntityNotFoundException(ex);
             }
             catch (DO.AllreadyExistException ex)
             {
-                throw new BO.AllreadyExistException(ex.Message);
+                throw new BO.AllreadyExistException(ex);
             }
         }
         /// <summary>
@@ -151,11 +152,13 @@ namespace BlImplementation
         /// <param name="newAmount"> the user put amount that he want to update in the order that we have in the basket shopping</param>
         /// <returns> return the basket shopping with new oder </returns>
         /// <exception cref="BO.EntityNotFoundException"> the exception say that the prouct we wanted to change is not exist in the basket shopping</exception>
+        /// <exception cref="BO.IncorrectAmountException">throw exeption when amount incorrect</exception>
+        /// <exception cref="BO.CartException">throw exeption when product not in cart</exception>
         public BO.Cart UpdateProductAmount(BO.Cart cart, int id, int newAmount)
         {
             if(cart.Items is null)
             {
-                throw new CartEmptyException("the cart is empty");
+                throw new CartException("the cart is empty");
             }
             foreach (BO.OrderItem item in cart.Items)
             {
@@ -185,7 +188,7 @@ namespace BlImplementation
                     return cart;
                 }
             }
-            throw new BO.EntityNotFoundException("the product is not exist in the cart");
+            throw new BO.CartException("the product is not exist in the cart");
         }
     }
 }
