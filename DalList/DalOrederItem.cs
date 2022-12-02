@@ -89,9 +89,9 @@ internal class DalOrederItem :IOrderItem
         throw new EntityNotFoundException("Order item");
     }
     /// A function that returns an array of the order items in the database
-    public IEnumerable<OrderItem> List()
+    public IEnumerable<OrderItem?> List(Func<OrderItem?, bool>? myFunc = null)
     {
-        var orderItemToPrint = new List<OrderItem>();
+        var orderItemToPrint = new List<OrderItem?>();
         foreach (OrderItem myOrderItem in DataSource.OrderItems)
         {
             orderItemToPrint.Add(myOrderItem);

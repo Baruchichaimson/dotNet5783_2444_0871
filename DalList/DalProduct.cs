@@ -64,9 +64,9 @@ internal class DalProduct : IProduct
     /// <summary>
     /// A function that returns an array of the products in the database
     /// <returns> the array with all the products.
-    public IEnumerable<Product> List()
+    public IEnumerable<Product?> List(Func<Product?, bool>? myFunc = null)
     {
-        var productToPrint = new List<Product>();
+        var productToPrint = new List<Product?>();
         foreach (Product myproduct in DataSource.Products)
         {
             productToPrint.Add(myproduct);

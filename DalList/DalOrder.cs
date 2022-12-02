@@ -57,12 +57,19 @@ internal class DalOrder : IOrder
         throw new EntityNotFoundException("order");
     }
     /// A function that returns an array of the orders in the database
-    public IEnumerable<Order> List()
+    public IEnumerable<Order?> List(Func<Order?, bool>? myFunc = null)
     {
-        var ordersToPrint = new List<Order>();
-        foreach (Order myOrder in DataSource.Orders)
+        var ordersToPrint = new List<Order?>();
+        if (myFunc is null)
         {
-            ordersToPrint.Add(myOrder);
+            foreach (Order myOrder in DataSource.Orders)
+            {
+                ordersToPrint.Add(myOrder); 
+            }
+        }
+        else
+        {
+            ordersToPrint = DataSource.Orders.Where(myFunc);
         }
         return ordersToPrint;
     }
