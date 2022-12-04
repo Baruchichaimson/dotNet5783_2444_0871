@@ -19,7 +19,7 @@ namespace BO
         /// <summary>
         /// the product name
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
         /// <summary>
         /// product id in the order
         /// </summary>

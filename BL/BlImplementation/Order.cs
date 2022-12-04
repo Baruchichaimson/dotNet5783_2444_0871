@@ -45,7 +45,7 @@ namespace BlImplementation
         private List<OrderItem> GiveList(DO.Order idOrder)
         {
             List<OrderItem> list = new List<OrderItem>();
-            foreach (DO.OrderItem item in Dal.OrderItem.OrderItemsListByOrder(idOrder.Id))
+            foreach (DO.OrderItem item in Dal.OrderItem.List(element => element!.Value.OredrID == idOrder.Id))
             {
                 OrderItem dataItem = new()
                 {
@@ -85,7 +85,7 @@ namespace BlImplementation
             {
                 int totalAmount = 0;
                 double totalPrice = 0;
-                foreach (DO.OrderItem it in Dal.OrderItem.OrderItemsListByOrder(item.Id))
+                foreach (DO.OrderItem it in Dal.OrderItem.List(element => element.Value.Id == item.Id))
                 {
                     totalPrice += it.Price * it.Amount;
                     totalAmount++;
@@ -112,7 +112,7 @@ namespace BlImplementation
         public BO.Order GetData(int id)
         {
             double totalPrice = 0;
-            foreach (DO.OrderItem it in Dal.OrderItem.OrderItemsListByOrder(id))
+            foreach (DO.OrderItem it in Dal.OrderItem.List(element => element.Value.Id == id))
             {
                 totalPrice += it.Price * it.Amount;
             }
@@ -209,12 +209,12 @@ namespace BlImplementation
             {
                 DO.Order order = Dal.Order.Get(id);
                 List<string> templist = new();
-                templist.Add(GiveOrderDate(order.OrderDate, "created"));
+                templist.Add(GiveOrderDate(order.OrderDate!.Value, "created"));
                 if (order.ShipDate != DateTime.MinValue)
                 {
-                    templist.Add(GiveOrderDate(order.ShipDate, "shipped"));
+                    templist.Add(GiveOrderDate(order.ShipDate!.Value, "shipped"));
                     if (order.DeliveryrDate != DateTime.MinValue)
-                        templist.Add(GiveOrderDate(order.DeliveryrDate, "deliverd"));
+                        templist.Add(GiveOrderDate(order.DeliveryrDate!.Value, "deliverd"));
                 }
                 OrderTracking tracking = new()
                 {
@@ -252,7 +252,7 @@ namespace BlImplementation
                 int id = 0;
                 if (Dal.Order.Get(orderId).ShipDate == DateTime.MinValue)
                 {
-                    foreach (DO.OrderItem orderItems in Dal.OrderItem.OrderItemsListByOrder(orderId))
+                    foreach (DO.OrderItem orderItems in Dal.OrderItem.List(element => element.Value.OredrID == orderId))
                     {
                         if (productId == orderItems.ProductID)
                         {

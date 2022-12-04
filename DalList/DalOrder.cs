@@ -1,6 +1,7 @@
 ﻿
 using DO;
 using DalApi;
+using System.Linq;
 //using System.Security.Principal;
 namespace Dal;
 
@@ -45,9 +46,9 @@ internal class DalOrder : IOrder
         throw new EntityNotFoundException("order");
     }
     /// A function that returns an order by id
-    public Order Get(int idToGet)
+    public Order? Get(int idToGet)
     {
-        foreach(Order myOrder in DataSource.Orders)
+        foreach(Order? myOrder in DataSource.Orders)
         {
             if (idToGet == myOrder.Id)
             {
@@ -59,18 +60,17 @@ internal class DalOrder : IOrder
     /// A function that returns an array of the orders in the database
     public IEnumerable<Order?> List(Func<Order?, bool>? myFunc = null)
     {
-        var ordersToPrint = new List<Order?>();
-        if (myFunc is null)
-        {
-            foreach (Order myOrder in DataSource.Orders)
-            {
-                ordersToPrint.Add(myOrder); 
-            }
-        }
+       bool flag = myFunc is null;
+        if (flag)
+            return DataSource.Orders.Select(order => order);
         else
-        {
-            ordersToPrint = DataSource.Orders.Where(myFunc);
-        }
-        return ordersToPrint;
+            return DataSource.Orders.Where(myFunc); 
+    }
+    public Order? GetElement(Func<Order?, bool>? myFunc)
+    {
+        Order? order = DataSource.Orders.FirstOrDefault(myFunc);
+        if (order == null)
+            throw new EntityNotFoundException("order");
+        return order;
     }
 }

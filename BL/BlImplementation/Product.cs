@@ -82,11 +82,11 @@ namespace BlImplementation
                         Name = product.Name,
                         Price = product.Price,
                         InStock = product.Instock > 0,
-                        Category = (BO.CoffeeShop)product.Categoryname
+                        Category = (BO.CoffeeShop)product.Categoryname!
                     };
                     if (cart.Items is not null)
                     {
-                        OrderItem orderItem = cart.Items.Find(orderItem => orderItem.ProductID == id);
+                        OrderItem orderItem = cart.Items.Find(orderItem => orderItem.ProductID == id)!;
                         if (orderItem is not null)
                         {
                             newProductItem.Amount = orderItem.Amount;
@@ -143,7 +143,7 @@ namespace BlImplementation
         /// <exception cref="ProductIsOnOrderException">It is not possible to delete a product that exists in one of the orders</exception>
         public void Delete(int id)
         {
-            bool exsit = Dal.OrderItem.List().Any(x => x.ProductID == id);
+            bool exsit = Dal.OrderItem.List().Any(x => x!.Value.ProductID == id);
             if (!exsit)
                 try
                 {

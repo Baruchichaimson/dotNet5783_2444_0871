@@ -259,14 +259,14 @@ internal class Program
                         int.TryParse(Console.ReadLine(), out int orderId);
                         Console.WriteLine("Enter product ID: ");
                         int.TryParse(Console.ReadLine(), out int productId);
-                        Console.WriteLine(dallist.OrderItem.GetOrderItemByOrderAndProductId(orderId, productId));///go to this function
+                        Console.WriteLine(dallist.OrderItem.List(element => element!.Value.OredrID == orderId && element.Value.ProductID == productId));///go to this function
                     }
                     break;
                 case (int)User.ITEM_BY_ORDER_ID: ///give order item by id number of the order item.
                     {
                         Console.WriteLine("Enter order ID: ");
                         int.TryParse(Console.ReadLine(), out int orderID);
-                        foreach (OrderItem myOrderItem in dallist.OrderItem.OrderItemsListByOrder(orderID))
+                        foreach (OrderItem myOrderItem in dallist.OrderItem.List(element => element!.Value.OredrID == orderID))
                         {
                             Console.WriteLine(myOrderItem);
                         }

@@ -1,6 +1,8 @@
 ﻿using DO;
 using DalApi;
 using System.Drawing;
+using System.Linq;
+
 namespace Dal;
 
 /// class for Manage The order item database
@@ -35,11 +37,11 @@ internal class DalOrederItem :IOrderItem
         if (!orderExist)
             throw new EntityNotFoundException("order"); 
 
-        IEnumerator<OrderItem> iter = OrderItemsListByOrder(newOrderItem.OredrID).GetEnumerator();
+        IEnumerator<OrderItem?> iter = List(element => element!.Value.OredrID == newOrderItem.OredrID).GetEnumerator();
 
         while (iter.MoveNext()){ 
 
-            if (iter.Current.ProductID == newOrderItem.ProductID)
+            if (iter.Current!.Value.ProductID == newOrderItem.ProductID)
                 throw new AllreadyExistException("product");
         };
 
@@ -77,9 +79,9 @@ internal class DalOrederItem :IOrderItem
         throw new EntityNotFoundException("Order item");
     }
     /// A function that returns an order item by id
-    public OrderItem Get(int idToGet)
+    public OrderItem? Get(int idToGet)
     {
-        foreach (OrderItem myOrderItem in DataSource.OrderItems)
+        foreach (OrderItem? myOrderItem in DataSource.OrderItems)
         {
             if (idToGet == myOrderItem.Id)
             {
@@ -91,37 +93,42 @@ internal class DalOrederItem :IOrderItem
     /// A function that returns an array of the order items in the database
     public IEnumerable<OrderItem?> List(Func<OrderItem?, bool>? myFunc = null)
     {
-        var orderItemToPrint = new List<OrderItem?>();
-        foreach (OrderItem myOrderItem in DataSource.OrderItems)
-        {
-            orderItemToPrint.Add(myOrderItem);
-
-        }
-        return orderItemToPrint;
+        bool flag = myFunc is null;
+        if (flag)
+            return DataSource.OrderItems.Select(orderItems => orderItems);
+        else
+            return DataSource.OrderItems.Where(myFunc);
+    }
+    public OrderItem? GetElement(Func<OrderItem?, bool>? myFunc)
+    {
+        OrderItem? orderItem = DataSource.OrderItems.FirstOrDefault(myFunc);
+        if (orderItem == null)
+            throw new EntityNotFoundException("order item");
+        return orderItem;
     }
     ///A function that returns an order item by prodact and order id;
-    public OrderItem GetOrderItemByOrderAndProductId(int orderId, int productId)
-    {
-        foreach (OrderItem myOrderItem in DataSource.OrderItems)
-        {
-            if (orderId == myOrderItem.OredrID && productId == myOrderItem.ProductID)
-            {
-                return myOrderItem;
-            }
-        }
-        throw new EntityNotFoundException("Order item");
-    }
-    /// A function that returns an array of the order items by order id
-    public IEnumerable<OrderItem> OrderItemsListByOrder(int orderId)
-    {
-        var orderItemToPrint = new List<OrderItem>();
-        foreach (OrderItem myOrderItem in DataSource.OrderItems)
-        {
-            if (orderId == myOrderItem.OredrID)
-            {
-                orderItemToPrint.Add(myOrderItem);   
-            }
-        }
-        return orderItemToPrint;
-    }
+    //public OrderItem GetOrderItemByOrderAndProductId(int orderId, int productId)
+    //{
+    //    foreach (OrderItem myOrderItem in DataSource.OrderItems)
+    //    {
+    //        if (orderId == myOrderItem.OredrID && productId == myOrderItem.ProductID)
+    //        {
+    //            return myOrderItem;
+    //        }
+    //    }
+    //    throw new EntityNotFoundException("Order item");
+    //}
+    ///// A function that returns an array of the order items by order id
+    //public IEnumerable<OrderItem> OrderItemsListByOrder(int orderId)
+    //{
+    //    var orderItemToPrint = new List<OrderItem>();
+    //    foreach (OrderItem myOrderItem in DataSource.OrderItems)
+    //    {
+    //        if (orderId == myOrderItem.OredrID)
+    //        {
+    //            orderItemToPrint.Add(myOrderItem);   
+    //        }
+    //    }
+    //    return orderItemToPrint;
+    //}
 }

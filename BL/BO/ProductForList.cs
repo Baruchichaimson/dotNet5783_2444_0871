@@ -19,7 +19,7 @@ namespace BO
         /// <summary>
         ///  product name
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
         /// <summary>
         ///  product price
         /// </summary>
@@ -27,7 +27,7 @@ namespace BO
         /// <summary>
         /// enum of product category
         /// </summary>
-        public CoffeeShop Category { get; set; }
+        public CoffeeShop? Category { get; set; }
         public override string ToString() => $@"
         ID : {ID}
         Name: {Name}

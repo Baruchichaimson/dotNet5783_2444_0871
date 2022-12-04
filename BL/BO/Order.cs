@@ -18,35 +18,35 @@ namespace BO
         /// <summary>
         /// customer name in the order
         /// </summary>
-        public string CustomerName { get; set; }
+        public string? CustomerName { get; set; }
         /// <summary>
         /// customer email in the order
         /// </summary>
-        public string CustomerEmail { get; set; }
+        public string? CustomerEmail { get; set; }
         /// <summary>
         /// customer address in the order
         /// </summary>
-        public string CustomerAdress { get; set; }
+        public string? CustomerAdress { get; set; }
         /// <summary>
         /// bring the status of the order.
         /// </summary>
-        public OrderStatus Status { get; set; }
+        public OrderStatus? Status { get; set; }
         /// <summary>
         /// show when the order is created
         /// </summary>
-        public DateTime OrderDate { get; set; }
+        public DateTime? OrderDate { get; set; }
         /// <summary>
         /// show when the order is shipped
         /// </summary>
-        public DateTime ShipDate { get; set; }
+        public DateTime? ShipDate { get; set; }
         /// <summary>
         /// show when the order is dilverd
         /// </summary>
-        public DateTime DeliveryrDate { get; set; }
+        public DateTime? DeliveryrDate { get; set; }
         /// <summary>
         /// to put in list the all order items.
         /// </summary>
-        public List<OrderItem> Items { get; set; }
+        public List<OrderItem?> Items { get; set; }
         /// <summary>
         /// bring the total price od the order with all the order item he have.
         /// </summary>

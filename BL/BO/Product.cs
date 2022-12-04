@@ -16,7 +16,7 @@ namespace BO
         /// <summary>
         /// prodact name
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
         /// <summary>
         /// priduct price
         /// </summary>
@@ -24,7 +24,7 @@ namespace BO
         /// <summary>
         /// enum of product category
         /// </summary>
-        public CoffeeShop Category { get; set; }
+        public CoffeeShop? Category { get; set; }
         /// <summary>
         /// How many in stock
         /// </summary>

@@ -1,6 +1,8 @@
 ﻿using DalApi;
 using DO;
+using Google.Api.Ads.AdWords.v201809;
 using System;
+using System.Linq;
 
 namespace Dal;
 
@@ -52,25 +54,29 @@ internal class DalProduct : IProduct
     /// <param name="idToGet"> its id we got from the user </param>
     /// <returns> return my product with this id </returns>
     /// <exception cref="EntityNotFoundException"></exception>
-    public Product Get(int idToGet)
+    public Product? Get(int idToGet)
     {
-        foreach (Product myproduct in DataSource.Products)
-        {
-            if (idToGet == myproduct.Id)
-                return myproduct;
-        }
-        throw new EntityNotFoundException("product");
+        Product? product = GetElement(product => product!.Value.Id == idToGet);
+        if(product == null)
+             throw new EntityNotFoundException("product");
+        return product;
     }
     /// <summary>
     /// A function that returns an array of the products in the database
     /// <returns> the array with all the products.
     public IEnumerable<Product?> List(Func<Product?, bool>? myFunc = null)
     {
-        var productToPrint = new List<Product?>();
-        foreach (Product myproduct in DataSource.Products)
-        {
-            productToPrint.Add(myproduct);
-        }
-        return productToPrint;
+        bool flag = myFunc is null;
+        if (flag)
+            return DataSource.Products.Select(Product => Product);
+        else
+            return DataSource.Products.Where(myFunc);
+    }
+    public Product? GetElement(Func<Product?, bool>? myFunc )
+    {
+        Product? product =  DataSource.Products.FirstOrDefault(myFunc);
+        if (product == null)
+            throw new EntityNotFoundException("product");
+        return product;
     }
 }

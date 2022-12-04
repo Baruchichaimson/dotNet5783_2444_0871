@@ -33,7 +33,7 @@ namespace BlImplementation
             {
                 cart.Items = new();
             }
-            prodactExistInCart = cart.Items.Any(x => x.ProductID == id);
+            prodactExistInCart = cart.Items.Any(x => x!.ProductID == id);
 
             foreach (DO.Product product in Dal.Product.List())
             {
@@ -43,7 +43,7 @@ namespace BlImplementation
                     {
                         if (!prodactExistInCart || cart.Items is null)
                         {
-                            cart.Items.Add(new BO.OrderItem()
+                            cart.Items!.Add(new BO.OrderItem()
                             {
                                 ProductID = product.Id,
                                 Name = product.Name,
