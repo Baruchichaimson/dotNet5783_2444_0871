@@ -30,9 +30,9 @@ internal static class DataSource
     /// <returns></returns>
     private static bool check(int id)
     {
-        foreach (Product myproduct in Products)
+        foreach (Product? myproduct in Products)
         {
-            if (id == myproduct.Id)
+            if (id == myproduct!.Value.Id)
                 return false;
         }
         return true;

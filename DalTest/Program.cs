@@ -233,7 +233,7 @@ internal class Program
                         Console.WriteLine("Enter the amount: ");
                         int.TryParse(Console.ReadLine(), out  int amount);
                         newOrderItem.Amount= amount;
-                        newOrderItem.Price = dallist.OrderItem.Get(newOrderItem.ProductID).Price;
+                        newOrderItem.Price = dallist.OrderItem.Get(newOrderItem.ProductID)!.Value.Price;
                         dallist.OrderItem.Update(newOrderItem); ///go to the function that check if the id is exist update the store.
                         Console.WriteLine("the orderItem has been sccessfully update ");
                     }

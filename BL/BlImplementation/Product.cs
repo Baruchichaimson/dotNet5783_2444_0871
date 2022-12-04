@@ -43,14 +43,14 @@ namespace BlImplementation
             {
                 try
                 {
-                    DO.Product product = Dal.Product.Get(id);
+                    DO.Product product = Dal.Product.Get(id)!.Value;
                     BO.Product newProduct = new()
                     {
                         ID = product.Id,
                         Name = product.Name,
                         Price = product.Price,
                         InStock = product.Instock,
-                        Category = (BO.CoffeeShop)product.Categoryname
+                        Category = (BO.CoffeeShop)product.Categoryname!
                     };
                     return newProduct;
                 }
@@ -75,7 +75,7 @@ namespace BlImplementation
             {
                 if (id > 0)
                 {
-                    DO.Product product = Dal.Product.Get(id);
+                    DO.Product product = Dal.Product.Get(id)!.Value;
                     ProductItem newProductItem = new()
                     {
                         ID = product.Id,
@@ -86,7 +86,7 @@ namespace BlImplementation
                     };
                     if (cart.Items is not null)
                     {
-                        OrderItem orderItem = cart.Items.Find(orderItem => orderItem.ProductID == id)!;
+                        OrderItem orderItem = cart.Items.Find(orderItem => orderItem!.ProductID == id)!;
                         if (orderItem is not null)
                         {
                             newProductItem.Amount = orderItem.Amount;
@@ -117,7 +117,7 @@ namespace BlImplementation
                     Name = product.Name,
                     Price = product.Price,
                     Instock = product.InStock,
-                    Categoryname = (DO.CoffeeShop)product.Category
+                    Categoryname = (DO.CoffeeShop)product.Category!
                 };
                 try
                 {
@@ -143,16 +143,17 @@ namespace BlImplementation
         /// <exception cref="ProductIsOnOrderException">It is not possible to delete a product that exists in one of the orders</exception>
         public void Delete(int id)
         {
-            bool exsit = Dal.OrderItem.List().Any(x => x!.Value.ProductID == id);
-            if (!exsit)
+            if (!Dal.OrderItem.List().Any(x => x!.Value.ProductID == id))
+            {
                 try
                 {
                     Dal.Product.Delete(id);
                 }
-                 catch (DO.EntityNotFoundException ex)
+                catch (DO.EntityNotFoundException ex)
                 {
                     throw new BO.EntityNotFoundException(ex);
                 }
+            }
             else
                 throw new ProductIsOnOrderException("product exsit in order");
         }
@@ -172,7 +173,7 @@ namespace BlImplementation
                     Name = product.Name,
                     Price = product.Price,
                     Instock = product.InStock,
-                    Categoryname = (DO.CoffeeShop)product.Category
+                    Categoryname = (DO.CoffeeShop)product.Category!
                 };
                 try
                 {

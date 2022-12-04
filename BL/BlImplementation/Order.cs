@@ -25,9 +25,9 @@ namespace BlImplementation
         private OrderStatus Status(DO.Order item)
         {
             OrderStatus currentStatus = new OrderStatus();
-            if (item.DeliveryrDate == DateTime.MinValue)
+            if (item.DeliveryrDate is null)
             {
-                if (item.ShipDate == DateTime.MinValue)
+                if (item.ShipDate is null)
                     currentStatus = OrderStatus.CONFIRMED;
                 else
                     currentStatus = OrderStatus.SHIPPED;
@@ -42,9 +42,9 @@ namespace BlImplementation
         /// </summary>
         /// <param name="idOrder">order id from data layer</param>
         /// <returns>A list of orderItem of the logical layer</returns>
-        private List<OrderItem> GiveList(DO.Order idOrder)
+        private List<OrderItem?>? GiveList(DO.Order idOrder)
         {
-            List<OrderItem> list = new List<OrderItem>();
+            List<OrderItem?>? list = new List<OrderItem?>();
             foreach (DO.OrderItem item in Dal.OrderItem.List(element => element!.Value.OredrID == idOrder.Id))
             {
                 OrderItem dataItem = new()
@@ -54,7 +54,7 @@ namespace BlImplementation
                     Price = item.Price,
                     Amount = item.Amount,
                     TotalPrice = item.Price * item.Amount,
-                    Name = Dal.Product.Get(item.ProductID).Name
+                    Name = Dal.Product.Get(item.ProductID)!.Value.Name
                 };
                 list.Add(dataItem);
             }
@@ -112,7 +112,7 @@ namespace BlImplementation
         public BO.Order GetData(int id)
         {
             double totalPrice = 0;
-            foreach (DO.OrderItem it in Dal.OrderItem.List(element => element.Value.Id == id))
+            foreach (DO.OrderItem it in Dal.OrderItem.List(element => element!.Value.Id == id))
             {
                 totalPrice += it.Price * it.Amount;
             }
@@ -120,7 +120,7 @@ namespace BlImplementation
             {
                 try
                 {
-                    DO.Order dataOrder = Dal.Order.Get(id);
+                    DO.Order dataOrder = Dal.Order.Get(id)!.Value;
                     BO.Order order = new()
                     {
                         ID = id,
@@ -153,10 +153,10 @@ namespace BlImplementation
         {
             try
             {
-                if (Dal.Order.Get(id).ShipDate == DateTime.MinValue)
+                if (Dal.Order.Get(id)!.Value.ShipDate is null)
             {
                
-                    DO.Order updateOrders = Dal.Order.Get(id);
+                    DO.Order updateOrders = Dal.Order.Get(id)!.Value;
                     updateOrders.ShipDate = DateTime.Now;
                     Dal.Order.Update(updateOrders);
                     BO.Order updorder = GetData(id);
@@ -181,9 +181,9 @@ namespace BlImplementation
         {
             try
             {
-                if (Dal.Order.Get(id).ShipDate != DateTime.MinValue && Dal.Order.Get(id).DeliveryrDate == DateTime.MinValue)
+                if (Dal.Order.Get(id)!.Value.ShipDate is not null && Dal.Order.Get(id)!.Value.DeliveryrDate is null)
                 {
-                    DO.Order updateOrdersData = Dal.Order.Get(id);
+                    DO.Order updateOrdersData = Dal.Order.Get(id)!.Value;
                     updateOrdersData.DeliveryrDate = DateTime.Now;
                     Dal.Order.Update(updateOrdersData);
                     BO.Order updateOrderLogic = GetData(id);
@@ -207,8 +207,8 @@ namespace BlImplementation
         {
             try
             {
-                DO.Order order = Dal.Order.Get(id);
-                List<string> templist = new();
+                DO.Order order = Dal.Order.Get(id)!.Value;
+                List<string?> templist = new();
                 templist.Add(GiveOrderDate(order.OrderDate!.Value, "created"));
                 if (order.ShipDate != DateTime.MinValue)
                 {
@@ -246,13 +246,13 @@ namespace BlImplementation
         {
             try
             {
-                DO.Product product = Dal.Product.Get(productId);
+                DO.Product product = Dal.Product.Get(productId)!.Value;
                 if (amount > product.Instock)
                     throw new BO.IncorrectAmountException("Not enough amount in stock");
                 int id = 0;
-                if (Dal.Order.Get(orderId).ShipDate == DateTime.MinValue)
+                if (Dal.Order.Get(orderId)!.Value.ShipDate is null)
                 {
-                    foreach (DO.OrderItem orderItems in Dal.OrderItem.List(element => element.Value.OredrID == orderId))
+                    foreach (DO.OrderItem orderItems in Dal.OrderItem.List(element => element!.Value.OredrID == orderId))
                     {
                         if (productId == orderItems.ProductID)
                         {
@@ -278,7 +278,7 @@ namespace BlImplementation
                     }
                     else
                     {
-                        DO.OrderItem item = Dal.OrderItem.Get(id);
+                        DO.OrderItem item = Dal.OrderItem.Get(id)!.Value;
                         if (item.Amount + amount >= 0)
                             item.Amount += amount;
                         else

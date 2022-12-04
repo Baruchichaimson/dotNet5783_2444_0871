@@ -7,9 +7,5 @@ using System.Threading.Tasks;
 
 namespace DalApi
 {
-    public interface IOrderItem : ICrud<OrderItem>
-    {
-       // public OrderItem GetOrderItemByOrderAndProductId(int orderId, int productId);
-       // public IEnumerable<OrderItem> OrderItemsListByOrder(int orderId);
-    }
+    public interface IOrderItem : ICrud<OrderItem> { }
 }

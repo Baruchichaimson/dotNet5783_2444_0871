@@ -28,52 +28,48 @@ namespace BlImplementation
         /// <exception cref="BO.EntityNotFoundException"> the id product is not correct and we can't search this product in the stock </exception>
         public BO.Cart AddProduct(BO.Cart cart, int id)
         {
-            bool prodactExistInCart = false;
+            
             if (cart.Items is null)
             {
                 cart.Items = new();
             }
-            prodactExistInCart = cart.Items.Any(x => x!.ProductID == id);
+            bool prodactExistInCart  = cart.Items.Exists(x => x!.ProductID == id);
+            DO.Product? product = Dal.Product.GetElement(element => element!.Value.Id == id);
 
-            foreach (DO.Product product in Dal.Product.List())
+            if (product!.Value.Instock > 0)
             {
-                if (product.Id == id)
+                if (!prodactExistInCart || cart.Items is null)
                 {
-                    if (product.Instock > 0)
+                    cart.Items!.Add(new BO.OrderItem()
                     {
-                        if (!prodactExistInCart || cart.Items is null)
-                        {
-                            cart.Items!.Add(new BO.OrderItem()
-                            {
-                                ProductID = product.Id,
-                                Name = product.Name,
-                                Price = product.Price,
-                                Amount = 1,
-                                TotalPrice = product.Price
-                            });
-                        }
-                        else
-                        {
-                            foreach (BO.OrderItem orderItem in cart.Items)
-                            {
-                                if (orderItem.ProductID == id)
-                                {
-                                    orderItem.Amount++;
-                                    orderItem.TotalPrice += product.Price;
-                                    break;
-                                }
-                            }
-                        }
-                        if (cart.TotalPrice > 0)
-                            cart.TotalPrice += product.Price;
-                        else
-                            cart.TotalPrice = product.Price;
-                        return cart;
-                    }
-                    throw new BO.IncorrectAmountException("not enough amount in stock");
+                        ProductID = product.Value.Id,
+                        Name = product.Value.Name,
+                        Price = product.Value.Price,
+                        Amount = 1,
+                        TotalPrice = product.Value.Price
+                    });
                 }
+                else
+                {
+                    foreach (BO.OrderItem? orderItem in cart.Items)
+                    {
+                        if (orderItem!.ProductID == id)
+                        {
+                            orderItem!.Amount++;
+                            orderItem.TotalPrice += product.Value.Price;
+                            break;
+                        }
+                    }
+                }
+                if (cart.TotalPrice > 0)
+                    cart.TotalPrice += product.Value.Price;
+                else
+                    cart.TotalPrice = product.Value.Price;
+                return cart;
+
             }
-            throw new BO.EntityDetailsWrongException("product not found");
+            throw new BO.IncorrectAmountException("not enough amount in stock");
+                
         }
         /// <summary>
         /// the function check that all the details on the order is 
@@ -96,9 +92,9 @@ namespace BlImplementation
                 foreach (BO.OrderItem orderItem in cart.Items)
                 {
 
-                    DO.Product product = Dal.Product.Get(orderItem.ProductID);
+                    DO.Product? product = Dal.Product.Get(orderItem!.ProductID);
 
-                    if (orderItem.Amount > product.Instock || orderItem.Amount <= 0)
+                    if (orderItem.Amount > product!.Value.Instock || orderItem.Amount <= 0)
                     {
                         throw new BO.IncorrectAmountException("not enough amount in stock");
                     }
@@ -130,7 +126,7 @@ namespace BlImplementation
                         OredrID = idOrder
                     };
                     Dal.OrderItem.Add(orderItem);
-                    DO.Product product = Dal.Product.Get(item.ProductID);
+                    DO.Product product = Dal.Product.Get(item.ProductID)!.Value;
                     product.Instock -= item.Amount;
                     Dal.Product.Update(product);
                 }
@@ -162,7 +158,7 @@ namespace BlImplementation
             }
             foreach (BO.OrderItem item in cart.Items)
             {
-                if (item.ProductID == id)
+                if (item!.ProductID == id)
                 {
                     if (newAmount == 0)
                     {

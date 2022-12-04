@@ -248,7 +248,7 @@ internal class Program
                 case (int)UserCart.ORDER_CONFIRMATION:
                     {
                         Console.WriteLine("enter name:");
-                        string input = Console.ReadLine();
+                        string? input = Console.ReadLine();
                         cart.CustomerName = input;
                         Console.WriteLine("enter address:");
                         input = Console.ReadLine();
@@ -298,11 +298,11 @@ internal class Program
             }
             catch (EntityNotFoundException ex)
             {
-                Console.WriteLine(ex.InnerException.Message);
+                Console.WriteLine(ex.InnerException!.Message);
             }
             catch (AllreadyExistException ex)
             {
-                Console.WriteLine(ex.InnerException.Message);
+                Console.WriteLine(ex.InnerException!.Message);
             }
             catch (NotEnoughInStockException ex)
             {

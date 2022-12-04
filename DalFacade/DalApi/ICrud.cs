@@ -15,6 +15,6 @@ namespace DalApi
         public void Update(T newEntity);
         public T? Get(int idToGet);
         public IEnumerable<T?> List(Func<T?, bool>? myFunc = null);
-        public T? GetElement(Func<T?, bool>? myFunc = null);
+        public T? GetElement(Func<T?, bool>? myFunc);
     }
 }

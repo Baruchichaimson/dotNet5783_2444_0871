@@ -12,41 +12,23 @@ internal class DalProduct : IProduct
     /// Function to add a new product
     public int Add(Product newProduct)
     {
-        foreach (Product myproduct in DataSource.Products)
-        {
-            if (newProduct.Id == myproduct.Id)
-                throw new AllreadyExistException("Product");
-        }
-            DataSource.Products.Add(newProduct);
+        if (DataSource.Products.Exists(element => element!.Value.Id == newProduct.Id))
+            throw new AllreadyExistException("product");
+        DataSource.Products.Add(newProduct);
         return newProduct.Id;
     }
-
     ///Function to delete a product
     public void Delete(int idToDelete)
     {
-        foreach (Product myproduct in DataSource.Products)
-        {
-            if (idToDelete == myproduct.Id)
-            {
-                DataSource.Products.Remove(myproduct);
-                return; 
-            }
-        }
-        throw new EntityNotFoundException("product");
+        Product? product = GetElement(element => element!.Value.Id == idToDelete);
+        DataSource.Products.Remove(product);
     }
     /// Function to update a product
     public void Update(Product newProduct)
     {
-        foreach (Product myproduct in DataSource.Products)
-        {
-            if (newProduct.Id == myproduct.Id)
-            {
-                DataSource.Products.Remove(myproduct);
-                DataSource.Products.Add(newProduct);
-                return;
-            }
-        }
-        throw new EntityNotFoundException("product");
+        Product? product = GetElement(element => element!.Value.Id == newProduct.Id);
+        DataSource.Products.Remove(product);
+        DataSource.Products.Add(newProduct);
     }
     /// <summary>
     /// A function that returns a product by id
@@ -72,8 +54,13 @@ internal class DalProduct : IProduct
         else
             return DataSource.Products.Where(myFunc);
     }
-    public Product? GetElement(Func<Product?, bool>? myFunc )
+
+    public Product? GetElement(Func<Product?, bool>? myFunc)
     {
+        if (myFunc is null)
+        {
+            throw new EntityNotFoundException("product");
+        }
         Product? product =  DataSource.Products.FirstOrDefault(myFunc);
         if (product == null)
             throw new EntityNotFoundException("product");

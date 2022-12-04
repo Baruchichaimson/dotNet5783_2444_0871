@@ -22,7 +22,7 @@ namespace BO
         /// <summary>
         /// List of strings with tracking dates by progress
         /// </summary>
-        public List<string?> orderDetails { get; set; }
+        public List<string?>? orderDetails { get; set; }
         public override string ToString() => $@"
         ID: {ID}
         Status: {Status}
