@@ -208,7 +208,7 @@ internal class Program
                         Console.WriteLine("Enter the amount: ");
                         int.TryParse(Console.ReadLine(), out int amount);
                         newOrderItem.Amount = amount;
-                        newOrderItem.Price = dallist.OrderItem.Get(newOrderItem.ProductID).Price;
+                        newOrderItem.Price = dallist.OrderItem.Get(newOrderItem.ProductID)?.Price ?? throw new Exception() ;
                         dallist.OrderItem.Add(newOrderItem); /// go to the function that add order item to array of order items.
                         Console.WriteLine("the orderItem has been succsefully added ");
                     }
@@ -233,7 +233,7 @@ internal class Program
                         Console.WriteLine("Enter the amount: ");
                         int.TryParse(Console.ReadLine(), out  int amount);
                         newOrderItem.Amount= amount;
-                        newOrderItem.Price = dallist.OrderItem.Get(newOrderItem.ProductID)!.Value.Price;
+                        newOrderItem.Price = dallist.OrderItem.Get(newOrderItem.ProductID)?.Price?? throw new Exception();
                         dallist.OrderItem.Update(newOrderItem); ///go to the function that check if the id is exist update the store.
                         Console.WriteLine("the orderItem has been sccessfully update ");
                     }
@@ -259,14 +259,14 @@ internal class Program
                         int.TryParse(Console.ReadLine(), out int orderId);
                         Console.WriteLine("Enter product ID: ");
                         int.TryParse(Console.ReadLine(), out int productId);
-                        Console.WriteLine(dallist.OrderItem.List(element => element!.Value.OredrID == orderId && element.Value.ProductID == productId));///go to this function
+                        Console.WriteLine(dallist.OrderItem.List(element => element?.OredrID == orderId && element?.ProductID == productId));///go to this function
                     }
                     break;
                 case (int)User.ITEM_BY_ORDER_ID: ///give order item by id number of the order item.
                     {
                         Console.WriteLine("Enter order ID: ");
                         int.TryParse(Console.ReadLine(), out int orderID);
-                        foreach (OrderItem myOrderItem in dallist.OrderItem.List(element => element!.Value.OredrID == orderID))
+                        foreach (OrderItem myOrderItem in dallist.OrderItem.List(element => element?.OredrID == orderID))
                         {
                             Console.WriteLine(myOrderItem);
                         }

@@ -12,7 +12,7 @@ internal class DalProduct : IProduct
     /// Function to add a new product
     public int Add(Product newProduct)
     {
-        if (DataSource.Products.Exists(element => element!.Value.Id == newProduct.Id))
+        if (DataSource.Products.Exists(element => element?.Id == newProduct.Id))
             throw new AllreadyExistException("product");
         DataSource.Products.Add(newProduct);
         return newProduct.Id;
@@ -20,13 +20,13 @@ internal class DalProduct : IProduct
     ///Function to delete a product
     public void Delete(int idToDelete)
     {
-        Product? product = GetElement(element => element!.Value.Id == idToDelete);
+        Product? product = GetElement(element => element?.Id == idToDelete);
         DataSource.Products.Remove(product);
     }
     /// Function to update a product
     public void Update(Product newProduct)
     {
-        Product? product = GetElement(element => element!.Value.Id == newProduct.Id);
+        Product? product = GetElement(element => element?.Id == newProduct.Id);
         DataSource.Products.Remove(product);
         DataSource.Products.Add(newProduct);
     }
@@ -38,7 +38,7 @@ internal class DalProduct : IProduct
     /// <exception cref="EntityNotFoundException"></exception>
     public Product? Get(int idToGet)
     {
-        Product? product = GetElement(product => product!.Value.Id == idToGet);
+        Product? product = GetElement(product => product?.Id == idToGet);
         if(product == null)
              throw new EntityNotFoundException("product");
         return product;

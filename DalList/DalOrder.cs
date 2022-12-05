@@ -18,18 +18,18 @@ internal class DalOrder : IOrder
     ///Function to delete an order
     public void Delete(int idToDelete)
     { 
-        DataSource.Orders.Remove(GetElement(element => element.Value.Id == idToDelete));
+        DataSource.Orders.Remove(GetElement(element => element?.Id == idToDelete));
     }
     ///Function to update an order
     public void Update(Order newOrder)
     {     
-        DataSource.Orders.Remove(GetElement(element => element.Value.Id == newOrder.Id));
+        DataSource.Orders.Remove(GetElement(element => element?.Id == newOrder.Id));
         DataSource.Orders.Add(newOrder);
     }
     /// A function that returns an order by id
     public Order? Get(int idToGet)
     {
-        return GetElement(element => element!.Value.Id == idToGet);
+        return GetElement(element => element?.Id == idToGet);
     }
     /// A function that returns an array of the orders in the database
     public IEnumerable<Order?> List(Func<Order?, bool>? myFunc = null)

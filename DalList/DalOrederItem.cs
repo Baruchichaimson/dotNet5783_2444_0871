@@ -13,12 +13,12 @@ internal class DalOrederItem :IOrderItem
     public int Add(OrderItem newOrderItem)
     {
         ///Checking if the product exists in the database
-       if(!DataSource.Products.Exists(element => element!.Value.Id == newOrderItem.ProductID))
+       if(!DataSource.Products.Exists(element => element?.Id == newOrderItem.ProductID))
              throw new EntityNotFoundException("Product");
-        if (!DataSource.Orders.Exists(element => element!.Value.Id == newOrderItem.OredrID))
+        if (!DataSource.Orders.Exists(element => element?.Id == newOrderItem.OredrID))
             throw new EntityNotFoundException("order"); 
 
-        if(List(element => element!.Value.OredrID == newOrderItem.OredrID).ToList().Exists(element => element!.Value.ProductID == newOrderItem.ProductID))
+        if(List(element => element!.Value.OredrID == newOrderItem.OredrID).ToList().Exists(element => element?.ProductID == newOrderItem.ProductID))
             throw new AllreadyExistException("product in order");
 
         newOrderItem.Id = DataSource.GetOrderItem;
@@ -28,20 +28,20 @@ internal class DalOrederItem :IOrderItem
     ///Function to delete an order item
     public void Delete(int idToDelete)
     {
-        DataSource.OrderItems.Remove(GetElement(element => element!.Value.Id == idToDelete));   
+        DataSource.OrderItems.Remove(GetElement(element => element?.Id == idToDelete));   
     }
     ///Function to update an order item
     public void Update(OrderItem newOrderItem)
     {
-        OrderItem? orderItem = GetElement(element => element!.Value.Id == newOrderItem.Id);
-       newOrderItem.OredrID = orderItem!.Value.OredrID;
+       OrderItem? orderItem = GetElement(element => element?.Id == newOrderItem.Id);
+       newOrderItem.OredrID = orderItem?.OredrID ?? throw new Exception();
        DataSource.OrderItems.Remove(orderItem);  
        DataSource.OrderItems.Add(newOrderItem);
     }
     /// A function that returns an order item by id
     public OrderItem? Get(int idToGet)
     {
-       return GetElement(element => element!.Value.Id == idToGet);
+       return GetElement(element => element?.Id == idToGet);
     }
     /// A function that returns an array of the order items in the database
     public IEnumerable<OrderItem?> List(Func<OrderItem?, bool>? myFunc = null)

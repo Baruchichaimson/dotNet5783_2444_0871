@@ -33,8 +33,8 @@ namespace BlImplementation
             {
                 cart.Items = new();
             }
-            bool prodactExistInCart  = cart.Items.Exists(x => x!.ProductID == id);
-            DO.Product? product = Dal.Product.GetElement(element => element!.Value.Id == id);
+            bool prodactExistInCart  = cart.Items.Exists(x => x?.ProductID == id);
+            DO.Product? product = Dal.Product.GetElement(element => element?.Id == id);
 
             if (product!.Value.Instock > 0)
             {
@@ -42,9 +42,9 @@ namespace BlImplementation
                 {
                     cart.Items!.Add(new BO.OrderItem()
                     {
-                        ProductID = product.Value.Id,
-                        Name = product.Value.Name,
-                        Price = product.Value.Price,
+                        ProductID = product?.Id ?? throw,
+                        Name = product?.Name ?? throw,
+                        Price = product?.Price ?? throw,
                         Amount = 1,
                         TotalPrice = product.Value.Price
                     });
