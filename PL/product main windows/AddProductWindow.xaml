@@ -7,20 +7,13 @@
         mc:Ignorable="d"
         Title="AddProductWindow" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="nameText" HorizontalAlignment="Left" Margin="5,8,0,0" TextWrapping="Wrap" Text="enter name:" VerticalAlignment="Top" Width="74" RenderTransformOrigin="0.5,0.5" Height="23" TextChanged="nametext_TextChanged_2">
-            <TextBox.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-0.057"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </TextBox.RenderTransform>
-        </TextBox>
-        <TextBox x:Name="idText" HorizontalAlignment="Left" Margin="5,34,0,0" TextWrapping="Wrap" Text="enter id:" VerticalAlignment="Top" Width="75" Height="22" TextChanged="idtext_TextChanged"/>
-        <TextBox x:Name="categoryText" HorizontalAlignment="Left" Margin="5,88,0,0" TextWrapping="Wrap" Text="enter category:" VerticalAlignment="Top" Width="92" Height="22" TextChanged="categorytext_TextChanged"/>
-        <TextBox x:Name="priceText" HorizontalAlignment="Left" Margin="5,61,0,0" TextWrapping="Wrap" Text="enter price" VerticalAlignment="Top" Width="75" Height="22" TextChanged="pricetext_TextChanged"/>
-        <Button x:Name="addProductButton" Content="Add Product" HorizontalAlignment="Left" Margin="234,99,0,0" VerticalAlignment="Top" RenderTransformOrigin="-4.404,2.457" Click="button_Click"/>
+        <TextBox x:Name="name" HorizontalAlignment="Left" Margin="5,8,0,0" TextWrapping="Wrap" Text="enter name:" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5" Height="23" />
+        <TextBox x:Name="id" HorizontalAlignment="Left" Margin="5,34,0,0" TextWrapping="Wrap" Text="enter id:" VerticalAlignment="Top" Width="120" Height="22"/>
+        <TextBox x:Name="category" HorizontalAlignment="Left" Margin="5,88,0,0" TextWrapping="Wrap" Text="enter category:" VerticalAlignment="Top" Width="120" Height="22"/>
+        <TextBox x:Name="price" HorizontalAlignment="Left" Margin="5,61,0,0" TextWrapping="Wrap" Text="enter price" VerticalAlignment="Top" Width="120" Height="22"/>
+        <TextBox x:Name="instoke" HorizontalAlignment="Left" Margin="5,115,0,0" TextWrapping="Wrap" Text="instoke" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="addProdut" Content="Add Product" HorizontalAlignment="Left" Margin="234,99,0,0" VerticalAlignment="Top" RenderTransformOrigin="-4.404,2.457" Click="addProductButton"/>
+        
 
     </Grid>
 </Window>

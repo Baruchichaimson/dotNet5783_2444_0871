@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using BlImplementation;
+using BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,15 +22,26 @@ namespace PL.product_main_windows
     /// </summary>
     public partial class AddProductWindow : Window
     {
+        private IBl blForAdd;
         public AddProductWindow(IBl bl)
         {
-            
+            blForAdd = bl;
             InitializeComponent();
         }
 
         private void addProductButton(object sender, RoutedEventArgs e)
         {
-           
+            blForAdd.Product.Add(new BO.Product
+            {
+                ID = int.Parse(id.Text),
+                Name = name.Text,
+                Price = double.Parse(price.Text),
+                InStock = int.Parse(instoke.Text),
+                Category = (CoffeeShop)Enum.Parse(typeof(CoffeeShop), category.Text, true)
+
+            });
+           this.Close();
         }
+
     }
 }

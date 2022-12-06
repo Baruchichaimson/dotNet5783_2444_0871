@@ -13,7 +13,9 @@ internal class DalProduct : IProduct
     public int Add(Product newProduct)
     {
         if (DataSource.Products.Exists(element => element?.Id == newProduct.Id))
-            throw new AllreadyExistException("product");
+        {
+            throw new AllreadyExistException($"product id={newProduct.Id}");
+        }
         DataSource.Products.Add(newProduct);
         return newProduct.Id;
     }
