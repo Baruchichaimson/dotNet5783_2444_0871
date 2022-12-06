@@ -39,12 +39,12 @@ internal class DalOrederItem :IOrderItem
        DataSource.OrderItems.Add(newOrderItem);
     }
     /// A function that returns an order item by id
-    public OrderItem? Get(int idToGet)
+    public OrderItem Get(int idToGet)
     {
        return GetElement(element => element?.Id == idToGet);
     }
     /// A function that returns an array of the order items in the database
-    public IEnumerable<OrderItem?> List(Func<OrderItem?, bool>? myFunc = null)
+    public IEnumerable<OrderItem?>? List(Func<OrderItem?, bool>? myFunc = null)
     {
         bool flag = myFunc is null;
         if (flag)
@@ -52,15 +52,13 @@ internal class DalOrederItem :IOrderItem
         else
             return DataSource.OrderItems.Where(myFunc!);
     }
-    public OrderItem? GetElement(Func<OrderItem?, bool>? myFunc)
+    public OrderItem GetElement(Func<OrderItem?, bool>? myFunc)
     {
         if (myFunc is null)
         {
             throw new EntityNotFoundException("order item");
         }
-        OrderItem? orderItem = DataSource.OrderItems.FirstOrDefault(myFunc);
-        if (orderItem == null)
-            throw new EntityNotFoundException("order item");
+        OrderItem orderItem = DataSource.OrderItems.FirstOrDefault(myFunc) ?? throw new EntityNotFoundException("order item");
         return orderItem;
     }
 }

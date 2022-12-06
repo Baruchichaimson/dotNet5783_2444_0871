@@ -28,43 +28,42 @@ namespace BlImplementation
         /// <exception cref="BO.EntityNotFoundException"> the id product is not correct and we can't search this product in the stock </exception>
         public BO.Cart AddProduct(BO.Cart cart, int id)
         {
-            
             if (cart.Items is null)
             {
                 cart.Items = new();
             }
             bool prodactExistInCart  = cart.Items.Exists(x => x?.ProductID == id);
-            DO.Product? product = Dal.Product.GetElement(element => element?.Id == id);
+            DO.Product product = Dal.Product.GetElement(element => element?.Id== id);
 
-            if (product!.Value.Instock > 0)
+            if (product.Instock > 0) 
             {
-                if (!prodactExistInCart || cart.Items is null)
+                if (!prodactExistInCart)
                 {
-                    cart.Items!.Add(new BO.OrderItem()
+                    cart.Items.Add(new BO.OrderItem()
                     {
-                        ProductID = product?.Id ?? throw,
-                        Name = product?.Name ?? throw,
-                        Price = product?.Price ?? throw,
+                        ProductID = product.Id,
+                        Name = product.Name,
+                        Price = product.Price,
                         Amount = 1,
-                        TotalPrice = product.Value.Price
+                        TotalPrice = product.Price
                     });
                 }
                 else
                 {
                     foreach (BO.OrderItem? orderItem in cart.Items)
                     {
-                        if (orderItem!.ProductID == id)
+                        if (orderItem?.ProductID == id)
                         {
-                            orderItem!.Amount++;
-                            orderItem.TotalPrice += product.Value.Price;
+                            orderItem.Amount++;
+                            orderItem.TotalPrice += product.Price;
                             break;
                         }
                     }
                 }
                 if (cart.TotalPrice > 0)
-                    cart.TotalPrice += product.Value.Price;
+                    cart.TotalPrice += product.Price;
                 else
-                    cart.TotalPrice = product.Value.Price;
+                    cart.TotalPrice = product.Price;
                 return cart;
 
             }
@@ -89,12 +88,12 @@ namespace BlImplementation
             }
             try
             {
-                foreach (BO.OrderItem orderItem in cart.Items)
+                foreach (BO.OrderItem? orderItem in cart.Items)
                 {
 
-                    DO.Product? product = Dal.Product.Get(orderItem!.ProductID);
+                    DO.Product product = Dal.Product.Get(orderItem!.ProductID);
 
-                    if (orderItem.Amount > product!.Value.Instock || orderItem.Amount <= 0)
+                    if (orderItem.Amount > product.Instock || orderItem.Amount <= 0)
                     {
                         throw new BO.IncorrectAmountException("not enough amount in stock");
                     }
@@ -118,6 +117,8 @@ namespace BlImplementation
                 int idOrder = Dal.Order.Add(order);
                 foreach (var item in cart.Items)
                 {
+                    if (item is null)
+                        throw new ItemIsNullExeption("cart item is null");
                     DO.OrderItem orderItem = new()
                     {
                         ProductID = item.ProductID,
@@ -126,7 +127,7 @@ namespace BlImplementation
                         OredrID = idOrder
                     };
                     Dal.OrderItem.Add(orderItem);
-                    DO.Product product = Dal.Product.Get(item.ProductID)!.Value;
+                    DO.Product product = Dal.Product.Get(item.ProductID);
                     product.Instock -= item.Amount;
                     Dal.Product.Update(product);
                 }
@@ -154,11 +155,13 @@ namespace BlImplementation
         {
             if(cart.Items is null)
             {
-                throw new CartException("the cart is empty");
+                throw new BO.CartException("the cart is empty");
             }
-            foreach (BO.OrderItem item in cart.Items)
+            foreach (var item in cart.Items)
             {
-                if (item!.ProductID == id)
+                if (item is null)
+                    throw new ItemIsNullExeption("cart item is null");
+                if (item.ProductID == id)
                 {
                     if (newAmount == 0)
                     {
@@ -175,7 +178,7 @@ namespace BlImplementation
                     {
                         if (newAmount < 0)
                         {
-                            throw new IncorrectAmountException("the amount can't be negative number");
+                            throw new BO.IncorrectAmountException("the amount can't be negative number");
                         }
                         item.TotalPrice = item.Price * newAmount;
                         cart.TotalPrice -= item.Price * (item.Amount - newAmount);

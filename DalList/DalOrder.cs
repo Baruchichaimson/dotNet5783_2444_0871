@@ -27,7 +27,7 @@ internal class DalOrder : IOrder
         DataSource.Orders.Add(newOrder);
     }
     /// A function that returns an order by id
-    public Order? Get(int idToGet)
+    public Order Get(int idToGet)
     {
         return GetElement(element => element?.Id == idToGet);
     }
@@ -40,15 +40,13 @@ internal class DalOrder : IOrder
         else
             return DataSource.Orders.Where(myFunc); 
     }
-    public Order? GetElement(Func<Order?, bool>? myFunc)
+    public Order GetElement(Func<Order?, bool>? myFunc)
     {
         if (myFunc is null)
         {
             throw new EntityNotFoundException("order");
         }
-        Order? order = DataSource.Orders.FirstOrDefault(myFunc);
-        if (order == null)
-            throw new EntityNotFoundException("order");
+        Order order = DataSource.Orders.FirstOrDefault(myFunc) ?? throw new EntityNotFoundException("order"); 
         return order;
     }
 }

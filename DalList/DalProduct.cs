@@ -36,34 +36,30 @@ internal class DalProduct : IProduct
     /// <param name="idToGet"> its id we got from the user </param>
     /// <returns> return my product with this id </returns>
     /// <exception cref="EntityNotFoundException"></exception>
-    public Product? Get(int idToGet)
+    public Product Get(int idToGet)
     {
-        Product? product = GetElement(product => product?.Id == idToGet);
-        if(product == null)
-             throw new EntityNotFoundException("product");
+        Product product = GetElement(product => product?.Id == idToGet);
         return product;
     }
     /// <summary>
     /// A function that returns an array of the products in the database
     /// <returns> the array with all the products.
-    public IEnumerable<Product?> List(Func<Product?, bool>? myFunc = null)
+    public IEnumerable<Product?>? List(Func<Product?, bool>? myFunc = null)
     {
         bool flag = myFunc is null;
         if (flag)
             return DataSource.Products.Select(Product => Product);
         else
-            return DataSource.Products.Where(myFunc);
+            return DataSource.Products.Where(myFunc!);
     }
 
-    public Product? GetElement(Func<Product?, bool>? myFunc)
+    public Product GetElement(Func<Product?, bool>? myFunc)
     {
         if (myFunc is null)
         {
             throw new EntityNotFoundException("product");
         }
-        Product? product =  DataSource.Products.FirstOrDefault(myFunc);
-        if (product == null)
-            throw new EntityNotFoundException("product");
+        Product product =  DataSource.Products.FirstOrDefault(myFunc) ?? throw new EntityNotFoundException("product") ;
         return product;
     }
 }

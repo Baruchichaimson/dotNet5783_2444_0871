@@ -102,7 +102,7 @@ internal class Program
                     break;
                 case (int)User.PRINTALL: /// make new array and put in him the array of the products and print the products.
                     {
-                        foreach (Product myproduct in dallist.Product.List())
+                        foreach (Product? myproduct in dallist.Product.List()!)
                         {
                             Console.WriteLine(myproduct);
                         }
@@ -174,7 +174,7 @@ internal class Program
                     break;
                 case (int)User.PRINTALL: /// make new array and put in him the array of the orders and print the orders.
                     {
-                        foreach (Order myOrder in dallist.Order.List())
+                        foreach (Order? myOrder in dallist.Order.List()!)
                         {
                             Console.WriteLine(myOrder);
                         }
@@ -208,7 +208,7 @@ internal class Program
                         Console.WriteLine("Enter the amount: ");
                         int.TryParse(Console.ReadLine(), out int amount);
                         newOrderItem.Amount = amount;
-                        newOrderItem.Price = dallist.OrderItem.Get(newOrderItem.ProductID)?.Price ?? throw new Exception() ;
+                        newOrderItem.Price = dallist.OrderItem.Get(newOrderItem.ProductID).Price;
                         dallist.OrderItem.Add(newOrderItem); /// go to the function that add order item to array of order items.
                         Console.WriteLine("the orderItem has been succsefully added ");
                     }
@@ -233,7 +233,7 @@ internal class Program
                         Console.WriteLine("Enter the amount: ");
                         int.TryParse(Console.ReadLine(), out  int amount);
                         newOrderItem.Amount= amount;
-                        newOrderItem.Price = dallist.OrderItem.Get(newOrderItem.ProductID)?.Price?? throw new Exception();
+                        newOrderItem.Price = dallist.OrderItem.Get(newOrderItem.ProductID).Price;
                         dallist.OrderItem.Update(newOrderItem); ///go to the function that check if the id is exist update the store.
                         Console.WriteLine("the orderItem has been sccessfully update ");
                     }
@@ -247,7 +247,7 @@ internal class Program
                     break;
                 case (int)User.PRINTALL: /// make new array and put in him the array of the order items and print the order items.
                     {
-                        foreach (OrderItem myOrderItem in dallist.OrderItem.List())
+                        foreach (OrderItem? myOrderItem in dallist.OrderItem.List()!)
                         {
                             Console.WriteLine(myOrderItem);
                         }
@@ -266,7 +266,7 @@ internal class Program
                     {
                         Console.WriteLine("Enter order ID: ");
                         int.TryParse(Console.ReadLine(), out int orderID);
-                        foreach (OrderItem myOrderItem in dallist.OrderItem.List(element => element?.OredrID == orderID))
+                        foreach (OrderItem? myOrderItem in dallist.OrderItem.List(element => element?.OredrID == orderID)!)
                         {
                             Console.WriteLine(myOrderItem);
                         }

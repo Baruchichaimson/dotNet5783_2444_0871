@@ -47,4 +47,9 @@ namespace BO
     {
         public ProductIsOnOrderException(string messege) : base(messege) { }
     }
+    [Serializable]
+    public class ItemIsNullExeption : Exception
+    {
+        public ItemIsNullExeption(string messege) : base(messege) { }
+    }
 }

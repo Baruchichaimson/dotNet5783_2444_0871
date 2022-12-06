@@ -42,19 +42,19 @@ namespace BlImplementation
         /// </summary>
         /// <param name="idOrder">order id from data layer</param>
         /// <returns>A list of orderItem of the logical layer</returns>
-        private List<OrderItem?>? GiveList(DO.Order idOrder)
+        private List<OrderItem> GiveList(DO.Order idOrder)
         {
-            List<OrderItem?>? list = new List<OrderItem?>();
-            foreach (DO.OrderItem item in Dal.OrderItem.List(element => element!.Value.OredrID == idOrder.Id))
+            List<OrderItem> list = new List<OrderItem>();
+            foreach (DO.OrderItem? item in Dal.OrderItem.List(element => element?.OredrID == idOrder.Id)?? throw new ItemIsNullExeption("order item list is null"))
             {
                 OrderItem dataItem = new()
                 {
-                    ID = item.OredrID,
-                    ProductID = item.ProductID,
-                    Price = item.Price,
-                    Amount = item.Amount,
-                    TotalPrice = item.Price * item.Amount,
-                    Name = Dal.Product.Get(item.ProductID)!.Value.Name
+                    ID = (int)item?.OredrID!,
+                    ProductID = (int)item?.ProductID!,
+                    Price = (double)item?.Price!,
+                    Amount = (int)item?.Amount!,
+                    TotalPrice = (double)item?.Price! * (int)item?.Amount!,
+                    Name = Dal.Product.Get((int)item?.ProductID!).Name
                 };
                 list.Add(dataItem);
             }
@@ -78,30 +78,27 @@ namespace BlImplementation
         /// to a list of order  from the logical layer
         /// </summary>
         /// <returns></returns>
-        public List<OrderForList> GetList()
+        public IEnumerable<OrderForList?>? GetList()
         {
-            List<OrderForList> newList = new List<OrderForList>();
-            foreach (DO.Order item in Dal.Order.List())
+            IEnumerable<DO.Order?>? list = Dal.Order.List(element => element is not null);
+            return list?.Select(element => 
             {
                 int totalAmount = 0;
                 double totalPrice = 0;
-                foreach (DO.OrderItem it in Dal.OrderItem.List(element => element.Value.Id == item.Id))
+                foreach (DO.OrderItem it in Dal.OrderItem.List(x => x is not null && x?.Id == element?.Id) ?? throw new ItemIsNullExeption("order item list is null"))
                 {
                     totalPrice += it.Price * it.Amount;
                     totalAmount++;
                 }
-
-                OrderForList orderForList = new()
+                return new OrderForList
                 {
-                    ID = item.Id,
-                    CustomerName = item.CustomerName,
+                    ID = element!.Value.Id,
+                    CustomerName = element!.Value.CustomerName,
                     TotalPrice = totalPrice,
                     AmountOfItems = totalAmount,
-                    Status = Status(item),
+                    Status = Status(element!.Value),
                 };
-                newList.Add(orderForList);
-            }
-            return newList;
+            });
         }
         /// <summary>
         /// A function that returns an order by ID number
@@ -112,7 +109,7 @@ namespace BlImplementation
         public BO.Order GetData(int id)
         {
             double totalPrice = 0;
-            foreach (DO.OrderItem it in Dal.OrderItem.List(element => element!.Value.Id == id))
+            foreach (DO.OrderItem it in Dal.OrderItem.List(element => element is not null && element?.Id == id) ?? throw new ItemIsNullExeption("order list is null"))
             {
                 totalPrice += it.Price * it.Amount;
             }
@@ -120,7 +117,7 @@ namespace BlImplementation
             {
                 try
                 {
-                    DO.Order dataOrder = Dal.Order.Get(id)!.Value;
+                    DO.Order dataOrder = Dal.Order.Get(id);
                     BO.Order order = new()
                     {
                         ID = id,
@@ -153,10 +150,10 @@ namespace BlImplementation
         {
             try
             {
-                if (Dal.Order.Get(id)!.Value.ShipDate is null)
+                if (Dal.Order.Get(id).ShipDate is null)
             {
                
-                    DO.Order updateOrders = Dal.Order.Get(id)!.Value;
+                    DO.Order updateOrders = Dal.Order.Get(id);
                     updateOrders.ShipDate = DateTime.Now;
                     Dal.Order.Update(updateOrders);
                     BO.Order updorder = GetData(id);
@@ -181,9 +178,9 @@ namespace BlImplementation
         {
             try
             {
-                if (Dal.Order.Get(id)!.Value.ShipDate is not null && Dal.Order.Get(id)!.Value.DeliveryrDate is null)
+                if (Dal.Order.Get(id).ShipDate is not null && Dal.Order.Get(id).DeliveryrDate is null)
                 {
-                    DO.Order updateOrdersData = Dal.Order.Get(id)!.Value;
+                    DO.Order updateOrdersData = Dal.Order.Get(id);
                     updateOrdersData.DeliveryrDate = DateTime.Now;
                     Dal.Order.Update(updateOrdersData);
                     BO.Order updateOrderLogic = GetData(id);
@@ -207,7 +204,7 @@ namespace BlImplementation
         {
             try
             {
-                DO.Order order = Dal.Order.Get(id)!.Value;
+                DO.Order order = Dal.Order.Get(id);
                 List<string?> templist = new();
                 templist.Add(GiveOrderDate(order.OrderDate!.Value, "created"));
                 if (order.ShipDate != DateTime.MinValue)
@@ -246,17 +243,17 @@ namespace BlImplementation
         {
             try
             {
-                DO.Product product = Dal.Product.Get(productId)!.Value;
+                DO.Product product = Dal.Product.Get(productId);
                 if (amount > product.Instock)
                     throw new BO.IncorrectAmountException("Not enough amount in stock");
                 int id = 0;
-                if (Dal.Order.Get(orderId)!.Value.ShipDate is null)
+                if (Dal.Order.Get(orderId).ShipDate is null)
                 {
-                    foreach (DO.OrderItem orderItems in Dal.OrderItem.List(element => element!.Value.OredrID == orderId))
+                    foreach (var orderItems in Dal.OrderItem.List(element => element?.OredrID == orderId)?? throw new Exception()) //************
                     {
-                        if (productId == orderItems.ProductID)
+                        if (productId == orderItems?.ProductID)
                         {
-                            id = orderItems.Id;
+                            id = orderItems?.Id ?? throw  new Exception();
                             break;
                         }
                     }
@@ -278,7 +275,7 @@ namespace BlImplementation
                     }
                     else
                     {
-                        DO.OrderItem item = Dal.OrderItem.Get(id)!.Value;
+                        DO.OrderItem item = Dal.OrderItem.Get(id);
                         if (item.Amount + amount >= 0)
                             item.Amount += amount;
                         else

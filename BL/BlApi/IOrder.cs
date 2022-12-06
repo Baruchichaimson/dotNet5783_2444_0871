@@ -16,7 +16,7 @@ namespace BlApi
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<BO.OrderForList> GetList();
+        public IEnumerable<BO.OrderForList?>? GetList();
         /// <summary>
         /// 
         /// </summary>

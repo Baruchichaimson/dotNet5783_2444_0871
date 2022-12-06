@@ -4,7 +4,7 @@ using Google.Api.Ads.AdWords.v201809;
 using BlApi;
 using BO;
 using System.Threading.Channels;
-
+using System.ServiceModel.Channels;
 
 namespace BlTest;
 /// <summary>
@@ -49,8 +49,8 @@ internal class Program
                     return;
                 case (int)UserProduct.LIST_REQUEST:
                     {
-                        IEnumerable<ProductForList> list = bl.Product.GetList();
-                        foreach (ProductForList item in list)
+                        IEnumerable<ProductForList?> list = bl.Product.GetList() ?? throw new ItemIsNullExeption("product list is null");
+                        foreach (ProductForList? item in list)
                         {
                             Console.WriteLine(item);
                         }
@@ -165,8 +165,8 @@ internal class Program
                     return;
                 case (int)UserOrder.LIST_REQUEST:
                     {
-                        IEnumerable<OrderForList> list = bl.Order.GetList();
-                        foreach (OrderForList item in list)
+                        IEnumerable<OrderForList?> list = bl.Order.GetList()?? throw new ItemIsNullExeption("the order list is null");
+                        foreach (OrderForList? item in list)
                         {
                             Console.WriteLine(item);
                         }
@@ -319,8 +319,8 @@ internal class Program
             catch (EntityDetailsWrongException ex)
             {
                 Console.WriteLine(ex.Message);
-            }   
-            catch(CartException ex)
+            }
+            catch (CartException ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -328,7 +328,10 @@ internal class Program
             {
                 Console.WriteLine(ex.Message);
             }
-            
+            catch (ItemIsNullExeption ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ namespace BlApi
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<BO.ProductForList> GetList();
+        public IEnumerable<ProductForList?>? GetList(Func<ProductForList?, bool>? myFunc = null);
         /// <summary>
         /// 
         /// </summary>

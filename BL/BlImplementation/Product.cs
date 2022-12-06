@@ -1,6 +1,7 @@
 ﻿using BlApi;
 using BO;
 using Google.Api.Ads.AdWords.v201809;
+using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 
 namespace BlImplementation
@@ -16,19 +17,18 @@ namespace BlImplementation
         /// layer to a list of products of the logical layer
         /// </summary>
         /// <returns></returns>
-        public List<ProductForList> GetList()
+        public IEnumerable<ProductForList?>? GetList(Func<ProductForList?, bool>? myFunc = null)
         {
-            List<ProductForList> newList = new();
-            foreach (DO.Product item in Dal.Product.List())
+            IEnumerable<DO.Product?>? newCollection = Dal.Product.List() ?? throw new ItemIsNullExeption("product list is null");
+            IEnumerable<ProductForList?> productForLists = newCollection.Select(
+            item => new ProductForList
             {
-                ProductForList productForList = new ProductForList();
-                productForList.ID = item.Id;
-                productForList.Name = item.Name;
-                productForList.Price = item.Price;
-                productForList.Category = (BO.CoffeeShop)item.Categoryname;
-                newList.Add(productForList);
-            }
-            return newList;
+                ID = (int)item?.Id!,
+                Name = (string)item?.Name!,
+                Price = (double)item?.Price!,
+                Category = (BO.CoffeeShop?)item?.Categoryname
+            });
+            return myFunc is null ? productForLists : productForLists.Where(myFunc);
         }
         /// <summary>
         /// A function that returns a product by ID number
@@ -43,14 +43,14 @@ namespace BlImplementation
             {
                 try
                 {
-                    DO.Product product = Dal.Product.Get(id)!.Value;
+                    DO.Product product = Dal.Product.Get(id);
                     BO.Product newProduct = new()
                     {
                         ID = product.Id,
                         Name = product.Name,
                         Price = product.Price,
                         InStock = product.Instock,
-                        Category = (BO.CoffeeShop)product.Categoryname!
+                        Category = (BO.CoffeeShop?)product.Categoryname
                     };
                     return newProduct;
                 }
@@ -75,18 +75,18 @@ namespace BlImplementation
             {
                 if (id > 0)
                 {
-                    DO.Product product = Dal.Product.Get(id)!.Value;
+                    DO.Product product = Dal.Product.Get(id);
                     ProductItem newProductItem = new()
                     {
                         ID = product.Id,
                         Name = product.Name,
                         Price = product.Price,
                         InStock = product.Instock > 0,
-                        Category = (BO.CoffeeShop)product.Categoryname!
+                        Category = (BO.CoffeeShop?)product.Categoryname
                     };
                     if (cart.Items is not null)
                     {
-                        OrderItem orderItem = cart.Items.Find(orderItem => orderItem!.ProductID == id)!;
+                        OrderItem orderItem = cart.Items.Find(orderItem => orderItem?.ProductID == id) ?? throw new ItemIsNullExeption("cart item list is null");
                         if (orderItem is not null)
                         {
                             newProductItem.Amount = orderItem.Amount;
@@ -117,7 +117,7 @@ namespace BlImplementation
                     Name = product.Name,
                     Price = product.Price,
                     Instock = product.InStock,
-                    Categoryname = (DO.CoffeeShop)product.Category!
+                    Categoryname = (DO.CoffeeShop?)product.Category
                 };
                 try
                 {
@@ -143,7 +143,7 @@ namespace BlImplementation
         /// <exception cref="ProductIsOnOrderException">It is not possible to delete a product that exists in one of the orders</exception>
         public void Delete(int id)
         {
-            if (!Dal.OrderItem.List().Any(x => x!.Value.ProductID == id))
+            if (!Dal.OrderItem.List()?.Any(x => x?.ProductID == id) ?? throw new ItemIsNullExeption("order item list is null"))
             {
                 try
                 {
@@ -173,7 +173,7 @@ namespace BlImplementation
                     Name = product.Name,
                     Price = product.Price,
                     Instock = product.InStock,
-                    Categoryname = (DO.CoffeeShop)product.Category!
+                    Categoryname = (DO.CoffeeShop?)product.Category
                 };
                 try
                 {
