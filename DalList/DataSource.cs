@@ -41,7 +41,14 @@ internal static class DataSource
     /// <returns> in the database return fallse and if not return true.</returns>
     private static bool check(int id)
     {
-        return Products.Exists(element => element?.Id == id);
+        foreach (var item in Products)
+        {
+            if (item?.Id == id)
+            {
+                return true;
+            };
+        };
+      return false;
     }
     ///<summary>
     /// put products in the store.
@@ -66,7 +73,7 @@ internal static class DataSource
             for (int j = 0; j < 5; j++)              /// run on the 5 product from one category.
             {
                 int randomIdProducts = randomNumber.Next(100000, 1000000);
-                while(!check(randomIdProducts)) ///if the number is already in the database, then draw a new number.
+                while(check(randomIdProducts)) ///if the number is already in the database, then draw a new number.
                 {
                     randomIdProducts = randomNumber.Next(100000, 1000000);
                 }
