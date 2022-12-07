@@ -49,7 +49,7 @@ internal class Program
                     return;
                 case (int)UserProduct.LIST_REQUEST:
                     {
-                        IEnumerable<ProductForList?> list = bl.Product.GetList() ?? throw new ItemIsNullExeption("product list is null");
+                        IEnumerable<ProductForList?> list = bl.Product.GetList() ?? throw new NullExeption("product list");
                         foreach (ProductForList? item in list)
                         {
                             Console.WriteLine(item);
@@ -165,7 +165,7 @@ internal class Program
                     return;
                 case (int)UserOrder.LIST_REQUEST:
                     {
-                        IEnumerable<OrderForList?> list = bl.Order.GetList()?? throw new ItemIsNullExeption("the order list is null");
+                        IEnumerable<OrderForList?> list = bl.Order.GetList()?? throw new NullExeption("the order list");
                         foreach (OrderForList? item in list)
                         {
                             Console.WriteLine(item);
