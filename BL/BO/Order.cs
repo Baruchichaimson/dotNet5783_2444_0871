@@ -46,7 +46,7 @@ namespace BO
         /// <summary>
         /// to put in list the all order items.
         /// </summary>
-        public List<OrderItem?>? Items { get; set; }
+        public List<OrderItem> Items { get; set; }
         /// <summary>
         /// bring the total price od the order with all the order item he have.
         /// </summary>

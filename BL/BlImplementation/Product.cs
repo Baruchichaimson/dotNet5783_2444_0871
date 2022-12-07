@@ -12,19 +12,19 @@ namespace BlImplementation
     internal class Product : IProduct
     {
         private DalApi.IDal Dal = new DO.DalList();
-        /// <summary>
-        /// A function that converts a list of products from the data 
-        /// layer to a list of products of the logical layer
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<ProductForList?>? GetList(Func<ProductForList?, bool>? myFunc = null)
+     /// <summary>
+     /// A function that converts a list of products from the data 
+     /// layer to a list of products of the logical layer
+     /// </summary>
+     /// <returns></returns>
+    public IEnumerable<ProductForList?>? GetList(Func<ProductForList?, bool>? myFunc = null)
         {
-            IEnumerable<DO.Product?>? newCollection = Dal.Product.List() ?? throw new ItemIsNullExeption("product list is null");
+            IEnumerable<DO.Product?>? newCollection = Dal.Product.List() ?? throw new NullExeption("product list");
             IEnumerable<ProductForList?> productForLists = newCollection.Select(
             item => new ProductForList
             {
                 ID = (int)item?.Id!,
-                Name = (string)item?.Name!,
+                Name = item?.Name!,
                 Price = (double)item?.Price!,
                 Category = (BO.CoffeeShop?)item?.Categoryname
             });
@@ -86,7 +86,7 @@ namespace BlImplementation
                     };
                     if (cart.Items is not null)
                     {
-                        OrderItem orderItem = cart.Items.Find(orderItem => orderItem?.ProductID == id) ?? throw new ItemIsNullExeption("cart item list is null");
+                        OrderItem orderItem = cart.Items.Find(orderItem => orderItem?.ProductID == id) ?? throw new NullExeption("cart item list");
                         if (orderItem is not null)
                         {
                             newProductItem.Amount = orderItem.Amount;
@@ -98,6 +98,10 @@ namespace BlImplementation
             catch (DO.EntityNotFoundException ex)
             {
                 throw new BO.EntityNotFoundException(ex);
+            }
+            catch (DO.NullExeption ex)
+            {
+                throw new BO.NullExeptionForDO(ex);
             }
             throw new IdNotExsitException("the id is negtive");
         }
@@ -143,7 +147,7 @@ namespace BlImplementation
         /// <exception cref="ProductIsOnOrderException">It is not possible to delete a product that exists in one of the orders</exception>
         public void Delete(int id)
         {
-            if (!Dal.OrderItem.List()?.Any(x => x?.ProductID == id) ?? throw new ItemIsNullExeption("order item list is null"))
+            if (!Dal.OrderItem.List()?.Any(x => x?.ProductID == id) ?? throw new NullExeption("order item list"))
             {
                 try
                 {
@@ -182,10 +186,6 @@ namespace BlImplementation
                 catch (DO.EntityNotFoundException ex)
                 {
                     throw new BO.EntityNotFoundException(ex);
-                }
-                catch (DO.AllreadyExistException ex)
-                {
-                    throw new BO.AllreadyExistException(ex);
                 }
             }
             else

@@ -48,8 +48,15 @@ namespace BO
         public ProductIsOnOrderException(string messege) : base(messege) { }
     }
     [Serializable]
-    public class ItemIsNullExeption : Exception
+    public class NullExeption : Exception
     {
-        public ItemIsNullExeption(string messege) : base(messege) { }
+        public NullExeption(string messege) : base(messege + " is null in BO") { }
+       
     }
+    [Serializable]
+    public class NullExeptionForDO : Exception
+    {
+        public NullExeptionForDO(Exception inner, string messege = "") : base(messege, inner) { }
+    }
+
 }

@@ -16,14 +16,9 @@ namespace DO
     {
         public EntityNotFoundException(string entityName) : base($"the {entityName} is not exist\n") { }
     }
-    [Serializable]
-    public class StorgeIsFullException : Exception
+    public class NullExeption : Exception
     {
-        public StorgeIsFullException(string entityName) : base($"the storge of {entityName} is full\n") { }
+        public NullExeption(string messege) : base(messege + " is null in DO") { }
     }
-    [Serializable]
-    public class StorgeIsEmptyException: Exception
-    {
-        public StorgeIsEmptyException(string entityName) : base($"the storge of {entityName} is empty\n") { }
-    }
+
 }

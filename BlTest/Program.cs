@@ -328,10 +328,15 @@ internal class Program
             {
                 Console.WriteLine(ex.Message);
             }
-            catch (ItemIsNullExeption ex)
+            catch (NullExeption ex)
             {
                 Console.WriteLine(ex.Message);
             }
+            catch (NullExeptionForDO ex)
+            {
+                Console.WriteLine(ex.InnerException!.Message);
+            }
+
         }
     }
 }

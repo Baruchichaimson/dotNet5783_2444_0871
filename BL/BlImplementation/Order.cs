@@ -24,7 +24,7 @@ namespace BlImplementation
         /// <returns>order status</returns>
         private OrderStatus Status(DO.Order item)
         {
-            OrderStatus currentStatus = new OrderStatus();
+            OrderStatus currentStatus = new();
             if (item.DeliveryrDate is null)
             {
                 if (item.ShipDate is null)
@@ -44,21 +44,33 @@ namespace BlImplementation
         /// <returns>A list of orderItem of the logical layer</returns>
         private List<OrderItem> GiveList(DO.Order idOrder)
         {
-            List<OrderItem> list = new List<OrderItem>();
-            foreach (DO.OrderItem? item in Dal.OrderItem.List(element => element?.OredrID == idOrder.Id)?? throw new ItemIsNullExeption("order item list is null"))
+            try
             {
-                OrderItem dataItem = new()
+                List<OrderItem> list = new List<OrderItem>();
+                foreach (DO.OrderItem? item in Dal.OrderItem.List(element => element?.OredrID == idOrder.Id) ?? throw new NullExeption("order item list"))
                 {
-                    ID = (int)item?.OredrID!,
-                    ProductID = (int)item?.ProductID!,
-                    Price = (double)item?.Price!,
-                    Amount = (int)item?.Amount!,
-                    TotalPrice = (double)item?.Price! * (int)item?.Amount!,
-                    Name = Dal.Product.Get((int)item?.ProductID!).Name
-                };
-                list.Add(dataItem);
+                    OrderItem dataItem = new()
+                    {
+                        ID = (int)item?.OredrID!,
+                        ProductID = (int)item?.ProductID!,
+                        Price = (double)item?.Price!,
+                        Amount = (int)item?.Amount!,
+                        TotalPrice = (double)item?.Price! * (int)item?.Amount!,
+                        Name = Dal.Product.Get((int)item?.ProductID!).Name
+                    };
+                    list.Add(dataItem);
+                }
+                return list;
             }
-            return list;
+            catch (DO.EntityNotFoundException ex)
+            {
+                throw new BO.EntityNotFoundException(ex);
+            }
+            catch (DO.NullExeption ex)
+            {
+                throw new BO.NullExeptionForDO(ex);
+            }
+           
         }
         /// <summary>
         /// Helper function that returns a string with the order details
@@ -66,7 +78,7 @@ namespace BlImplementation
         /// <param name="date">date</param>
         /// <param name="text">Description</param>
         /// <returns></returns>
-        private string GiveOrderDate(DateTime date, string text)
+        private string GiveOrderDate(DateTime? date, string text)
         {
             string tempString = $@"in {date}: the order is {text}";
             return tempString;
@@ -85,7 +97,7 @@ namespace BlImplementation
             {
                 int totalAmount = 0;
                 double totalPrice = 0;
-                foreach (DO.OrderItem it in Dal.OrderItem.List(x => x is not null && x?.Id == element?.Id) ?? throw new ItemIsNullExeption("order item list is null"))
+                foreach (DO.OrderItem it in Dal.OrderItem.List(x => x is not null && x?.Id == element?.Id) ?? throw new NullExeption("order item list"))
                 {
                     totalPrice += it.Price * it.Amount;
                     totalAmount++;
@@ -109,7 +121,7 @@ namespace BlImplementation
         public BO.Order GetData(int id)
         {
             double totalPrice = 0;
-            foreach (DO.OrderItem it in Dal.OrderItem.List(element => element is not null && element?.Id == id) ?? throw new ItemIsNullExeption("order list is null"))
+            foreach (DO.OrderItem it in Dal.OrderItem.List(element => element is not null && element?.Id == id) ?? throw new NullExeption("order list"))
             {
                 totalPrice += it.Price * it.Amount;
             }
@@ -136,6 +148,10 @@ namespace BlImplementation
                 catch (DO.EntityNotFoundException ex)
                 {
                     throw new BO.EntityNotFoundException(ex);
+                }
+                catch (DO.NullExeption ex)
+                {
+                    throw new BO.NullExeptionForDO(ex);
                 }
             }
             throw new BO.IdNotExsitException("Order id not valid");
@@ -166,6 +182,10 @@ namespace BlImplementation
             {
                 throw new BO.EntityNotFoundException(ex);
             }
+            catch (DO.NullExeption ex)
+            {
+                throw new BO.NullExeptionForDO(ex);
+            }
             throw new BO.EntityDetailsWrongException("Order allredy shiped");
         }
         /// <summary>
@@ -192,6 +212,10 @@ namespace BlImplementation
             {
                 throw new BO.EntityNotFoundException(ex);
             }
+            catch (DO.NullExeption ex)
+            {
+                throw new BO.NullExeptionForDO(ex);
+            }
             throw new BO.EntityDetailsWrongException("delivery time cannot be updated");
         }
         /// <summary>
@@ -206,11 +230,11 @@ namespace BlImplementation
             {
                 DO.Order order = Dal.Order.Get(id);
                 List<string?> templist = new();
-                templist.Add(GiveOrderDate(order.OrderDate!.Value, "created"));
-                if (order.ShipDate != DateTime.MinValue)
+                templist.Add(GiveOrderDate(order.OrderDate, "created"));
+                if (order.ShipDate is not null)
                 {
                     templist.Add(GiveOrderDate(order.ShipDate!.Value, "shipped"));
-                    if (order.DeliveryrDate != DateTime.MinValue)
+                    if (order.DeliveryrDate is not null)
                         templist.Add(GiveOrderDate(order.DeliveryrDate!.Value, "deliverd"));
                 }
                 OrderTracking tracking = new()
@@ -228,6 +252,10 @@ namespace BlImplementation
             catch (DO.AllreadyExistException ex)
             {
                 throw new BO.AllreadyExistException(ex);
+            }
+            catch (DO.NullExeption ex)
+            {
+                throw new BO.NullExeptionForDO(ex);
             }
         }
         /// <summary>
@@ -249,11 +277,11 @@ namespace BlImplementation
                 int id = 0;
                 if (Dal.Order.Get(orderId).ShipDate is null)
                 {
-                    foreach (var orderItems in Dal.OrderItem.List(element => element?.OredrID == orderId)?? throw new Exception()) //************
+                    foreach (var orderItems in Dal.OrderItem.List(element => element?.OredrID == orderId)?? throw new NullExeption("order item list"))
                     {
                         if (productId == orderItems?.ProductID)
                         {
-                            id = orderItems?.Id ?? throw  new Exception();
+                            id = orderItems?.Id ?? throw new NullExeption("order item");
                             break;
                         }
                     }
@@ -298,6 +326,10 @@ namespace BlImplementation
             catch (DO.AllreadyExistException ex)
             {
                 throw new BO.AllreadyExistException(ex);
+            }
+            catch (DO.NullExeption ex)
+            {
+                throw new BO.NullExeptionForDO(ex);
             }
         }
     }

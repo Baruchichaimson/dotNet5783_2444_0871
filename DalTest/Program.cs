@@ -132,8 +132,8 @@ internal class Program
                         Console.WriteLine("Enter the customer adress: ");
                         newOrder.CustomerAdress = Console.ReadLine();
                         newOrder.OrderDate = DateTime.Now;
-                        newOrder.ShipDate = DateTime.MinValue;
-                        newOrder.DeliveryrDate = DateTime.MinValue;
+                        newOrder.ShipDate = null;
+                        newOrder.DeliveryrDate = null;
                         dallist.Order.Add(newOrder); /// go to the function that add order to array of orders.
                         Console.WriteLine("the order has been succsefully added ");
                     }

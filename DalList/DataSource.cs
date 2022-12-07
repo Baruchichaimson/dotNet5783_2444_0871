@@ -6,38 +6,47 @@ using System.Reflection.Metadata.Ecma335;
 namespace Dal;
 internal static class DataSource
 {
-    static public readonly Random randomNumber = new Random(DateTime.Now.Millisecond); ///initialization random object.
+    ///<summary>
+    /// initialization random object.
+    /// </summary>
+    static public readonly Random randomNumber = new Random(DateTime.Now.Millisecond);
 
-    internal static List<Product?> Products = new List<Product?>();        ///initialization three arrays for the three entities.
+    ///<summary>
+    /// initialization three list for the three entities.
+    /// </summary>
+    internal static List<Product?> Products = new List<Product?>();       
     internal static List<Order?> Orders = new List<Order?>();
     internal static List<OrderItem?> OrderItems = new List<OrderItem?>();
 
-    private static void S_Initialize() ///function call to any function that holding the data of the entities.
+    ///<summary>
+    /// function call to any function that holding the data of the entities.
+    /// </summary>
+    private static void S_Initialize()
     {
         AddProductToStore();
         AddOrderToStore();
         AddOrderItemsToStore();
     }
-    static DataSource() ///call of the default constructor we have inn the class.
+    ///<summary>
+    /// call of the default constructor we have inn the class.
+    /// </summary>
+    static DataSource() 
     {
         S_Initialize();
     }
     /// <summary>
     /// if the id number that was chooce is allready 
-    /// in the database return fallse and if not return true.
     /// </summary>
-    /// <param name="id"></param> the number that chooce.
-    /// <returns></returns>
+    /// <param name="id"> the number that chooce.</param>
+    /// <returns> in the database return fallse and if not return true.</returns>
     private static bool check(int id)
     {
-        foreach (Product? myproduct in Products)
-        {
-            if (id == myproduct?.Id)
-                return false;
-        }
-        return true;
+        return Products.Exists(element => element?.Id == id);
     }
-    static void AddProductToStore() ///put products in the store.
+    ///<summary>
+    /// put products in the store.
+    /// </summary>
+    static void AddProductToStore() 
     {
         ///arrays for all the product ant array to one category etc.
         string[] CoffeMachines = new string[] { "PIXIE", "CITIZE", "ESSENZA", "ESSENZA_PLUSE", "ATELIER" };
@@ -76,7 +85,6 @@ internal static class DataSource
                     CoffeeShop.ACCESSORIES => Accessories[j],
                     CoffeeShop.FROTHERS => Forthers[j],
                     CoffeeShop.SWEETS => Sweets[j],
-                    _ => throw new ArgumentNullException("You didnt send right name")
                 };
                 newProduct.Price = randomNumber.Next(100, 300);
 
@@ -85,10 +93,12 @@ internal static class DataSource
             }
         }
     }
-    static void AddOrderToStore()  ///put orders in the store.
+    ///<summary>
+    /// put orders in the store.
+    /// </summary>
+    static void AddOrderToStore()  
     {
         ///arrays for all the names and emails
-        ///
         /// and address of the people are make order.
         string[] costomerName = new string[]
         { "Laurent Conklin", "Ariana Mohring", "Ilsa Humphrey", "Breanne Bursnell", "Alexandros Popping",
@@ -139,16 +149,19 @@ internal static class DataSource
                 ///random number just we make him to be one ot two days after the random date we have.
                 newOrder.ShipDate = newOrder.OrderDate?.Add(new TimeSpan(randomNumber.Next(1, 3), 0, 0, 0));
             else
-                newOrder.ShipDate = DateTime.MinValue;
+                newOrder.ShipDate = null;
             if (i < 12)
                 ///random number just we make him to be one ot two days after the random date we have.
                 newOrder.DeliveryrDate = newOrder.ShipDate?.Add(new TimeSpan(randomNumber.Next(4, 6), 0, 0, 0));
             else
-                newOrder.DeliveryrDate = DateTime.MinValue;
+                newOrder.DeliveryrDate = null;
             Orders.Add(newOrder); ///put the new order in the store.
         }
     }
-    static void AddOrderItemsToStore() ///put orderitems in the store.
+    ///<summary>
+    /// put orderitems in the store.
+    /// </summary>
+    static void AddOrderItemsToStore()
     {
         for (int i = 0; i < 20; i++)  ///until 40 item product (minimum amount of item for one order is two).
         {
@@ -166,11 +179,7 @@ internal static class DataSource
             }
         }
     }
-    /// we make class config for all the run number we have here in the data source.
-   // internal static int NextOrder = 0;
-    //internal static int NextOrderItem = 0;
-    //internal static int NextProduct = 0;
-
+   
     ///run number that start from number with 6 digits for the id number.
     private static int IdOrder = 1;
     internal static int GetOrder => IdOrder++;

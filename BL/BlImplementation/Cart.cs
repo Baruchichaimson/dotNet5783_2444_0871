@@ -18,6 +18,7 @@ namespace BlImplementation
     internal class Cart : ICart
     {
         private IDal Dal = new DO.DalList();
+
         /// <summary>
         /// the function add product from the store to the basket shopping .
         /// </summary>
@@ -33,39 +34,46 @@ namespace BlImplementation
                 cart.Items = new();
             }
             bool prodactExistInCart  = cart.Items.Exists(x => x?.ProductID == id);
-            DO.Product product = Dal.Product.GetElement(element => element?.Id== id);
-
-            if (product.Instock > 0) 
+            try
             {
-                if (!prodactExistInCart)
+                DO.Product product = Dal.Product.GetElement(element => element?.Id == id);
+
+                if (product.Instock > 0)
                 {
-                    cart.Items.Add(new BO.OrderItem()
+                    if (!prodactExistInCart)
                     {
-                        ProductID = product.Id,
-                        Name = product.Name,
-                        Price = product.Price,
-                        Amount = 1,
-                        TotalPrice = product.Price
-                    });
-                }
-                else
-                {
-                    foreach (BO.OrderItem? orderItem in cart.Items)
-                    {
-                        if (orderItem?.ProductID == id)
+                        cart.Items.Add(new BO.OrderItem()
                         {
-                            orderItem.Amount++;
-                            orderItem.TotalPrice += product.Price;
-                            break;
+                            ProductID = product.Id,
+                            Name = product.Name,
+                            Price = product.Price,
+                            Amount = 1,
+                            TotalPrice = product.Price
+                        });
+                    }
+                    else
+                    {
+                        foreach (BO.OrderItem? orderItem in cart.Items)
+                        {
+                            if (orderItem?.ProductID == id)
+                            {
+                                orderItem.Amount++;
+                                orderItem.TotalPrice += product.Price;
+                                break;
+                            }
                         }
                     }
-                }
-                if (cart.TotalPrice > 0)
-                    cart.TotalPrice += product.Price;
-                else
-                    cart.TotalPrice = product.Price;
-                return cart;
+                    if (cart.TotalPrice > 0)
+                        cart.TotalPrice += product.Price;
+                    else
+                        cart.TotalPrice = product.Price;
+                    return cart;
 
+                };
+            }
+            catch (DO.NullExeption ex)
+            {
+                throw new BO.NullExeptionForDO(ex);
             }
             throw new BO.IncorrectAmountException("not enough amount in stock");
                 
@@ -91,7 +99,7 @@ namespace BlImplementation
                 foreach (BO.OrderItem? orderItem in cart.Items)
                 {
 
-                    DO.Product product = Dal.Product.Get(orderItem!.ProductID);
+                    DO.Product product = Dal.Product.Get(orderItem?.ProductID ?? throw new NullExeption("item in cart"));
 
                     if (orderItem.Amount > product.Instock || orderItem.Amount <= 0)
                     {
@@ -99,7 +107,7 @@ namespace BlImplementation
                     }
                 }
 
-                if (cart.CustomerEmail == null || cart.CustomerAddress == null || cart.CustomerName == null)
+                if (cart.CustomerEmail is null || cart.CustomerAddress is null || cart.CustomerName is null)
                 {
                     throw new BO.EntityDetailsWrongException("missing Customer details");
                 }
@@ -118,7 +126,8 @@ namespace BlImplementation
                 foreach (var item in cart.Items)
                 {
                     if (item is null)
-                        throw new ItemIsNullExeption("cart item is null");
+                        throw  new NullExeption("cart item");
+
                     DO.OrderItem orderItem = new()
                     {
                         ProductID = item.ProductID,
@@ -140,6 +149,10 @@ namespace BlImplementation
             {
                 throw new BO.AllreadyExistException(ex);
             }
+            catch (DO.NullExeption ex)
+            {
+                throw new BO.NullExeptionForDO(ex);
+            }
         }
         /// <summary>
         /// the function is check if the order item is correct and if wh have it we can update is amount.
@@ -160,7 +173,8 @@ namespace BlImplementation
             foreach (var item in cart.Items)
             {
                 if (item is null)
-                    throw new ItemIsNullExeption("cart item is null");
+                    throw new NullExeption("cart item");
+
                 if (item.ProductID == id)
                 {
                     if (newAmount == 0)
