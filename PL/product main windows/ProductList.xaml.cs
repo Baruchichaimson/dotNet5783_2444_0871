@@ -17,17 +17,22 @@ using System.Windows.Shapes;
 
 namespace PL.product_main_windows
 {
+    public  delegate void AddingNewItemEventArgs(string id);
+
     /// <summary>
     /// Interaction logic for ProductList.xaml
     /// </summary>
+
+
     public partial class ProductList : Window
     {
-        private IBl bl;
+        private IBl _bl;
+
         public ProductList()
         {
             InitializeComponent();
-            bl = new Bl();
-            ProductlistView.ItemsSource = bl.Product.GetList();
+            _bl = new Bl();
+            ProductlistView.ItemsSource = _bl.Product.GetList();
             CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
 
         }
@@ -45,15 +50,25 @@ namespace PL.product_main_windows
                 "FROTHERS" => CoffeeShop.FROTHERS,
                 "SWEETS" => CoffeeShop.SWEETS
             };
-            ProductlistView.ItemsSource = bl.Product.GetList(element => element?.Category == Categoryname);
+            ProductlistView.ItemsSource = _bl.Product.GetList(element => element?.Category == Categoryname);
         }
 
         private void Reset_button_Click(object sender, RoutedEventArgs e)
         {
-            ProductlistView.ItemsSource = bl.Product.GetList();
+            ProductlistView.ItemsSource = _bl.Product.GetList();
             CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
         }
 
-        private void Add_Product_Button_Click(object sender, RoutedEventArgs e) => new AddProductWindow(bl).Show();
+        private void Add_Product_Button_Click(object sender, RoutedEventArgs e) => new AddProductWindow(_bl).Show();
+
+        private void ProductlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (ProductlistView.SelectedItem is ProductForList productForList)
+            {
+                new AddProductWindow(_bl, productForList.ID).Show();
+            }
+          
+            
+        }
     }
 }

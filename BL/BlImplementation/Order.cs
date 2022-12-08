@@ -104,8 +104,8 @@ namespace BlImplementation
                 }
                 return new OrderForList
                 {
-                    ID = element!.Value.Id,
-                    CustomerName = element!.Value.CustomerName,
+                    ID = (int)element?.Id!,
+                    CustomerName = (string)element?.CustomerName!,
                     TotalPrice = totalPrice,
                     AmountOfItems = totalAmount,
                     Status = Status(element!.Value),
@@ -233,9 +233,9 @@ namespace BlImplementation
                 templist.Add(GiveOrderDate(order.OrderDate, "created"));
                 if (order.ShipDate is not null)
                 {
-                    templist.Add(GiveOrderDate(order.ShipDate!.Value, "shipped"));
+                    templist.Add(GiveOrderDate(order.ShipDate, "shipped"));
                     if (order.DeliveryrDate is not null)
-                        templist.Add(GiveOrderDate(order.DeliveryrDate!.Value, "deliverd"));
+                        templist.Add(GiveOrderDate(order.DeliveryrDate, "deliverd"));
                 }
                 OrderTracking tracking = new()
                 {

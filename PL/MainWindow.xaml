@@ -6,8 +6,31 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button Click="ShowProductButton_Click" Content="Button" HorizontalAlignment="Left" Margin="364,204,0,0" VerticalAlignment="Top" Height="33" Width="76"/>
 
+    <Grid >
+        <Grid.Background>
+            <ImageBrush TileMode="None" Stretch="UniformToFill" ImageSource="/צילום מסך_20221207_231839.png"/>
+        </Grid.Background>
+
+        <Border CornerRadius="50" >
+            <Button x:Name="Button"   Click="ShowProductButton_Click" Content="WELCOME" HorizontalAlignment="Center"
+                VerticalAlignment="Top" Height="79" Margin="0,165,0,0" Foreground="#FF41710E" 
+                FontSize="30" FontWeight="Bold" Width="190" >
+                <Button.Resources>
+                    <Style TargetType="Button" >
+                        <Style.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="50" />
+                            </Style>
+                        </Style.Resources>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </Border>
+        
+     
+            
+           
+   
     </Grid>
 </Window>

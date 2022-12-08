@@ -7,12 +7,16 @@
         mc:Ignorable="d"
         Title="ProductList" Height="640" Width="800">
     <Grid Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="24*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
             <RowDefinition Height="500*"/>
             <RowDefinition Height="Auto" MinHeight="0"/>
         </Grid.RowDefinitions>
-        <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto">
+        <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -21,7 +25,7 @@
             <Label x:Name="label" Content="Category" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="178" Margin="10,0,0,0" Background="{x:Null}" FontSize="20"/>
             <Button x:Name="button" Content="Reset List" HorizontalAlignment="Left" Height="27" Margin="306,0,0,0" VerticalAlignment="Center" Width="70" Click="Reset_button_Click"/>
         </Grid>
-        <ListView x:Name="ProductlistView" d:ItemsSource="{d:SampleData ItemCount=5}" Foreground="#FF041D71" Margin="0,2,0,0" Grid.Row="1">
+        <ListView x:Name="ProductlistView" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="ProductlistView_MouseDoubleClick" Foreground="#FF041D71" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="2" Background="White">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="id" DisplayMemberBinding="{Binding ID}"/>
@@ -31,7 +35,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Add new Product" Grid.Row="2" HorizontalAlignment="Right" Margin="5" Padding="5" Click="Add_Product_Button_Click"/>
+        <Button Content="Add new Product" Grid.Row="2" HorizontalAlignment="Left" Margin="636,5,0,5" Padding="5" Click="Add_Product_Button_Click"/>
     </Grid>
 
 

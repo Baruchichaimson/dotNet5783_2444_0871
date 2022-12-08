@@ -179,7 +179,7 @@ internal static class DataSource
 
                 newOrderItem.Id = GetOrderItem; ///the run number that we have to the orderitem we put in the id of the order item. 
                 newOrderItem.ProductID = Products[randomProduct + j]!.Value.Id; ///put id product from the array product in the id.
-                newOrderItem.OredrID = Orders[i]!.Value.Id; ///put id order from the array order in the id.
+                newOrderItem.OredrID = Orders[i]?.Id ?? -1; ///put id order from the array order in the id.
                 newOrderItem.Price = Products[randomProduct + j]!.Value.Price; ///put price to the itemorder from the array product in the price.
                 newOrderItem.Amount = randomNumber.Next(1, 7); ///we can order from one product just between 1 and 6.
                 OrderItems.Add(newOrderItem); ///up the run number for the order item.

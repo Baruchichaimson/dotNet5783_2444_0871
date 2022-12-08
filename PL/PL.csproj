@@ -18,12 +18,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="צילום מסך_20221207_231839.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="App.xaml.cs" />
     <None Include="AssemblyInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="צילום מסך_20221207_231839.png" />
   </ItemGroup>
 
 </Project>

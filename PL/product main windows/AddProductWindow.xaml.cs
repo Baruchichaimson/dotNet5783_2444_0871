@@ -22,26 +22,70 @@ namespace PL.product_main_windows
     /// </summary>
     public partial class AddProductWindow : Window
     {
-        private IBl blForAdd;
-        public AddProductWindow(IBl bl)
+        private IBl _blForAdd;
+
+        private BO.Product currentProduct;
+
+        public AddProductWindow(IBl bl, bool c)
         {
-            blForAdd = bl;
             InitializeComponent();
+            _blForAdd = bl;
+            categorychoose.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
         }
 
-        private void addProductButton(object sender, RoutedEventArgs e)
+        public AddProductWindow(IBl bl, int productId) : this(bl, true)
         {
-            blForAdd.Product.Add(new BO.Product
-            {
-                ID = int.Parse(id.Text),
-                Name = name.Text,
-                Price = double.Parse(price.Text),
-                InStock = int.Parse(instoke.Text),
-                Category = (CoffeeShop)Enum.Parse(typeof(CoffeeShop), category.Text, true)
-
-            });
-           this.Close();
+            currentProduct = bl.Product.GetData(productId);
+            DataContext = currentProduct;
+            addOrUpdateProdut.Content = "Update";
         }
 
+        public AddProductWindow(IBl bl) : this(bl, true)
+        {
+            currentProduct = new BO.Product();
+            DataContext = currentProduct;
+            addOrUpdateProdut.Content = "Add";
+        }
+
+        
+
+        private void addOrUpdateProductButton(object sender, RoutedEventArgs e)
+        {
+            try
+            { 
+                var combo = sender as ComboBox;
+                if (int.TryParse(id.Text, out int x) == false || string.IsNullOrEmpty(name.Text) || double.TryParse(price.Text, out double y) == false || int.TryParse(instoke.Text, out int z) == false)
+                {
+                    MessageBox.Show("missing details");
+                    return;
+                }
+                _blForAdd.Product.Add(new BO.Product
+                {
+                    ID = int.Parse(id.Text),
+                    Name = name.Text,
+                    Price = double.Parse(price.Text),
+                    InStock = int.Parse(instoke.Text),
+                    Category = (CoffeeShop)categorychoose.SelectedItem
+                });
+                this.Close();
+            }
+            catch(BO.AllreadyExistException ex) when (ex.InnerException is not null)
+            {
+                MessageBox.Show(ex.Message + ex.InnerException!.Message);
+            }
+            catch(BO.EntityDetailsWrongException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
     }
 }
