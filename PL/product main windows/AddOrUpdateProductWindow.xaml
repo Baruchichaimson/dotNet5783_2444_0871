@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.product_main_windows"
         mc:Ignorable="d"
-        Title="AddProductWindow" Height="450" Width="600">
+        Title="AddProductWindow" Height="460" Width="600">
 
     <Grid>
 
@@ -14,17 +14,18 @@
             <RadialGradientBrush>
                 <GradientStop Color="#FFDFD2C4"/>
                 <GradientStop Color="#FF9C4A08" Offset="1"/>
+
             </RadialGradientBrush>
         </Grid.Background>
 
         <TextBox x:Name="name" HorizontalAlignment="Left" Margin="182,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.5,0.5" Height="23"/>
         <TextBox x:Name="id" HorizontalAlignment="Left" Margin="182,70,0,0" TextWrapping="Wrap" Text="{Binding ID}" VerticalAlignment="Top" Width="120" Height="22"/>
         <ComboBox x:Name="categorychoose" HorizontalAlignment="Left" Margin="182,280,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="comboBox_SelectionChanged" SelectedIndex="0"/>
-        <TextBox x:Name="price" HorizontalAlignment="Left" Margin="182,210,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" Height="22" Text="{Binding Price}" TextChanged="price_TextChanged" />
-        <TextBox x:Name="instoke" HorizontalAlignment="Left" Margin="182,350,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" Text="{Binding InStock}"/>
-        <Button x:Name="addOrUpdateProdut"   HorizontalAlignment="Left" Margin="458,372,0,0" VerticalAlignment="Top" RenderTransformOrigin="-4.404,2.457" Click="addOrUpdateProductButton" Height="33" Width="90">
+        <TextBox x:Name="price" HorizontalAlignment="Left" Margin="182,210,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" Height="22" Text="{Binding Price}" />
+        <TextBox x:Name="instoke" HorizontalAlignment="Left" Margin="182,347,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" Text="{Binding InStock}" Height="21"/>
+        <Button x:Name="addOrUpdateProdut"   HorizontalAlignment="Left" Margin="479,372,0,0" VerticalAlignment="Top" RenderTransformOrigin="-4.404,2.457" Click="addOrUpdateProductButton" Height="33" Width="90">
             <Button.Resources>
-            <Style TargetType="Button" >
+                <Style TargetType="Button" >
                     <Style.Resources>
                         <Style TargetType="Border" >
                             <Setter Property="CornerRadius" Value="20"/>
@@ -33,11 +34,11 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <Label x:Name="label" Content="ID" HorizontalAlignment="Left" Margin="349,56,0,0" VerticalAlignment="Top" FontSize="20"/>
-        <Label x:Name="label1" Content="PRICE" HorizontalAlignment="Left" Margin="341,196,0,0" VerticalAlignment="Top" FontSize="20"/>
-        <Label x:Name="label2" Content="NAME" HorizontalAlignment="Left" Margin="341,127,0,0" VerticalAlignment="Top" FontSize="20"/>
-        <Label x:Name="label3" Content="CATEGORY" HorizontalAlignment="Left" Margin="326,266,0,0" VerticalAlignment="Top" FontSize="20"/>
-        <Label x:Name="label4" Content="IN STOCK" HorizontalAlignment="Left" Margin="324,338,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.545,0.594" Height="44" FontSize="20" Width="110">
+        <Label x:Name="label" Content="ID" HorizontalAlignment="Left" Margin="307,72,0,0" VerticalAlignment="Top" FontSize="14" FontFamily="Aharoni" Height="28"/>
+        <Label x:Name="label1" Content="PRICE" HorizontalAlignment="Left" Margin="307,210,0,0" VerticalAlignment="Top" FontSize="14" FontFamily="Aharoni"/>
+        <Label x:Name="label2" Content="NAME" HorizontalAlignment="Left" Margin="307,140,0,0" VerticalAlignment="Top" FontSize="14" FontFamily="Aharoni"/>
+        <Label x:Name="label3" Content="CATEGORY" HorizontalAlignment="Left" Margin="307,281,0,0" VerticalAlignment="Top" FontSize="14" FontFamily="Aharoni" RenderTransformOrigin="0.484,0.942"/>
+        <Label x:Name="label4" Content="IN STOCK" HorizontalAlignment="Left" Margin="310,349,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.545,0.594" Height="26" FontSize="14" Width="110" FontFamily="Aharoni">
             <Label.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -49,6 +50,14 @@
         </Label>
 
         <Slider x:Name="slider" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding ElementName=price, Path=Text}"  Maximum="5000" Orientation="Vertical" HorizontalAlignment="Left" Margin="142,145,0,0" VerticalAlignment="Top" Width="22" Height="100"/>
+        <Image  Source="C:\Users\golan\source\repos\Baruchichaimson\dotNet5783_2444_0871\PL\product main windows\CoffeeHouseLogoBrownWhite.png" HorizontalAlignment="Left" Height="111" Margin="461,20,0,0" VerticalAlignment="Top" Width="119" Stretch="Fill" Cursor="No" >
+            <Image.OpacityMask>
+                <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.6" RadiusY="0.6">
+                    <GradientStop Color="#ffffffff" Offset="0.5" />
+                    <GradientStop Color="#00ffffff" Offset="0.8" />
+                </RadialGradientBrush>
+            </Image.OpacityMask>
+        </Image>
 
 
 

@@ -59,14 +59,30 @@ namespace PL.product_main_windows
                     MessageBox.Show("missing details");
                     return;
                 }
-                _blForAdd.Product.Add(new BO.Product
+                if(addOrUpdateProdut.Content == "Add")
                 {
-                    ID = int.Parse(id.Text),
-                    Name = name.Text,
-                    Price = double.Parse(price.Text),
-                    InStock = int.Parse(instoke.Text),
-                    Category = (CoffeeShop)categorychoose.SelectedItem
-                });
+                    _blForAdd.Product.Add(new BO.Product
+                    {
+                        ID = int.Parse(id.Text),
+                        Name = name.Text,
+                        Price = double.Parse(price.Text),
+                        InStock = int.Parse(instoke.Text),
+                        Category = (CoffeeShop)categorychoose.SelectedItem
+                    });
+
+                }
+                else
+                {
+                    _blForAdd.Product.Update(new BO.Product
+                    {
+                        ID = int.Parse(id.Text),
+                        Name = name.Text,
+                        Price = double.Parse(price.Text),
+                        InStock = int.Parse(instoke.Text),
+                        Category = (CoffeeShop)categorychoose.SelectedItem
+                    });
+
+                }
                 this.Close();
             }
             catch(BO.AllreadyExistException ex) when (ex.InnerException is not null)
@@ -88,9 +104,6 @@ namespace PL.product_main_windows
             
         }
 
-        private void price_TextChanged(object sender, TextChangedEventArgs e)
-        {
 
-        }
     }
 }
