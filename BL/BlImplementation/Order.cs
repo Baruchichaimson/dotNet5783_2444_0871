@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using BO;
 using System.Xml.Schema;
 
 namespace BlImplementation
@@ -22,18 +21,18 @@ namespace BlImplementation
         /// </summary>
         /// <param name="item">order from data layer</param>
         /// <returns>order status</returns>
-        private OrderStatus Status(DO.Order item)
+        private BO.OrderStatus Status(DO.Order item)
         {
-            OrderStatus currentStatus = new();
+            BO.OrderStatus currentStatus = new();
             if (item.DeliveryrDate is null)
             {
                 if (item.ShipDate is null)
-                    currentStatus = OrderStatus.CONFIRMED;
+                    currentStatus = BO.OrderStatus.CONFIRMED;
                 else
-                    currentStatus = OrderStatus.SHIPPED;
+                    currentStatus = BO.OrderStatus.SHIPPED;
             }
             else
-                currentStatus = OrderStatus.PROVIDED;
+                currentStatus = BO.OrderStatus.PROVIDED;
             return currentStatus;
         }
         /// <summary>
@@ -42,14 +41,14 @@ namespace BlImplementation
         /// </summary>
         /// <param name="idOrder">order id from data layer</param>
         /// <returns>A list of orderItem of the logical layer</returns>
-        private List<OrderItem> GiveList(DO.Order idOrder)
+        private List<BO.OrderItem> GiveList(DO.Order idOrder)
         {
             try
             {
-                List<OrderItem> list = new List<OrderItem>();
-                foreach (DO.OrderItem? item in Dal.OrderItem.List(element => element?.OredrID == idOrder.Id) ?? throw new NullExeption("order item list"))
+                List<BO.OrderItem> list = new List<BO.OrderItem>();
+                foreach (DO.OrderItem? item in Dal.OrderItem.List(element => element?.OredrID == idOrder.Id) ?? throw new BO.NullExeption("order item list"))
                 {
-                    OrderItem dataItem = new()
+                    BO.OrderItem dataItem = new()
                     {
                         ID = (int)item?.OredrID!,
                         ProductID = (int)item?.ProductID!,
@@ -90,19 +89,19 @@ namespace BlImplementation
         /// to a list of order  from the logical layer
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<OrderForList?>? GetList()
+        public IEnumerable<BO.OrderForList?>? GetList()
         {
             IEnumerable<DO.Order?>? list = Dal.Order.List(element => element is not null);
             return list?.Select(element => 
             {
                 int totalAmount = 0;
                 double totalPrice = 0;
-                foreach (DO.OrderItem it in Dal.OrderItem.List(x => x is not null && x?.Id == element?.Id) ?? throw new NullExeption("order item list"))
+                foreach (DO.OrderItem it in Dal.OrderItem.List(x => x is not null && x?.Id == element?.Id) ?? throw new BO.NullExeption("order item list"))
                 {
                     totalPrice += it.Price * it.Amount;
                     totalAmount++;
                 }
-                return new OrderForList
+                return new BO.OrderForList
                 {
                     ID = (int)element?.Id!,
                     CustomerName = (string)element?.CustomerName!,
@@ -121,7 +120,7 @@ namespace BlImplementation
         public BO.Order GetData(int id)
         {
             double totalPrice = 0;
-            foreach (DO.OrderItem it in Dal.OrderItem.List(element => element is not null && element?.Id == id) ?? throw new NullExeption("order list"))
+            foreach (DO.OrderItem it in Dal.OrderItem.List(element => element is not null && element?.Id == id) ?? throw new BO.NullExeption("order list"))
             {
                 totalPrice += it.Price * it.Amount;
             }
@@ -224,7 +223,7 @@ namespace BlImplementation
         /// <param name="id"> order id</param>
         /// <returns>Updated orderTracking </returns>
         /// <exception cref="EntityNotFoundException">Throws an exception when the order was not found in the database</exception>
-        public OrderTracking OrderTracking(int id)
+        public BO.OrderTracking OrderTracking(int id)
         {
             try
             {
@@ -237,7 +236,7 @@ namespace BlImplementation
                     if (order.DeliveryrDate is not null)
                         templist.Add(GiveOrderDate(order.DeliveryrDate, "deliverd"));
                 }
-                OrderTracking tracking = new()
+                BO.OrderTracking tracking = new()
                 {
                     ID = id,
                     Status = Status(order),
@@ -277,11 +276,11 @@ namespace BlImplementation
                 int id = 0;
                 if (Dal.Order.Get(orderId).ShipDate is null)
                 {
-                    foreach (var orderItems in Dal.OrderItem.List(element => element?.OredrID == orderId)?? throw new NullExeption("order item list"))
+                    foreach (var orderItems in Dal.OrderItem.List(element => element?.OredrID == orderId)?? throw new BO.NullExeption("order item list"))
                     {
                         if (productId == orderItems?.ProductID)
                         {
-                            id = orderItems?.Id ?? throw new NullExeption("order item");
+                            id = orderItems?.Id ?? throw new BO.NullExeption("order item");
                             break;
                         }
                     }

@@ -18,29 +18,29 @@ using System.Windows.Shapes;
 namespace PL.product_main_windows
 {
     /// <summary>
-    /// Interaction logic for AddProductWindow.xaml
+    /// Interaction logic for AddOrUpdateProductWindow.xaml
     /// </summary>
-    public partial class AddProductWindow : Window
+    public partial class AddOrUpdateProductWindow : Window
     {
         private IBl _blForAdd;
 
         private BO.Product currentProduct;
 
-        public AddProductWindow(IBl bl, bool c)
+        public AddOrUpdateProductWindow(IBl bl, bool c)
         {
             InitializeComponent();
             _blForAdd = bl;
             categorychoose.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
         }
 
-        public AddProductWindow(IBl bl, int productId) : this(bl, true)
+        public AddOrUpdateProductWindow(IBl bl, int productId) : this(bl, true)
         {
             currentProduct = bl.Product.GetData(productId);
             DataContext = currentProduct;
             addOrUpdateProdut.Content = "Update";
         }
 
-        public AddProductWindow(IBl bl) : this(bl, true)
+        public AddOrUpdateProductWindow(IBl bl) : this(bl, true)
         {
             currentProduct = new BO.Product();
             DataContext = currentProduct;
@@ -86,6 +86,11 @@ namespace PL.product_main_windows
         private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             
+        }
+
+        private void price_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

@@ -59,13 +59,13 @@ namespace PL.product_main_windows
             CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
         }
 
-        private void Add_Product_Button_Click(object sender, RoutedEventArgs e) => new AddProductWindow(_bl).Show();
+        private void Add_Product_Button_Click(object sender, RoutedEventArgs e) => new AddOrUpdateProductWindow(_bl).Show();
 
         private void ProductlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (ProductlistView.SelectedItem is ProductForList productForList)
             {
-                new AddProductWindow(_bl, productForList.ID).Show();
+                new AddOrUpdateProductWindow(_bl, productForList.ID).Show();
             }
           
             

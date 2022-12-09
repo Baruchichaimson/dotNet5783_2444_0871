@@ -4,8 +4,6 @@ using DalApi;
 using System.Linq;
 //using System.Security.Principal;
 namespace Dal;
-
-
 /// <summary>
 /// class for Manage The order database
 /// </summary>

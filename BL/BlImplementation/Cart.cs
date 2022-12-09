@@ -8,7 +8,6 @@ using DalApi;
 using System.Text.RegularExpressions;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using BO;
 
 namespace BlImplementation
 {
@@ -99,7 +98,7 @@ namespace BlImplementation
                 foreach (BO.OrderItem? orderItem in cart.Items)
                 {
 
-                    DO.Product product = Dal.Product.Get(orderItem?.ProductID ?? throw new NullExeption("item in cart"));
+                    DO.Product product = Dal.Product.Get(orderItem?.ProductID ?? throw new BO.NullExeption("item in cart"));
 
                     if (orderItem.Amount > product.Instock || orderItem.Amount <= 0)
                     {
@@ -126,7 +125,7 @@ namespace BlImplementation
                 foreach (var item in cart.Items)
                 {
                     if (item is null)
-                        throw  new NullExeption("cart item");
+                        throw  new BO.NullExeption("cart item");
 
                     DO.OrderItem orderItem = new()
                     {
@@ -173,7 +172,7 @@ namespace BlImplementation
             foreach (var item in cart.Items)
             {
                 if (item is null)
-                    throw new NullExeption("cart item");
+                    throw new BO.NullExeption("cart item");
 
                 if (item.ProductID == id)
                 {

@@ -1,5 +1,4 @@
 ﻿using BlApi;
-using BO;
 using Google.Api.Ads.AdWords.v201809;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
@@ -7,7 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 namespace BlImplementation
 {
     /// <summary>
-    /// 
+    /// class for product.
     /// </summary>
     internal class Product : IProduct
     {
@@ -17,11 +16,11 @@ namespace BlImplementation
      /// layer to a list of products of the logical layer
      /// </summary>
      /// <returns></returns>
-    public IEnumerable<ProductForList?>? GetList(Func<ProductForList?, bool>? myFunc = null)
+    public IEnumerable<BO.ProductForList?>? GetList(Func<BO.ProductForList?, bool>? myFunc = null)
         {
-            IEnumerable<DO.Product?>? newCollection = Dal.Product.List() ?? throw new NullExeption("product list");
-            IEnumerable<ProductForList?> productForLists = newCollection.Select(
-            item => new ProductForList
+            IEnumerable<DO.Product?>? newCollection = Dal.Product.List() ?? throw new BO.NullExeption("product list");
+            IEnumerable<BO.ProductForList?> productForLists = newCollection.Select(
+            item => new BO.ProductForList
             {
                 ID = (int)item?.Id!,
                 Name = item?.Name!,
@@ -69,14 +68,14 @@ namespace BlImplementation
         /// <returns></returns>
         /// <exception cref="EntityNotFoundException"> throw an Exception when the product was not found in the database</exception>
         /// <exception cref="IdNotExsitException"> throw an Exception when the id is invalid</exception>
-        public ProductItem GetData(int id, BO.Cart cart)
+        public BO.ProductItem GetData(int id, BO.Cart cart)
         {
             try
             {
                 if (id > 0)
                 {
                     DO.Product product = Dal.Product.Get(id);
-                    ProductItem newProductItem = new()
+                    BO.ProductItem newProductItem = new()
                     {
                         ID = product.Id,
                         Name = product.Name,
@@ -86,7 +85,7 @@ namespace BlImplementation
                     };
                     if (cart.Items is not null)
                     {
-                        OrderItem orderItem = cart.Items.Find(orderItem => orderItem?.ProductID == id) ?? throw new NullExeption("cart item list");
+                        BO.OrderItem orderItem = cart.Items.Find(orderItem => orderItem?.ProductID == id) ?? throw new BO.NullExeption("cart item list");
                         if (orderItem is not null)
                         {
                             newProductItem.Amount = orderItem.Amount;
@@ -103,7 +102,7 @@ namespace BlImplementation
             {
                 throw new BO.NullExeptionForDO(ex);
             }
-            throw new IdNotExsitException("the id is negtive");
+            throw new BO.IdNotExsitException("the id is negtive");
         }
         /// <summary>
         /// A function to add a product to the database
@@ -137,7 +136,7 @@ namespace BlImplementation
                 }
             }
             else
-                throw new EntityDetailsWrongException("The product data is incorrect");
+                throw new BO.EntityDetailsWrongException("The product data is incorrect");
         }
         /// <summary>
         ///  A function to deleting a product from the database
@@ -147,7 +146,7 @@ namespace BlImplementation
         /// <exception cref="ProductIsOnOrderException">It is not possible to delete a product that exists in one of the orders</exception>
         public void Delete(int id)
         {
-            if (!Dal.OrderItem.List()?.Any(x => x?.ProductID == id) ?? throw new NullExeption("order item list"))
+            if (!Dal.OrderItem.List()?.Any(x => x?.ProductID == id) ?? throw new BO.NullExeption("order item list"))
             {
                 try
                 {
@@ -159,7 +158,7 @@ namespace BlImplementation
                 }
             }
             else
-                throw new ProductIsOnOrderException("product exsit in order");
+                throw new BO.ProductIsOnOrderException("product exsit in order");
         }
         /// <summary>
         /// Function to update product details

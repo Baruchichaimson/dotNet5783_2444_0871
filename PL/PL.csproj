@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="product main windows\צילום מסך_20221208_213312.png" />
     <None Remove="צילום מסך_20221207_231839.png" />
   </ItemGroup>
 
@@ -31,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="product main windows\צילום מסך_20221208_213312.png" />
     <Resource Include="צילום מסך_20221207_231839.png" />
   </ItemGroup>
 
