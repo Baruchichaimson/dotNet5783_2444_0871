@@ -23,11 +23,21 @@
             </Grid.ColumnDefinitions >
             <ComboBox x:Name="CategorySelector" Grid.Column="1" SelectionChanged="CategorySelector_SelectionChanged" Margin="10,8,150,8"/>
             <Label x:Name="label" Content="Category" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="178" Margin="10,0,0,0" Background="{x:Null}" FontSize="20"/>
-            <Button x:Name="button" Content="Reset List" HorizontalAlignment="Left" Height="27" Margin="320,0,0,0" VerticalAlignment="Center" Width="70" Click="Reset_button_Click"/>
+            <Button x:Name="button" Content="Reset List" HorizontalAlignment="Left" Height="27" Margin="320,0,0,0" VerticalAlignment="Center" Width="70" Click="Reset_button_Click" Background="#FF176C0F" FontWeight="Bold" Foreground="Black">
+            <Button.Resources>
+                <Style TargetType="Button" >
+                    <Style.Resources>
+                        <Style TargetType="Border" >
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Style.Resources>
+                </Style>
+            </Button.Resources>
+            </Button>
         </Grid>
-        <ListView x:Name="ProductlistView" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="ProductlistView_MouseDoubleClick" Foreground="#FF041D71" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="2">
+        <ListView x:Name="ProductlistView" d:ItemsSource="{d:SampleData ItemCount=5}" MouseDoubleClick="ProductlistView_MouseDoubleClick" Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="2" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" SelectionChanged="ProductlistView_SelectionChanged" AutomationProperties.IsColumnHeader="True">
             <ListView.Background>
-                <ImageBrush ImageSource="/product main windows/צילום מסך_20221208_213312.png"/>
+                <ImageBrush ImageSource="/product main windows/צילום מסך_20221208_213312.png" TileMode="None"/>
             </ListView.Background>
             <ListView.View>
                 <GridView>

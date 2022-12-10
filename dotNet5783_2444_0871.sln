@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL", "BL\BL.csproj", "{8AA5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlTest", "BlTest\BlTest.csproj", "{D2A180AC-8ABF-4F05-89C1-F9493E961ACF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PL", "PL\PL.csproj", "{3C34ECD1-BE8E-4B71-9918-FF892AB02185}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PL", "PL\PL.csproj", "{3C34ECD1-BE8E-4B71-9918-FF892AB02185}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

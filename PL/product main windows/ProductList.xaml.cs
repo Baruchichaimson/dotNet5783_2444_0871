@@ -70,5 +70,15 @@ namespace PL.product_main_windows
           
             
         }
+
+        private void ProductlistView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void ProductlistView_IsMouseCapturedChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
+        }
     }
 }
