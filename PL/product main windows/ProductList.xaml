@@ -23,7 +23,7 @@
             </Grid.ColumnDefinitions >
             <ComboBox x:Name="CategorySelector" Grid.Column="1" SelectionChanged="CategorySelector_SelectionChanged" Margin="10,8,150,8"/>
             <Label x:Name="label" Content="Category" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="178" Margin="10,0,0,0" Background="{x:Null}" FontSize="20"/>
-            <Button x:Name="button" Content="Reset List" HorizontalAlignment="Left" Height="27" Margin="320,0,0,0" VerticalAlignment="Center" Width="70" Click="Reset_button_Click" Background="#FF176C0F" FontWeight="Bold" Foreground="Black">
+            <Button x:Name="button" Content="Reset List" HorizontalAlignment="Left" Height="27" Margin="320,0,0,0" VerticalAlignment="Center" Width="70" Click="Reset_button_Click" FontWeight="Bold" Foreground="Black">
             <Button.Resources>
                 <Style TargetType="Button" >
                     <Style.Resources>
