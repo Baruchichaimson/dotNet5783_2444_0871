@@ -9,7 +9,7 @@
 
     <Grid >
         <Grid.Background>
-            <ImageBrush TileMode="None" Stretch="UniformToFill" ImageSource="/צילום מסך_20221207_231839.png"/>
+            <ImageBrush TileMode="None" Stretch="UniformToFill" ImageSource="צילום מסך_20221207_231839.png"/>
         </Grid.Background>
 
         <Border CornerRadius="50" >
@@ -34,7 +34,7 @@
             </Button>
         </Border>
 
-        <Image  Source="C:\Users\chaim\source\repos\dotNet5783_2444_0871\PL\product main windows\images\Brown and Beige Simple Minimalist Coffee Shop Circle Logo.png" HorizontalAlignment="Center" Height="217" Margin="0,10,0,0" VerticalAlignment="Top" Width="228" Stretch="Fill" Cursor="No" RenderTransformOrigin="0.599,0.607" >
+        <Image  Source="" HorizontalAlignment="Center" Height="217" Margin="0,10,0,0" VerticalAlignment="Top" Width="228" Stretch="Fill" Cursor="No" RenderTransformOrigin="0.599,0.607" >
             <Image.OpacityMask>
                 <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.7" RadiusY="0.7">
                     <GradientStop Color="#ffffffff" Offset="0.5" />
