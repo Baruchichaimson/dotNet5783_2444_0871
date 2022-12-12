@@ -10,15 +10,15 @@ namespace BlImplementation
     /// </summary>
     internal class Product : IProduct
     {
-        private DalApi.IDal Dal = new DO.DalList();
-     /// <summary>
-     /// A function that converts a list of products from the data 
-     /// layer to a list of products of the logical layer
-     /// </summary>
-     /// <returns></returns>
-    public IEnumerable<BO.ProductForList?>? GetList(Func<BO.ProductForList?, bool>? myFunc = null)
+        DalApi.IDal? dal = DalApi.Factory.Get();
+        /// <summary>
+        /// A function that converts a list of products from the data 
+        /// layer to a list of products of the logical layer
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<BO.ProductForList?>? GetList(Func<BO.ProductForList?, bool>? myFunc = null)
         {
-            IEnumerable<DO.Product?>? newCollection = Dal.Product.List() ?? throw new BO.NullExeption("product list");
+            IEnumerable<DO.Product?>? newCollection = dal?.Product.List() ?? throw new BO.NullExeption("product list");
             IEnumerable<BO.ProductForList?> productForLists = newCollection.Select(
             item => new BO.ProductForList
             {
@@ -42,7 +42,7 @@ namespace BlImplementation
             {
                 try
                 {
-                    DO.Product product = Dal.Product.Get(id);
+                    DO.Product product = dal?.Product.Get(id) ?? throw new BO.NullExeption("Dal");
                     BO.Product newProduct = new()
                     {
                         ID = product.Id,
@@ -74,7 +74,7 @@ namespace BlImplementation
             {
                 if (id > 0)
                 {
-                    DO.Product product = Dal.Product.Get(id);
+                    DO.Product product = dal?.Product.Get(id) ?? throw new BO.NullExeption("Dal");
                     BO.ProductItem newProductItem = new()
                     {
                         ID = product.Id,
@@ -124,7 +124,7 @@ namespace BlImplementation
                 };
                 try
                 {
-                    Dal.Product.Add(newProduct);
+                    dal?.Product.Add(newProduct);
                 }
                 catch(DO.AllreadyExistException ex)
                 {
@@ -146,11 +146,11 @@ namespace BlImplementation
         /// <exception cref="ProductIsOnOrderException">It is not possible to delete a product that exists in one of the orders</exception>
         public void Delete(int id)
         {
-            if (!Dal.OrderItem.List()?.Any(x => x?.ProductID == id) ?? throw new BO.NullExeption("order item list"))
+            if (!dal?.OrderItem.List()?.Any(x => x?.ProductID == id) ?? throw new BO.NullExeption("Dal") ?? throw new BO.NullExeption("order item list"))
             {
                 try
                 {
-                    Dal.Product.Delete(id);
+                    dal?.Product.Delete(id);
                 }
                 catch (DO.EntityNotFoundException ex)
                 {
@@ -180,7 +180,7 @@ namespace BlImplementation
                 };
                 try
                 {
-                    Dal.Product.Update(newProduct);
+                    dal?.Product.Update(newProduct);
                 }
                 catch (DO.EntityNotFoundException ex)
                 {

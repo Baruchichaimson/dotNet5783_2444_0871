@@ -1,5 +1,4 @@
-﻿using BlApi;
-using BlImplementation;
+﻿
 using BO;
 using System;
 using System.Collections.Generic;
@@ -26,13 +25,13 @@ namespace PL.product_main_windows
 
     public partial class ProductList : Window
     {
-        private IBl _bl;
+        private BlApi.IBl? _bl;
 
         public ProductList()
         {
             InitializeComponent();
-            _bl = new Bl();
-            ProductlistView.ItemsSource = _bl.Product.GetList();
+            _bl = BlApi.Factory.Get;
+            ProductlistView.ItemsSource = _bl?.Product.GetList();
             CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
 
         }
@@ -50,12 +49,12 @@ namespace PL.product_main_windows
                 "FROTHERS" => CoffeeShop.FROTHERS,
                 "SWEETS" => CoffeeShop.SWEETS
             };
-            ProductlistView.ItemsSource = _bl.Product.GetList(element => element?.Category == Categoryname);
+            ProductlistView.ItemsSource = _bl?.Product.GetList(element => element?.Category == Categoryname);
         }
 
         private void Reset_button_Click(object sender, RoutedEventArgs e)
         {
-            ProductlistView.ItemsSource = _bl.Product.GetList();
+            ProductlistView.ItemsSource = _bl?.Product.GetList();
             CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
         }
 

@@ -32,8 +32,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="product main windows\צילום מסך_20221208_213312.png" />
-    <Resource Include="צילום מסך_20221207_231839.png" />
+    <Resource Include="product main windows\images\צילום מסך_20221208_213312.png" />
+    <Resource Include="product main windows\images\צילום מסך_20221207_231839.png" />
   </ItemGroup>
 
 </Project>

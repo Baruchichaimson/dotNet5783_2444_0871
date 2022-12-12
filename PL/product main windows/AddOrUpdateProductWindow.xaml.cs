@@ -1,10 +1,9 @@
-﻿using BlApi;
-using BlImplementation;
-using BO;
+﻿using BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,32 +21,33 @@ namespace PL.product_main_windows
     /// </summary>
     public partial class AddOrUpdateProductWindow : Window
     {
-        private IBl _blForAdd;
+        BlApi.IBl? bl;
+        Regex regex;
 
         private BO.Product currentProduct;
 
-        public AddOrUpdateProductWindow(IBl bl, bool c)
+        public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, bool c)
         {
             InitializeComponent();
-            _blForAdd = bl;
+            bl = _blForAdd;
             categorychoose.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
         }
 
-        public AddOrUpdateProductWindow(IBl bl, int productId) : this(bl, true)
+        public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, int productId) : this(_blForAdd, true)
         {
-            currentProduct = bl.Product.GetData(productId);
+            //////////////////////////////////////////////////////////////////////////
+            currentProduct = bl?.Product.GetData(productId) ?? throw new Exception("");
             DataContext = currentProduct;
             addOrUpdateProdut.Content = "Update";
+            id.IsEnabled = false;
         }
 
-        public AddOrUpdateProductWindow(IBl bl) : this(bl, true)
+        public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd) : this(_blForAdd, true)
         {
             currentProduct = new BO.Product();
             DataContext = currentProduct;
             addOrUpdateProdut.Content = "Add";
         }
-
-        
 
         private void addOrUpdateProductButton(object sender, RoutedEventArgs e)
         {
@@ -59,9 +59,9 @@ namespace PL.product_main_windows
                     MessageBox.Show("missing details");
                     return;
                 }
-                if(addOrUpdateProdut.Content == "Add")
+                if(addOrUpdateProdut?.Content == "Add" ) 
                 {
-                    _blForAdd.Product.Add(new BO.Product
+                    bl?.Product.Add(new BO.Product
                     {
                         ID = int.Parse(id.Text),
                         Name = name.Text,
@@ -73,7 +73,7 @@ namespace PL.product_main_windows
                 }
                 else
                 {
-                    _blForAdd.Product.Update(new BO.Product
+                    bl?.Product.Update(new BO.Product
                     {
                         ID = int.Parse(id.Text),
                         Name = name.Text,
@@ -104,6 +104,26 @@ namespace PL.product_main_windows
             
         }
 
-
+        private void name_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            
+            regex = new Regex("/^[a - z,.'-]+$/i");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+        private void id_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            regex = new Regex("^[^0-9]+$");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+        private void price_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            regex = new Regex("/ ^[0 - 9] + (\\.[0 - 9] +)?$");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+        private void instoke_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            regex = new Regex("^[^0-9]+$");
+            e.Handled = regex.IsMatch(e.Text);
+        }
     }
 }

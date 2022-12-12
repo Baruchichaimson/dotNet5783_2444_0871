@@ -1,7 +1,6 @@
 ﻿using DalApi;
 using BlImplementation;
 using Google.Api.Ads.AdWords.v201809;
-using BlApi;
 using BO;
 using System.Threading.Channels;
 using System.ServiceModel.Channels;
@@ -15,11 +14,14 @@ internal class Program
     /// <summary>
     /// An arttitube of the interface that contains all the logical entities
     /// </summary>
-    private static IBl bl = new Bl();
+   static BlApi.IBl? bl = BlApi.Factory.Get;
+
+
     /// <summary>
     /// cart for user
     /// </summary>
     private static Cart cart = new Cart();
+
     /// <summary>
     /// to check if the number is correct
     /// </summary>
@@ -49,7 +51,7 @@ internal class Program
                     return;
                 case (int)UserProduct.LIST_REQUEST:
                     {
-                        IEnumerable<ProductForList?> list = bl.Product.GetList() ?? throw new NullExeption("product list");
+                        IEnumerable<ProductForList?> list = bl?.Product.GetList()  ?? throw new NullExeption("bl");
                         foreach (ProductForList? item in list)
                         {
                             Console.WriteLine(item);
@@ -165,7 +167,7 @@ internal class Program
                     return;
                 case (int)UserOrder.LIST_REQUEST:
                     {
-                        IEnumerable<OrderForList?> list = bl.Order.GetList()?? throw new NullExeption("the order list");
+                        IEnumerable<OrderForList?> list = bl?.Order.GetList() ?? throw new NullExeption("bl") ?? throw new NullExeption("the order list");
                         foreach (OrderForList? item in list)
                         {
                             Console.WriteLine(item);
@@ -187,25 +189,25 @@ internal class Program
                 case (int)UserOrder.DETAILS_REQUEST:
                     {
                         Console.WriteLine("enter order id:");
-                        Console.WriteLine(bl.Order.GetData(tryParseInt()));
+                        Console.WriteLine(bl?.Order.GetData(tryParseInt()) ?? throw new NullExeption("bl"));
                         break;
                     }
                 case (int)UserOrder.UPDATE_SHIPPING:
                     {
                         Console.WriteLine("enter order id:");
-                        Console.WriteLine(bl.Order.UpdateShippingDate(tryParseInt()));
+                        Console.WriteLine(bl?.Order.UpdateShippingDate(tryParseInt()) ?? throw new NullExeption("bl"));
                         break;
                     }
                 case (int)UserOrder.UPDATE_DELIVERY:
                     {
                         Console.WriteLine("enter order id:");
-                        Console.WriteLine(bl.Order.DeliveryUpdate(tryParseInt()));
+                        Console.WriteLine(bl?.Order.DeliveryUpdate(tryParseInt()) ?? throw new NullExeption("bl"));
                         break;
                     }
                 case (int)UserOrder.ORDER_TRACKING:
                     {
                         Console.WriteLine("enter order id:");
-                        Console.WriteLine(bl.Order.OrderTracking(tryParseInt()));
+                        Console.WriteLine(bl?.Order.OrderTracking(tryParseInt()) ?? throw new NullExeption("bl"));
                         break;
                     }
                 default:
@@ -233,7 +235,7 @@ internal class Program
                     {
                         Console.WriteLine("enter product id:");
                         int id = tryParseInt();
-                        Console.WriteLine(bl.Cart.AddProduct(cart, id));
+                        Console.WriteLine(bl?.Cart.AddProduct(cart, id) ?? throw new NullExeption("bl"));
                         break;
                     }
                 case (int)UserCart.UPDATE_AMOUNT:
@@ -242,7 +244,7 @@ internal class Program
                         int id = tryParseInt();
                         Console.WriteLine("enter new amount:");
                         int newAmount = tryParseInt();
-                        Console.WriteLine(bl.Cart.UpdateProductAmount(cart, id, newAmount));
+                        Console.WriteLine(bl?.Cart.UpdateProductAmount(cart, id, newAmount) ?? throw new NullExeption("bl"));
                         break;
                     }
                 case (int)UserCart.ORDER_CONFIRMATION:
@@ -256,7 +258,7 @@ internal class Program
                         Console.WriteLine("enter email:");
                         input = Console.ReadLine();
                         cart.CustomerEmail = input;
-                        bl.Cart.OrderConfirmation(cart);
+                        bl?.Cart.OrderConfirmation(cart);
                         cart = new();
                         break;
                     }

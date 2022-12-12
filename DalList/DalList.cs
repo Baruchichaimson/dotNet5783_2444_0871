@@ -1,16 +1,12 @@
 ﻿using Dal;
 using DalApi;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DO
+namespace Dal
 {
-    public sealed class DalList : IDal
+    internal sealed class DalList : IDal
     {
+        public static IDal Instance { get; } = new DalList();
+        private DalList() { }
         public IProduct Product => new DalProduct();
         public IOrder Order => new DalOrder();
         public IOrderItem OrderItem => new DalOrederItem();

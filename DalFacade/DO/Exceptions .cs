@@ -20,5 +20,12 @@ namespace DO
     {
         public NullExeption(string messege) : base(messege + " is null in DO") { }
     }
+    [Serializable]
+    public class DalConfigException : Exception
+    {
+        public DalConfigException(string msg) : base(msg) { }
+        public DalConfigException(string msg, Exception ex) : base(msg, ex) { }
+    }
+
 
 }

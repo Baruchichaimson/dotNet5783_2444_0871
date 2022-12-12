@@ -11,7 +11,7 @@ namespace BlImplementation
     /// <summary>
     /// Implementation of the interface IBl
     /// </summary>
-    sealed public class Bl : IBl
+    sealed internal class Bl : IBl
     {
         /// <summary>
         /// The attribute that can receive from the logic function product its implementations in the display layer
