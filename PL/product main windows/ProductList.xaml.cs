@@ -15,68 +15,82 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace PL.product_main_windows
+namespace PL.product_main_windows;
+/// <summary>
+/// Interaction logic for ProductList.xaml
+/// </summary>
+public partial class ProductList : Window
 {
-    public delegate void AddingNewItemEventArgs(string id);
-
     /// <summary>
-    /// Interaction logic for ProductList.xaml
+    /// access to the logical layyer.
     /// </summary>
-
-
-    public partial class ProductList : Window
+    private BlApi.IBl? _bl = BlApi.Factory.Get();
+    /// <summary>
+    /// constractor
+    /// </summary>
+    public ProductList()
     {
-        private BlApi.IBl? _bl = BlApi.Factory.Get();
+        InitializeComponent();
+        ProductlistView.ItemsSource = _bl?.Product.GetList();
+        CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
+    }
+    /// <summary>
+    /// category selector in the combo box
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
 
-        public ProductList()
+        var combo = sender as ComboBox;
+        var s = Convert.ToString(combo!.SelectedItem);
+        CoffeeShop Categoryname = s switch
         {
-            InitializeComponent();
-            ProductlistView.ItemsSource = _bl?.Product.GetList();
-            CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
+            "COFFE_MACHINES" => CoffeeShop.COFFE_MACHINES,
+            "CAPSULES" => CoffeeShop.CAPSULES,
+            "ACCESSORIES" => CoffeeShop.ACCESSORIES,
+            "FROTHERS" => CoffeeShop.FROTHERS,
+            "SWEETS" => CoffeeShop.SWEETS
+        };
+        ProductlistView.ItemsSource = _bl?.Product.GetList(element => element?.Category == Categoryname);
+    }
+    /// <summary>
+    /// button to reset the list
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Reset_button_Click(object sender, RoutedEventArgs e)
+    {
+        ProductlistView.ItemsSource = _bl?.Product.GetList();
+        CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
+    }
+    /// <summary>
+    /// button to add product
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Add_Product_Button_Click(object sender, RoutedEventArgs e) => new AddOrUpdateProductWindow(_bl).Show();
+    /// <summary>
+    /// event double click to open the new window of update product with the id that chooce.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ProductlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if (ProductlistView.SelectedItem is ProductForList productForList)
+        {
+            new AddOrUpdateProductWindow(_bl, productForList.ID).Show();
         }
 
-        private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
-            var combo = sender as ComboBox;
-            var s = Convert.ToString(combo!.SelectedItem);
-            CoffeeShop Categoryname = s switch
-            {
-                "COFFE_MACHINES" => CoffeeShop.COFFE_MACHINES,
-                "CAPSULES" => CoffeeShop.CAPSULES,
-                "ACCESSORIES" => CoffeeShop.ACCESSORIES,
-                "FROTHERS" => CoffeeShop.FROTHERS,
-                "SWEETS" => CoffeeShop.SWEETS
-            };
-            ProductlistView.ItemsSource = _bl?.Product.GetList(element => element?.Category == Categoryname);
-        }
+    }
+    /// <summary>
+    /// event double click
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ProductlistView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
 
-        private void Reset_button_Click(object sender, RoutedEventArgs e)
-        {
-            ProductlistView.ItemsSource = _bl?.Product.GetList();
-            CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
-        }
-
-        private void Add_Product_Button_Click(object sender, RoutedEventArgs e) => new AddOrUpdateProductWindow(_bl).Show();
-
-        private void ProductlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (ProductlistView.SelectedItem is ProductForList productForList)
-            {
-                new AddOrUpdateProductWindow(_bl, productForList.ID).Show();
-            }
-
-
-        }
-
-        private void ProductlistView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void ProductlistView_IsMouseCapturedChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-
-        }
     }
 }
