@@ -88,6 +88,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Add new Product" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  Padding="5" Click="Add_Product_Button_Click" FontWeight="ExtraBold"/>
+        <Button Content="Add new Product" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,7,0,7" Padding="5" Click="Add_Product_Button_Click" FontWeight="ExtraBold"/>
         </Grid>
 </Window>

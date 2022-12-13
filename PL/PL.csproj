@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="product main windows\images\add-product.jpg" />
     <None Remove="product main windows\images\Logo.png" />
-    <None Remove="product main windows\images\pexels.jpg" />
     <None Remove="product main windows\צילום מסך_20221208_213312.png" />
     <None Remove="צילום מסך_20221207_231839.png" />
   </ItemGroup>
@@ -34,10 +34,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="product main windows\images\Logo.png">
+    <Resource Include="product main windows\images\add-product.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="product main windows\images\pexels.jpg">
+    <Resource Include="product main windows\images\Logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="product main windows\images\צילום מסך_20221208_213312.png">

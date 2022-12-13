@@ -19,11 +19,14 @@
         <Grid.Background>
             <ImageBrush TileMode="None" Stretch="UniformToFill" ImageSource="product main windows\images\צילום מסך_20221207_231839.png"/>
         </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-       
 
-            <Button x:Name="Button"   Click="ShowProductButton_Click" Content="Admin" HorizontalAlignment="Center"
-                VerticalAlignment="Top" Height="70" Margin="0,242,0,0" Foreground="#FF41710E" 
+        <Button x:Name="Button"  Grid.Row="1" Click="ShowProductButton_Click" Content="Admin" HorizontalAlignment="Center"
+                VerticalAlignment="Top" Height="70" Foreground="#FF41710E" 
                 FontSize="20" FontWeight="Bold" Width="120" RenderTransformOrigin="0.517,0.874" >
                 <Button.Effect>
                     <DropShadowEffect/>
@@ -31,7 +34,7 @@
             </Button>
 
 
-        <Image Source="product main windows\images\Logo.png"  HorizontalAlignment="Center" Height="217" Margin="0,10,0,0" VerticalAlignment="Top" Width="228" Stretch="Fill" Cursor="No" RenderTransformOrigin="0.599,0.607" >
+        <Image Source="product main windows\images\Logo.png" Grid.Row="0" HorizontalAlignment="Center" Height="217" VerticalAlignment="Top" Width="228" Stretch="Fill" Cursor="No">
             <Image.OpacityMask>
                 <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.65" RadiusY="0.65">
                     <GradientStop Color="#ffffffff" Offset="0.5" />

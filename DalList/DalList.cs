@@ -6,9 +6,14 @@ namespace Dal
     internal sealed class DalList : IDal
     {
         public static IDal Instance { get; } = new DalList();
-        private DalList() { }
-        public IProduct Product => new DalProduct();
-        public IOrder Order => new DalOrder();
-        public IOrderItem OrderItem => new DalOrederItem();
+        private DalList()
+        {
+            this.Product = new DalProduct();
+            this.Order = new DalOrder();
+            this.OrderItem = new DalOrederItem();
+        }
+        public IProduct Product { get; }
+        public IOrder Order { get; }
+        public IOrderItem OrderItem { get; }
     }
 }
