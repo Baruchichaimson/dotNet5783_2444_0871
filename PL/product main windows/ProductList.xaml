@@ -77,7 +77,7 @@
                 </Style>
             </ListView.Resources>
             <ListView.Background>
-                <ImageBrush ImageSource="C:\Users\chaim\source\repos\dotNet5783_2444_0871\PL\product main windows\images\צילום מסך_20221208_213312.png" TileMode="None"/>
+                <ImageBrush ImageSource="images\צילום מסך_20221208_213312.png" TileMode="None"/>
             </ListView.Background>
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
