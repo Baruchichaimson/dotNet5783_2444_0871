@@ -16,7 +16,7 @@ namespace BlImplementation
     /// </summary>
     internal class Cart : ICart
     {
-        DalApi.IDal? dal = DalApi.Factory.Get();
+        DalApi.IDal? _dal = DalApi.Factory.Get();
 
         /// <summary>
         /// the function add product from the store to the basket shopping .
@@ -35,7 +35,7 @@ namespace BlImplementation
             bool prodactExistInCart  = cart.Items.Exists(x => x?.ProductID == id);
             try
             {
-                DO.Product product = dal?.Product.GetElement(element => element?.Id == id) ?? throw new BO.NullExeption("Dal");
+                DO.Product product = _dal?.Product.GetElement(element => element?.Id == id) ?? throw new BO.NullExeption("Dal");
 
                 if (product.Instock > 0)
                 {
@@ -98,7 +98,7 @@ namespace BlImplementation
                 foreach (BO.OrderItem? orderItem in cart.Items)
                 {
 
-                    DO.Product product = dal?.Product.Get(orderItem?.ProductID ?? throw new BO.NullExeption("item in cart")) ?? throw new BO.NullExeption("Dal");
+                    DO.Product product = _dal?.Product.Get(orderItem?.ProductID ?? throw new BO.NullExeption("item in cart")) ?? throw new BO.NullExeption("Dal");
                         ;
 
                     if (orderItem.Amount > product.Instock || orderItem.Amount <= 0)
@@ -122,7 +122,7 @@ namespace BlImplementation
                     ShipDate = DateTime.MinValue,
                     DeliveryrDate = DateTime.MinValue
                 };
-                int idOrder = dal?.Order.Add(order) ?? throw new BO.NullExeption("Dal");
+                int idOrder = _dal?.Order.Add(order) ?? throw new BO.NullExeption("Dal");
                 foreach (var item in cart.Items)
                 {
                     if (item is null)
@@ -135,10 +135,10 @@ namespace BlImplementation
                         Amount = item.Amount,
                         OredrID = idOrder
                     };
-                    dal.OrderItem.Add(orderItem);
-                    DO.Product product = dal.Product.Get(item.ProductID);
+                    _dal.OrderItem.Add(orderItem);
+                    DO.Product product = _dal.Product.Get(item.ProductID);
                     product.Instock -= item.Amount;
-                    dal.Product.Update(product);
+                    _dal.Product.Update(product);
                 }
             }
             catch (DO.EntityNotFoundException ex)

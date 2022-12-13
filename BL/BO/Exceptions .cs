@@ -59,4 +59,13 @@ namespace BO
         public NullExeptionForDO(Exception inner, string messege = "") : base(messege, inner) { }
     }
 
+    [Serializable]
+    public class BLConfigException : Exception
+    {
+        public BLConfigException(string msg) : base(msg) { }
+        public BLConfigException(Exception inner, string messege = "") : base(messege, inner) { }
+    }
+
+
+
 }

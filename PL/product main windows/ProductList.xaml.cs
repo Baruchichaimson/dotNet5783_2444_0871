@@ -1,5 +1,6 @@
 ﻿
 using BO;
+using DalApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ using System.Windows.Shapes;
 
 namespace PL.product_main_windows
 {
-    public  delegate void AddingNewItemEventArgs(string id);
+    public delegate void AddingNewItemEventArgs(string id);
 
     /// <summary>
     /// Interaction logic for ProductList.xaml
@@ -25,22 +26,20 @@ namespace PL.product_main_windows
 
     public partial class ProductList : Window
     {
-        private BlApi.IBl? _bl;
+        private BlApi.IBl? _bl = BlApi.Factory.Get();
 
         public ProductList()
         {
             InitializeComponent();
-            _bl = BlApi.Factory.Get;
             ProductlistView.ItemsSource = _bl?.Product.GetList();
             CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
-
         }
 
         private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
             var combo = sender as ComboBox;
-            var s = Convert.ToString(combo.SelectedItem);
+            var s = Convert.ToString(combo!.SelectedItem);
             CoffeeShop Categoryname = s switch
             {
                 "COFFE_MACHINES" => CoffeeShop.COFFE_MACHINES,
@@ -66,8 +65,8 @@ namespace PL.product_main_windows
             {
                 new AddOrUpdateProductWindow(_bl, productForList.ID).Show();
             }
-          
-            
+
+
         }
 
         private void ProductlistView_SelectionChanged(object sender, SelectionChangedEventArgs e)

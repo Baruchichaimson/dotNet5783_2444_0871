@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Xml.Schema;
+using BO;
 
 namespace BlImplementation
 {
@@ -15,7 +16,7 @@ namespace BlImplementation
     /// </summary>
     internal class Order : IOrder
     {
-        DalApi.IDal? dal = DalApi.Factory.Get();
+        private DalApi.IDal? _dal = DalApi.Factory.Get();
         /// <summary>
         /// A helper function that returns an order status
         /// </summary>
@@ -46,7 +47,7 @@ namespace BlImplementation
             try
             {
                 List<BO.OrderItem> list = new List<BO.OrderItem>();
-                foreach (DO.OrderItem? item in dal?.OrderItem.List(element => element?.OredrID == idOrder.Id) ?? throw new BO.NullExeption("Dal") ?? throw new BO.NullExeption("order item list"))
+                foreach (DO.OrderItem? item in _dal?.OrderItem.List(element => element?.OredrID == idOrder.Id) ?? throw new BO.NullExeption("Dal") ?? throw new BO.NullExeption("order item list"))
                 {
                     BO.OrderItem dataItem = new()
                     {
@@ -55,7 +56,7 @@ namespace BlImplementation
                         Price = (double)item?.Price!,
                         Amount = (int)item?.Amount!,
                         TotalPrice = (double)item?.Price! * (int)item?.Amount!,
-                        Name = dal.Product.Get((int)item?.ProductID!).Name
+                        Name = _dal.Product.Get((int)item?.ProductID!).Name
                     };
                     list.Add(dataItem);
                 }
@@ -91,14 +92,14 @@ namespace BlImplementation
         /// <returns></returns>
         public IEnumerable<BO.OrderForList?>? GetList()
         {
-            IEnumerable<DO.Order?>? list = dal?.Order.List(element => element is not null) ?? throw new BO.NullExeption("Dal");
+            IEnumerable<DO.Order?>? list = _dal?.Order.List(element => element is not null) ?? throw new BO.NullExeption("Dal");
             return list?.Select(element => 
             {
                 int totalAmount = 0;
                 double totalPrice = 0;
-                foreach (DO.OrderItem it in dal?.OrderItem.List(x => x is not null && x?.Id == element?.Id) ?? throw new BO.NullExeption("order item list") ?? throw new BO.NullExeption("Dal"))
+                foreach (DO.OrderItem? it in _dal?.OrderItem.List(x => x is not null && x?.Id == element?.Id) ?? throw new BO.NullExeption("order item list") ?? throw new BO.NullExeption("Dal"))
                 {
-                    totalPrice += it.Price * it.Amount;
+                    totalPrice += (double)it?.Price! * (int)it?.Amount!;
                     totalAmount++;
                 }
                 return new BO.OrderForList
@@ -120,15 +121,15 @@ namespace BlImplementation
         public BO.Order GetData(int id)
         {
             double totalPrice = 0;
-            foreach (DO.OrderItem it in dal?.OrderItem.List(element => element is not null && element?.Id == id) ?? throw new BO.NullExeption("order list") ?? throw new BO.NullExeption("Dal"))
+            foreach (DO.OrderItem? it in _dal?.OrderItem.List(element => element is not null && element?.Id == id) ?? throw new BO.NullExeption("order list") ?? throw new BO.NullExeption("Dal"))
             {
-                totalPrice += it.Price * it.Amount;
+                totalPrice += (double)it?.Price! * (int)it?.Amount!;
             }
             if (id > 0)
             {
                 try
                 {
-                    DO.Order dataOrder = dal.Order.Get(id);
+                    DO.Order dataOrder = _dal.Order.Get(id);
                     BO.Order order = new()
                     {
                         ID = id,
@@ -165,12 +166,12 @@ namespace BlImplementation
         {
             try
             {
-                if (dal?.Order.Get(id).ShipDate is null)
+                if (_dal?.Order.Get(id).ShipDate is null)
             {
                
-                    DO.Order updateOrders = dal?.Order.Get(id) ?? throw new BO.NullExeption("Dal");
+                    DO.Order updateOrders = _dal?.Order.Get(id) ?? throw new BO.NullExeption("Dal");
                     updateOrders.ShipDate = DateTime.Now;
-                    dal.Order.Update(updateOrders);
+                    _dal.Order.Update(updateOrders);
                     BO.Order updorder = GetData(id);
                     updorder.ShipDate = updateOrders.ShipDate;
                     return updorder;
@@ -197,11 +198,11 @@ namespace BlImplementation
         {
             try
             {
-                if (dal?.Order.Get(id).ShipDate is not null && dal.Order.Get(id).DeliveryrDate is null)
+                if (_dal?.Order.Get(id).ShipDate is not null && _dal.Order.Get(id).DeliveryrDate is null)
                 {
-                    DO.Order updateOrdersData = dal.Order.Get(id);
+                    DO.Order updateOrdersData = _dal.Order.Get(id);
                     updateOrdersData.DeliveryrDate = DateTime.Now;
-                    dal.Order.Update(updateOrdersData);
+                    _dal.Order.Update(updateOrdersData);
                     BO.Order updateOrderLogic = GetData(id);
                     updateOrderLogic.ShipDate = updateOrderLogic.ShipDate;
                     return updateOrderLogic;
@@ -227,7 +228,7 @@ namespace BlImplementation
         {
             try
             {
-                DO.Order order = dal?.Order.Get(id) ?? throw new BO.NullExeption("Dal");
+                DO.Order order = _dal?.Order.Get(id) ?? throw new BO.NullExeption("Dal");
                 List<string?> templist = new();
                 templist.Add(GiveOrderDate(order.OrderDate, "created"));
                 if (order.ShipDate is not null)
@@ -270,13 +271,13 @@ namespace BlImplementation
         {
             try
             {
-                DO.Product product = dal?.Product.Get(productId) ?? throw new BO.NullExeption("Dal");
+                DO.Product product = _dal?.Product.Get(productId) ?? throw new BO.NullExeption("Dal");
                 if (amount > product.Instock)
                     throw new BO.IncorrectAmountException("Not enough amount in stock");
                 int id = 0;
-                if (dal.Order.Get(orderId).ShipDate is null)
+                if (_dal.Order.Get(orderId).ShipDate is null)
                 {
-                    foreach (var orderItems in dal?.OrderItem.List(element => element?.OredrID == orderId)?? throw new BO.NullExeption("order item list") ?? throw new BO.NullExeption("Dal"))
+                    foreach (var orderItems in _dal?.OrderItem.List(element => element?.OredrID == orderId)?? throw new BO.NullExeption("order item list") ?? throw new BO.NullExeption("Dal"))
                     {
                         if (productId == orderItems?.ProductID)
                         {
@@ -295,25 +296,25 @@ namespace BlImplementation
                                 Amount = amount,
                                 Price = product.Price * amount
                             };
-                            dal.OrderItem.Add(item);
+                            _dal.OrderItem.Add(item);
                         }
                         else
                             throw new BO.IncorrectAmountException("the amount is not positive");
                     }
                     else
                     {
-                        DO.OrderItem item = dal.OrderItem.Get(id);
+                        DO.OrderItem item = _dal.OrderItem.Get(id);
                         if (item.Amount + amount >= 0)
                             item.Amount += amount;
                         else
                             throw new BO.IncorrectAmountException("reduce amount to much");
                         if (item.Amount == 0)
-                            dal.OrderItem.Delete(item.Id);
+                            _dal.OrderItem.Delete(item.Id);
                         else
-                            dal.OrderItem.Update(item);
+                            _dal.OrderItem.Update(item);
                     }
                     product.Instock -= amount;
-                    dal.Product.Update(product);
+                    _dal.Product.Update(product);
                 }
                 else
                     throw new BO.EntityDetailsWrongException("the order is allready been sent");

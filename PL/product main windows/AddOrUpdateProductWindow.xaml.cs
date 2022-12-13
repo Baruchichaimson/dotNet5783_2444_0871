@@ -21,7 +21,8 @@ namespace PL.product_main_windows
     /// </summary>
     public partial class AddOrUpdateProductWindow : Window
     {
-        BlApi.IBl? bl;
+        BlApi.IBl? _bl;
+
         Regex regex;
 
         private BO.Product currentProduct;
@@ -29,14 +30,14 @@ namespace PL.product_main_windows
         public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, bool c)
         {
             InitializeComponent();
-            bl = _blForAdd;
+            _bl = _blForAdd;
             categorychoose.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
         }
 
         public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, int productId) : this(_blForAdd, true)
         {
             //////////////////////////////////////////////////////////////////////////
-            currentProduct = bl?.Product.GetData(productId) ?? throw new Exception("");
+            currentProduct = _bl?.Product.GetData(productId) ?? throw new Exception("");
             DataContext = currentProduct;
             addOrUpdateProdut.Content = "Update";
             id.IsEnabled = false;
@@ -61,7 +62,7 @@ namespace PL.product_main_windows
                 }
                 if(addOrUpdateProdut?.Content == "Add" ) 
                 {
-                    bl?.Product.Add(new BO.Product
+                    _bl?.Product.Add(new BO.Product
                     {
                         ID = int.Parse(id.Text),
                         Name = name.Text,
@@ -73,7 +74,7 @@ namespace PL.product_main_windows
                 }
                 else
                 {
-                    bl?.Product.Update(new BO.Product
+                    _bl?.Product.Update(new BO.Product
                     {
                         ID = int.Parse(id.Text),
                         Name = name.Text,
@@ -124,6 +125,11 @@ namespace PL.product_main_windows
         {
             regex = new Regex("^[^0-9]+$");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void price_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }
