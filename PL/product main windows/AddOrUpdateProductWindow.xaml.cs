@@ -86,7 +86,6 @@ namespace PL.product_main_windows
                         InStock = int.Parse(instoke.Text),
                         Category = (CoffeeShop)categorychoose.SelectedItem
                     });
-
                 }
                 else
                 {
@@ -100,6 +99,7 @@ namespace PL.product_main_windows
                     });
 
                 }
+
                 this.Close();
             }
             catch(BO.AllreadyExistException ex) when (ex.InnerException is not null)

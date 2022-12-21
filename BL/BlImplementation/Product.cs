@@ -2,6 +2,7 @@
 using BO;
 using Google.Api.Ads.AdWords.v201809;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 
 namespace BlImplementation
@@ -19,16 +20,15 @@ namespace BlImplementation
         /// <returns></returns>
         public IEnumerable<BO.ProductForList?>? GetList(Func<BO.ProductForList?, bool>? myFunc = null)
         {
-            IEnumerable<DO.Product?>? newCollection = _dal?.Product.List() ?? throw new BO.NullExeption("product list");
-            IEnumerable<BO.ProductForList?> productForLists = newCollection.Select(
-            item => new BO.ProductForList
-            {
-                ID = (int)item?.Id!,
-                Name = item?.Name!,
-                Price = (double)item?.Price!,
-                Category = (BO.CoffeeShop?)item?.Categoryname
-            });
-            return myFunc is null ? productForLists : productForLists.Where(myFunc);
+            IEnumerable<BO.ProductForList?>? newCollection = (IEnumerable<ProductForList?>?)(from item in _dal?.Product.List() ?? throw new BO.NullExeption("product list")
+                                select new
+                                {
+                                    ID = (int)item?.Id!,
+                                    Name = item?.Name!,
+                                    Price = (double)item?.Price!,
+                                    Category = (BO.CoffeeShop?)item?.Categoryname
+                                });        
+            return myFunc is null ? newCollection : newCollection!.Where(myFunc);
         }
         /// <summary>
         /// A function that returns a product by ID number

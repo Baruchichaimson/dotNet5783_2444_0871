@@ -92,11 +92,13 @@ namespace BlImplementation
         /// <returns></returns>
         public IEnumerable<BO.OrderForList?>? GetList()
         {
+            
             IEnumerable<DO.Order?>? list = _dal?.Order.List(element => element is not null) ?? throw new BO.NullExeption("Dal");
             return list?.Select(element => 
             {
                 int totalAmount = 0;
                 double totalPrice = 0;
+
                 foreach (DO.OrderItem? it in _dal?.OrderItem.List(x => x is not null && x?.Id == element?.Id) ?? throw new BO.NullExeption("order item list") ?? throw new BO.NullExeption("Dal"))
                 {
                     totalPrice += (double)it?.Price! * (int)it?.Amount!;

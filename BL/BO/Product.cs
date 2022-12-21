@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -13,6 +14,7 @@ namespace BO
         /// product id
         /// </summary>
         public int ID { get; set; }
+
         /// <summary>
         /// prodact name
         /// </summary>
