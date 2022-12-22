@@ -42,11 +42,11 @@ namespace BlImplementation
         /// </summary>
         /// <param name="idOrder">order id from data layer</param>
         /// <returns>A list of orderItem of the logical layer</returns>
-        private List<BO.OrderItem> GiveList(DO.Order idOrder)
+        private List<BO.OrderItem> GiveList(DO.Order? idOrder)
         {
             try
             {
-                IEnumerable<BO.OrderItem> list = _dal?.OrderItem.List(element => element?.OredrID == idOrder.Id)?.Select(item =>
+                IEnumerable<BO.OrderItem> list = _dal?.OrderItem.List(element => element?.OredrID == idOrder?.Id)?.Select(item =>
                 {
                     return new BO.OrderItem 
                     {
@@ -91,24 +91,17 @@ namespace BlImplementation
         /// <returns></returns>
         public IEnumerable<BO.OrderForList?>? GetList()
         {
-            
             IEnumerable<DO.Order?>? list = _dal?.Order.List(element => element is not null) ?? throw new BO.NullExeption("Dal");
+          
             return list?.Select(element => 
             {
-                int totalAmount = 0;
-                double totalPrice = 0;
-
-                foreach (DO.OrderItem? it in _dal?.OrderItem.List(x => x is not null && x?.Id == element?.Id) ?? throw new BO.NullExeption("order item list") ?? throw new BO.NullExeption("Dal"))
-                {
-                    totalPrice += (double)it?.Price! * (int)it?.Amount!;
-                    totalAmount++;
-                }
+                List<OrderItem> orderItems = GiveList(element);
                 return new BO.OrderForList
                 {
                     ID = (int)element?.Id!,
-                    CustomerName = (string)element?.CustomerName!,
-                    TotalPrice = totalPrice,
-                    AmountOfItems = totalAmount,
+                    CustomerName = element?.CustomerName!,
+                    TotalPrice = totalPrice(orderItems),
+                    AmountOfItems = orderItems.Count(),
                     Status = Status(element!.Value),
                 };
             });
@@ -120,14 +113,15 @@ namespace BlImplementation
         /// <returns> Order  </returns>
         /// <exception cref="EntityNotFoundException"> trow an Exception when the order was not found in the database</exception>
         public BO.Order GetData(int id)
-        {
-            double totalPrice = 0;
-            _dal?.OrderItem.List(element => element is not null && element?.Id == id)?.Select(x => totalPrice += (double)x?.Price! * (int)x?.Amount!);
+        {               
             if (id > 0)
             {
                 try
                 {
+
                     DO.Order dataOrder = _dal?.Order.Get(id) ?? throw new NullExeption("Dal");
+                    List<OrderItem> orderItems = GiveList(dataOrder);
+
                     BO.Order order = new()
                     {
                         ID = id,
@@ -138,8 +132,8 @@ namespace BlImplementation
                         ShipDate = dataOrder.ShipDate,
                         OrderDate = dataOrder.OrderDate,
                         Status = Status(dataOrder),
-                        Items = GiveList(dataOrder),
-                        TotalPrice = totalPrice
+                        Items = orderItems,
+                        TotalPrice = totalPrice(orderItems)
                     };
                     return order;
                 }
@@ -154,6 +148,12 @@ namespace BlImplementation
             }
             throw new BO.IdNotExsitException("Order id not valid");
         }
+
+        private double totalPrice(List<OrderItem> orderItems)
+        {
+            return orderItems.Sum(x => (double)x?.Price! * (int)x?.Amount!);
+        }
+
         /// <summary>
         /// A function that updates shipping time
         /// </summary>

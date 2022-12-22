@@ -76,7 +76,7 @@ namespace PL.product_main_windows
                     MessageBox.Show("missing details");
                     return;
                 }
-                if(addOrUpdateProdut?.Content == "Add" ) 
+                if (addOrUpdateProdut?.Content == "Add")
                 {
                     _bl?.Product.Add(new BO.Product
                     {

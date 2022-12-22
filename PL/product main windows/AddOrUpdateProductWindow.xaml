@@ -41,12 +41,12 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBox x:Name="name"             Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" PreviewTextInput="name_PreviewTextInput"  TextWrapping="Wrap"  VerticalAlignment="Center" Width="120" Height="20"/>
-            <TextBox x:Name="id"               Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" PreviewTextInput="id_PreviewTextInput"  TextWrapping="Wrap" Text="{Binding ID}" VerticalAlignment="Center" Width="120" Height="20" />
-            <ComboBox x:Name="categorychoose"  Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="comboBox_SelectionChanged" SelectedIndex="0"/>
-            <TextBox x:Name="price"            Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" PreviewTextInput="price_PreviewTextInput"      TextWrapping="Wrap"  VerticalAlignment="Center" Width="120" Height="20" Text="{Binding Price}" TextChanged="price_TextChanged" />
-            <TextBox x:Name="instoke"          Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left" PreviewTextInput="instoke_PreviewTextInput"  TextWrapping="Wrap"  VerticalAlignment="Center" Width="120" Text="{Binding InStock}" Height="20"/>
-            <Button x:Name="addOrUpdateProdut" Grid.Column="3" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Top" Click="addOrUpdateProductButton" Height="33" Width="90"/>
+            <TextBox x:Name="name"             Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" PreviewTextInput="name_PreviewTextInput"  TextWrapping="Wrap"  VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black"/>
+            <TextBox x:Name="id"               Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" PreviewTextInput="id_PreviewTextInput"  TextWrapping="Wrap" Text="{Binding ID}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black" />
+            <ComboBox x:Name="categorychoose"  Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" SelectionChanged="comboBox_SelectionChanged" SelectedIndex="0" BorderBrush="Black"/>
+            <TextBox x:Name="price"            Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" PreviewTextInput="price_PreviewTextInput"      TextWrapping="Wrap"  VerticalAlignment="Center" Width="120" Height="20" Text="{Binding Price}" TextChanged="price_TextChanged" BorderBrush="Black"/>
+            <TextBox x:Name="instoke"          Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left" PreviewTextInput="instoke_PreviewTextInput"  TextWrapping="Wrap"  VerticalAlignment="Center" Width="120" Text="{Binding InStock}" Height="20" BorderBrush="Black"/>
+            <Button x:Name="addOrUpdateProdut" Grid.Column="3" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Top" Click="addOrUpdateProductButton" Height="33" Width="90" BorderBrush="Black"/>
 
             <Label x:Name="label"  Content="ID"      Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Height="28" Foreground="Black"  OpacityMask="Black"/>
             <Label x:Name="label1" Content="PRICE"   Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left"  VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Foreground="Black"/>

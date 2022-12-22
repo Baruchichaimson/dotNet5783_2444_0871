@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace PL.order_main_windows
 {
     /// <summary>
@@ -19,28 +20,17 @@ namespace PL.order_main_windows
     /// </summary>
     public partial class OrderList : Window
     {
+        private BlApi.IBl? _bl = BlApi.Factory.Get();
         public OrderList()
         {
             InitializeComponent();
+            OrderlistView.ItemsSource = _bl?.Order.GetList();
         }
 
-        private void Add_Product_Button_Click(object sender, RoutedEventArgs e)
+        private void OrderlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
-        }
-
-        private void Reset_button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ProductlistView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-        private void ProductlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
+            if(IsMouseCaptureWithin)    
+                 new UpdateOrder(_bl, ((BO.OrderForList)OrderlistView.SelectedItem).ID).Show();
         }
     }
 }

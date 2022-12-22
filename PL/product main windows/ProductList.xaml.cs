@@ -80,7 +80,8 @@ public partial class ProductList : Window
     {
         if (ProductlistView.SelectedItem is ProductForList productForList)
         {
-            new AddOrUpdateProductWindow(_bl, productForList.ID).Show();
+            if(IsMouseCaptureWithin)
+                new AddOrUpdateProductWindow(_bl, productForList.ID).Show();
         }
     }
     /// <summary>
