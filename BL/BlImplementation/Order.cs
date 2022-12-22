@@ -46,10 +46,9 @@ namespace BlImplementation
         {
             try
             {
-                List<BO.OrderItem> list = new List<BO.OrderItem>();
-                foreach (DO.OrderItem? item in _dal?.OrderItem.List(element => element?.OredrID == idOrder.Id) ?? throw new BO.NullExeption("Dal") ?? throw new BO.NullExeption("order item list"))
+                IEnumerable<BO.OrderItem> list = _dal?.OrderItem.List(element => element?.OredrID == idOrder.Id)?.Select(item =>
                 {
-                    BO.OrderItem dataItem = new()
+                    return new BO.OrderItem 
                     {
                         ID = (int)item?.OredrID!,
                         ProductID = (int)item?.ProductID!,
@@ -58,9 +57,9 @@ namespace BlImplementation
                         TotalPrice = (double)item?.Price! * (int)item?.Amount!,
                         Name = _dal.Product.Get((int)item?.ProductID!).Name
                     };
-                    list.Add(dataItem);
-                }
-                return list;
+                }) ?? throw new BO.NullExeption("Dal") ?? throw new BO.NullExeption("order item list");
+              
+                return list.ToList();
             }
             catch (DO.EntityNotFoundException ex)
             {
@@ -123,15 +122,12 @@ namespace BlImplementation
         public BO.Order GetData(int id)
         {
             double totalPrice = 0;
-            foreach (DO.OrderItem? it in _dal?.OrderItem.List(element => element is not null && element?.Id == id) ?? throw new BO.NullExeption("order list") ?? throw new BO.NullExeption("Dal"))
-            {
-                totalPrice += (double)it?.Price! * (int)it?.Amount!;
-            }
+            _dal?.OrderItem.List(element => element is not null && element?.Id == id)?.Select(x => totalPrice += (double)x?.Price! * (int)x?.Amount!);
             if (id > 0)
             {
                 try
                 {
-                    DO.Order dataOrder = _dal.Order.Get(id);
+                    DO.Order dataOrder = _dal?.Order.Get(id) ?? throw new NullExeption("Dal");
                     BO.Order order = new()
                     {
                         ID = id,
