@@ -56,8 +56,4 @@
     </Resource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="cart main windows\" />
-  </ItemGroup>
-
 </Project>

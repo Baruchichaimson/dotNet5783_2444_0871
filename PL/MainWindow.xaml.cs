@@ -1,5 +1,6 @@
 ﻿
 using PL.admin_window;
+using PL.cart_main_windows;
 using PL.new_order_window;
 using System.Windows;
 
@@ -32,8 +33,5 @@ public partial class MainWindow : Window
 
     private void ShowNewOrderButton_Click(object sender, RoutedEventArgs e) => new NewOrder().Show();
 
-    private void ShowOrderTrackingButton_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
+    private void ShowOrderTrackingButton_Click(object sender, RoutedEventArgs e) => new CartList().Show();
 }

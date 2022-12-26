@@ -1,6 +1,8 @@
 ﻿using BO;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -22,18 +24,18 @@ namespace PL.product_main_windows
     public partial class AddOrUpdateProductWindow : Window
     {
         BlApi.IBl? _bl;
-
         Regex regex;
-   
+
+        ProductList productListWindow;
         private BO.Product currentProduct;
         /// <summary>
         /// main constructor 
         /// </summary>
         /// <param name="_blForAdd"></param>
         /// <param name="c"></param>
-        public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, bool c)
+        public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, ProductList sender , bool c)
         {
-            InitializeComponent();
+            InitializeComponent(); 
             _bl = _blForAdd;
             categorychoose.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
         }
@@ -42,11 +44,12 @@ namespace PL.product_main_windows
         /// </summary>
         /// <param name="_blForAdd"></param>
         /// <param name="c"></param>
-        public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, int productId) : this(_blForAdd, true)
+        public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, int productId , ProductList sender) : this(_blForAdd, sender, true)
         {
             //////////////////////////////////////////////////////////////////////////
             currentProduct = _bl?.Product.GetData(productId) ?? throw new Exception("");
             DataContext = currentProduct;
+            productListWindow = sender;
             addOrUpdateProdut.Content = "Update";
             id.IsEnabled = false;
         }
@@ -55,10 +58,11 @@ namespace PL.product_main_windows
         /// </summary>
         /// <param name="_blForAdd"></param>
         /// <param name="c"></param>
-        public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd) : this(_blForAdd, true)
+        public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, ProductList sender) : this(_blForAdd, sender, true)
         {
             currentProduct = new BO.Product();
             DataContext = currentProduct;
+            productListWindow = sender;
             addOrUpdateProdut.Content = "Add";
         }
         /// <summary>
@@ -70,37 +74,17 @@ namespace PL.product_main_windows
         {
             try
             { 
-                var combo = sender as ComboBox;
                 if (int.TryParse(id.Text, out int x) == false || string.IsNullOrEmpty(name.Text) || double.TryParse(price.Text, out double y) == false || int.TryParse(instoke.Text, out int z) == false)
                 {
                     MessageBox.Show("missing details");
                     return;
                 }
                 if (addOrUpdateProdut?.Content == "Add")
-                {
-                    _bl?.Product.Add(new BO.Product
-                    {
-                        ID = int.Parse(id.Text),
-                        Name = name.Text,
-                        Price = double.Parse(price.Text),
-                        InStock = int.Parse(instoke.Text),
-                        Category = (CoffeeShop)categorychoose.SelectedItem
-                    });
-                }
+                    _bl?.Product.Add(currentProduct);
                 else
-                {
-                    _bl?.Product.Update(new BO.Product
-                    {
-                        ID = int.Parse(id.Text),
-                        Name = name.Text,
-                        Price = double.Parse(price.Text),
-                        InStock = int.Parse(instoke.Text),
-                        Category = (CoffeeShop)categorychoose.SelectedItem
-                    });
-
-                }
-
-                this.Close();
+                    _bl?.Product.Update(currentProduct);
+                Close();
+                productListWindow.listProduct = _bl?.Product.GetList()!;
             }
             catch(BO.AllreadyExistException ex) when (ex.InnerException is not null)
             {
@@ -127,7 +111,6 @@ namespace PL.product_main_windows
         /// <param name="e"></param>
         private void name_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            
             regex = new Regex("/^[a - z,.'-]+$/i");
             e.Handled = regex.IsMatch(e.Text);
         }
@@ -164,7 +147,8 @@ namespace PL.product_main_windows
 
         private void price_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            var textPrice = sender as TextBox;
+            currentProduct.Price = Convert.ToDouble(textPrice?.Text);
         }
     }
 }

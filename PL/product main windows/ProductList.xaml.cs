@@ -1,8 +1,9 @@
-﻿
+﻿using BlApi;
 using BO;
 using DalApi;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -27,12 +28,19 @@ public partial class ProductList : Window
     /// </summary>
     private BlApi.IBl? _bl = BlApi.Factory.Get();
     /// <summary>
+    /// initialize depency property
+    /// </summary>
+    public static readonly DependencyProperty ListProp = DependencyProperty.Register(nameof(listProduct), typeof(IEnumerable<BO.ProductForList?>), typeof(ProductList));
+    public IEnumerable<BO.ProductForList?> listProduct { get => (IEnumerable<BO.ProductForList?>)GetValue(ListProp); set => SetValue(ListProp, value); }
+    /// <summary>
     /// constractor
     /// </summary>
     public ProductList()
     {
         InitializeComponent();
-        ProductlistView.ItemsSource = _bl?.Product.GetList();
+        listProduct =_bl?.Product.GetList()!;
+        ProductlistView.ItemsSource = listProduct;
+        //var oc = new ObservableCollection<BO.ProductForList?>();
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
     }
     /// <summary>
@@ -70,7 +78,7 @@ public partial class ProductList : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Add_Product_Button_Click(object sender, RoutedEventArgs e) => new AddOrUpdateProductWindow(_bl).Show();
+    private void Add_Product_Button_Click(object sender, RoutedEventArgs e) => new AddOrUpdateProductWindow(_bl , this).Show();
     /// <summary>
     /// event double click to open the new window of update product with the id that chooce.
     /// </summary>
@@ -81,7 +89,7 @@ public partial class ProductList : Window
         if (ProductlistView.SelectedItem is ProductForList productForList)
         {
             if(IsMouseCaptureWithin)
-                new AddOrUpdateProductWindow(_bl, productForList.ID).Show();
+                new AddOrUpdateProductWindow(_bl, productForList.ID, this).Show();
         }
     }
     /// <summary>
