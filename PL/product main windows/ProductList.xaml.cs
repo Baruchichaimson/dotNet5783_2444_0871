@@ -30,17 +30,16 @@ public partial class ProductList : Window
     /// <summary>
     /// initialize depency property
     /// </summary>
-    public static readonly DependencyProperty ListProp = DependencyProperty.Register(nameof(listProduct), typeof(IEnumerable<BO.ProductForList?>), typeof(ProductList));
+    public static readonly DependencyProperty ListProp = DependencyProperty.Register(nameof(listProduct), typeof(IEnumerable<BO.ProductForList?>), typeof(ProductList), new PropertyMetadata(null));
     public IEnumerable<BO.ProductForList?> listProduct { get => (IEnumerable<BO.ProductForList?>)GetValue(ListProp); set => SetValue(ListProp, value); }
     /// <summary>
     /// constractor
     /// </summary>
     public ProductList()
     {
+        
         InitializeComponent();
-        listProduct =_bl?.Product.GetList()!;
-        ProductlistView.ItemsSource = listProduct;
-        //var oc = new ObservableCollection<BO.ProductForList?>();
+        listProduct = _bl?.Product.GetList()!;
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
     }
     /// <summary>
