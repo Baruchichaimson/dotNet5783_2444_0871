@@ -1,14 +1,14 @@
-﻿<Window x:Class="PL.product_main_windows.AddOrUpdateProductWindow"
+﻿<Window x:Class="PL.admin_window.AddOrUpdateProductWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
- 
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Icon="\images\icon.png"
         mc:Ignorable="d"
         Title="AddProductWindow" Height="460" Width="600">
     <Window.Resources>
-      <Style TargetType="TextBox">
+        <Style TargetType="TextBox">
            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
       </Style>
@@ -40,12 +40,12 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-        
-                    <TextBox x:Name="name"             Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" PreviewTextInput="name_PreviewTextInput" TextWrapping="Wrap"  Text="{Binding Name}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black"/>
-            <TextBox x:Name="id"               Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" PreviewTextInput="id_PreviewTextInput" TextWrapping="Wrap" Text="{Binding ID}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black" />
-            <ComboBox x:Name="categorychoose"  Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" Text="{Binding Category}" SelectionChanged="comboBox_SelectionChanged" SelectedIndex="0" BorderBrush="Black"/>
-            <TextBox x:Name="price"            Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" PreviewTextInput="price_PreviewTextInput" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Height="20" Text="{Binding Price}"  TextChanged="price_TextChanged" BorderBrush="Black"/>
-            <TextBox x:Name="instoke"          Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left" PreviewTextInput="instoke_PreviewTextInput" TextWrapping="Wrap"  VerticalAlignment="Center" Width="120"  Text="{Binding InStock}" Height="20" BorderBrush="Black"/>
+
+            <TextBox x:Name="name"             Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" PreviewTextInput="name_PreviewTextInput" TextWrapping="Wrap"  Text="{Binding currentProduct.Name}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black"/>
+            <TextBox x:Name="id"               Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" PreviewTextInput="id_PreviewTextInput" TextWrapping="Wrap" Text="{Binding currentProduct.ID}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black" />
+            <ComboBox x:Name="categorychoose"  Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" Text="{Binding currentProduct.Category}" SelectionChanged="comboBox_SelectionChanged" SelectedIndex="0"  BorderBrush="Black"/>
+            <TextBox x:Name="price"            Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" PreviewTextInput="price_PreviewTextInput" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Height="20" Text="{Binding currentProduct.Price}"  TextChanged="price_TextChanged" BorderBrush="Black"/>
+            <TextBox x:Name="instoke"          Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left" PreviewTextInput="instoke_PreviewTextInput" TextWrapping="Wrap"  VerticalAlignment="Center" Width="120"  Text="{Binding currentProduct.InStock}" Height="20" BorderBrush="Black"/>
             <Button x:Name="addOrUpdateProdut" Grid.Column="3" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Top" Cursor="Hand" Click="addOrUpdateProductButton" Height="33" Width="90" BorderBrush="Black"/>
       
             <Label x:Name="label"  Content="ID"      Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Height="28" Foreground="Black"  OpacityMask="Black"/>

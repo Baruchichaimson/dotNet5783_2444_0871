@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.new_order_window"
+        Icon="\images\icon.png"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d"
         Title="NewOrder" Height="450" Width="750">
     <Window.Resources>
@@ -34,7 +36,7 @@
         </Grid.RowDefinitions>
         <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="3">
             <Grid.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" >
                     <GradientStop Color="Black" Offset="0.98"/>
                     <GradientStop Color="#FF7A5000" Offset="0"/>
                     <GradientStop Color="#FF030200" Offset="0.84"/>
@@ -47,18 +49,36 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
-            <ComboBox x:Name="CategorySelector" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="Black" VerticalAlignment="Center" HorizontalAlignment="Left"  Width="200" Height="30" SelectionChanged="CategorySelector_SelectionChanged"/>
+            <ComboBox x:Name="CategorySelector" Grid.Column="1" Text="{Binding Category}" Grid.ColumnSpan="2" BorderBrush="Black" VerticalAlignment="Center" HorizontalAlignment="Left"  Width="200" Height="30" SelectionChanged="CategorySelector_SelectionChanged"/>
             <Label x:Name="label" Content="Category" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="178" Margin="10,0,0,0" Background="{x:Null}" FontSize="20" FontFamily="Aharoni" FontWeight="Bold" Foreground="#FFD9D9D9"/>
             <Button x:Name="button" Content="Reset List" Cursor="Hand" HorizontalAlignment="Left" Height="27" Grid.Column="3" VerticalAlignment="Center" Width="70" Click="Reset_button_Click" FontWeight="Bold" Foreground="Black"/>
+            <!--<Button x:Name="button1" Content="CART"  Cursor="Hand" HorizontalAlignment="Left" Grid.Column="4" Width="70" Click="Cart_button_Click" FontWeight="Bold" Foreground="Black" Margin="0,14,0,13"/>-->
+            <!--<Button Name="button1" Content="CART"  Cursor="Hand" HorizontalAlignment="Left" Grid.Column="4" Width="70" Click="Cart_button_Click" FontWeight="Bold" Foreground="Black" Margin="0,14,0,13"/>-->
+            <ToggleButton Name="button1" Cursor="Hand" HorizontalAlignment="Left" Grid.Column="4" Width="70" Click="Cart_button_Click" FontWeight="Bold" Foreground="Black" Margin="0,14,0,13">
+                <ToggleButton.Template>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <TextBlock>CART</TextBlock>
+                    </ControlTemplate>
+                </ToggleButton.Template>
+            </ToggleButton>
+            <Popup IsOpen="{Binding IsChecked, ElementName=button1}" StaysOpen="False">
+                
+                <Border Background="LightYellow">
+                    <TextBlock>I'm the popup</TextBlock>
+                </Border>
+            </Popup>
 
 
         </Grid>
-        <ListView x:Name="ProductItemlistView" d:ItemsSource="{d:SampleData ItemCount=5}"  Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" SelectionChanged="ProductlistView_SelectionChanged" AutomationProperties.IsColumnHeader="True">
+        <ListView x:Name="ProductItemlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding productItems}" Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" SelectionChanged="ProductlistView_SelectionChanged" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="ProductItemlistView_MouseDoubleClick">
             <ListView.Resources>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="#FFC3EA71"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background"  Value="#FFC3EA71"/>
                         </Trigger>
                     </Style.Triggers>
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -90,16 +110,9 @@
                     <GridViewColumn DisplayMemberBinding="{Binding Category}" Header="Categoty" Width ="120" />
                     <GridViewColumn DisplayMemberBinding="{Binding Amount}" Header="Amount In Cart" Width ="100" />
                     <GridViewColumn DisplayMemberBinding="{Binding InStock}" Header="InStock" Width ="100" />
-                    <GridViewColumn Header="ADD" Width="50">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button x:Name="button" Cursor="Hand" Click="AddClick" Content="+" BorderBrush="Black" BorderThickness="2" Background="#FF7A5000" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Label x:Name="label1" Content="NEW ORDER" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" Width="300" Background="{x:Null}" FontSize="40" FontFamily="Aharoni" FontWeight="Bold" Foreground="#FFD9D9D9"/>
+        <Label x:Name="label1" Content="NEW ORDER" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" Width="300" Background="{x:Null}" FontSize="40" FontFamily="Aharoni" Foreground="#FFD9D9D9" FontWeight="Bold"/>
     </Grid>
 </Window>

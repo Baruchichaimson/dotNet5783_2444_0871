@@ -1,6 +1,7 @@
 ﻿using BlApi;
 using BO;
 using Google.Api.Ads.AdWords.v201809;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -15,6 +16,12 @@ namespace BlImplementation
     internal class Product : IProduct
     {
         DalApi.IDal? _dal = DalApi.Factory.Get();
+        private bool exsit(int instock)
+        {
+            if (instock > 0)
+                return true;
+            return false;
+        }
         /// <summary>
         /// A function that converts a list of products from the data 
         /// layer to a list of products of the logical layer
@@ -33,6 +40,13 @@ namespace BlImplementation
             }) ?? throw new BO.NullExeption("product list");
                                
             return myFunc is null ? newCollection : newCollection?.Where(myFunc);
+        }
+        public IEnumerable<BO.ProductItem?>? GetListProductItem(BO.Cart cart, Func<BO.ProductItem?, bool>? myFunc = null)
+        { 
+            var products = _dal?.Product.List();
+            bool flag = myFunc is null;
+            return (from item in products
+                   select GetData((int)item?.Id!, cart)).Where(element => flag ? flag : myFunc!(element));
         }
         /// <summary>
         /// A function that returns a product by ID number
@@ -90,7 +104,7 @@ namespace BlImplementation
                     };
                     if (cart.Items is not null)
                     {
-                        BO.OrderItem orderItem = cart.Items.Find(orderItem => orderItem?.ProductID == id) ?? throw new BO.NullExeption("cart item list");
+                        BO.OrderItem? orderItem = cart.Items.Find(orderItem => orderItem?.ProductID == id);
                         if (orderItem is not null)
                         {
                             newProductItem.Amount = orderItem.Amount;

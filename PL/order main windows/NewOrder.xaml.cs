@@ -1,68 +1,84 @@
-﻿using BlApi;
-using BO;
+﻿using BO;
+using PL.cart_main_windows;
+using PL.order_main_windows;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Automation;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
+using System.Windows.Navigation;
 
-namespace PL.new_order_window
+namespace PL.new_order_window;
+
+/// <summary>
+/// Interaction logic for NewOrder.xaml
+/// </summary>
+public partial class NewOrder : Window , INotifyPropertyChanged 
 {
-    /// <summary>
-    /// Interaction logic for NewOrder.xaml
-    /// </summary>
-    public partial class NewOrder : Window
+    private BlApi.IBl? _bl = BlApi.Factory.Get();
+    private BO.Cart cart;
+    
+    IEnumerable<IGrouping<BO.CoffeeShop?, ProductItem>> groups;
+    public event PropertyChangedEventHandler? PropertyChanged;
+    private IEnumerable<BO.ProductItem?> productItemsp;
+    public IEnumerable<BO.ProductItem?> productItems { get { return productItemsp; } set { productItemsp = value; if (PropertyChanged != null)  { PropertyChanged(this, new PropertyChangedEventArgs("productItems")); } }}
+
+    public NewOrder()
     {
-        private BlApi.IBl? _bl = BlApi.Factory.Get();
-        private BO.Cart _cart;
-        IEnumerable<IGrouping<BO.CoffeeShop?, ProductForList>> groups;
-        private IEnumerable<BO.ProductItem?> productItems;
-        public NewOrder()
-        {
-            InitializeComponent();
-            _cart = new BO.Cart();
-            productItems = from item in _bl?.Product.GetList()!
-                           select _bl?.Product.GetData(item.ID, _cart)!;
-            ProductItemlistView.ItemsSource = productItems;
-            CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
-        }
+        InitializeComponent();
+        cart = new BO.Cart();
+        groups = from item in _bl?.Product.GetListProductItem(cart)
+                 group item by item.Category into x
+                 select x;
 
-        private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var combo = sender as ComboBox;
-            var s = Convert.ToString(combo!.SelectedItem);
-            productItems = from item in _bl?.Product.GetList()
-                           let category = item.Category
-                           where category == (BO.CoffeeShop)CategorySelector.SelectedItem
-                           select _bl?.Product.GetData(item.ID, _cart);
-            ProductItemlistView.ItemsSource = productItems;
-        }
+        productItems = _bl?.Product.GetListProductItem(cart)!;
+        CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
+    }
+     private void onchang()
+    {
+        productItems = _bl?.Product.GetListProductItem(cart)!;
+    }
+
+    private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        ProductItemlistView.ItemsSource = groups.FirstOrDefault(item => (BO.CoffeeShop)CategorySelector.SelectedItem == item.Key);
+    }
 
 
-        private void ProductlistView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+    private void ProductlistView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
 
-        }
-        private void Reset_button_Click(object sender, RoutedEventArgs e)
+    }
+    private void Reset_button_Click(object sender, RoutedEventArgs e)
+    {
+        productItems = from item in _bl?.Product.GetListProductItem(cart)!
+                       select item;
+        ProductItemlistView.ItemsSource = productItems;
+        CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
+    }
+
+    private void AddClick(object sender, RoutedEventArgs e)
+    {
+    }
+
+    private void Cart_button_Click(object sender, RoutedEventArgs e) => new CartList(_bl, cart).Show();
+
+    private void ProductItemlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+
+        if (ProductItemlistView.SelectedItem is BO.ProductItem Item)
         {
-            productItems = from item in _bl?.Product.GetList()!
-                           select _bl?.Product.GetData(item.ID, _cart)!;
-            ProductItemlistView.ItemsSource = productItems;
-            CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
+            if (IsMouseCaptureWithin)
+                new ProductItemWindow(_bl, Item , cart, onchang).Show();
         }
 
-        private void AddClick(object sender, RoutedEventArgs e)
-        {
-        }
+    }
+
+    private void button2_Checked(object sender, RoutedEventArgs e)
+    {
 
     }
 }

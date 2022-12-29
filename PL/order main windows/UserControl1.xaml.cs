@@ -10,27 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-
 
 namespace PL.order_main_windows
 {
     /// <summary>
-    /// Interaction logic for OrderList.xaml
+    /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class OrderList : Window
+    public partial class UserControl1 : UserControl
     {
-        private BlApi.IBl? _bl = BlApi.Factory.Get();
-        public OrderList()
+        public UserControl1()
         {
             InitializeComponent();
-            OrderlistView.ItemsSource = _bl?.Order.GetList();
-        }
-
-        private void OrderlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if(IsMouseCaptureWithin)    
-                 new UpdateOrder(_bl, ((BO.OrderForList)OrderlistView.SelectedItem).ID).Show();
         }
     }
 }

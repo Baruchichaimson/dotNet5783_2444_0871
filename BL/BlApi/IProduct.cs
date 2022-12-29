@@ -18,6 +18,12 @@ namespace BlApi
         /// <returns></returns>
         public IEnumerable<ProductForList?>? GetList(Func<ProductForList?, bool>? myFunc = null);
         /// <summary>
+        /// return a list of all product items
+        /// </summary>
+        /// <param name="myFunc"></param>
+        /// <returns></returns>
+        public IEnumerable<BO.ProductItem?>? GetListProductItem(Cart cart, Func<BO.ProductItem?, bool>? myFunc = null);
+        /// <summary>
         /// return the data of the products
         /// </summary>
         /// <param name="id"></param>

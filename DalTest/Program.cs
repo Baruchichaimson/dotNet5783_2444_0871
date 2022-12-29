@@ -12,7 +12,7 @@ namespace Dal;
 
 internal class Program
 {
-    private static IDal dallist = new DalList();
+    private static IDal dallist = DalApi.Factory.Get();
     private static void ProductOptions()/// the user input whice active he want to do on the product.
     {
         while (true)

@@ -3,25 +3,15 @@ using BO;
 using DalApi;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace PL.product_main_windows;
+namespace PL.admin_window;
 /// <summary>
 /// Interaction logic for ProductList.xaml
 /// </summary>
-public partial class ProductList : Window
+public partial class ProductAndOrderList : Window
 {
     /// <summary>
     /// access to the logical layyer.
@@ -30,16 +20,18 @@ public partial class ProductList : Window
     /// <summary>
     /// initialize depency property
     /// </summary>
-    public static readonly DependencyProperty ListProp = DependencyProperty.Register(nameof(listProduct), typeof(IEnumerable<BO.ProductForList?>), typeof(ProductList), new PropertyMetadata(null));
+    public static readonly DependencyProperty ListProp = DependencyProperty.Register(nameof(listProduct), typeof(IEnumerable<BO.ProductForList?>), typeof(ProductAndOrderList), new PropertyMetadata(null));
     public IEnumerable<BO.ProductForList?> listProduct { get => (IEnumerable<BO.ProductForList?>)GetValue(ListProp); set => SetValue(ListProp, value); }
+
     /// <summary>
     /// constractor
     /// </summary>
-    public ProductList()
+    public ProductAndOrderList()
     {
         
         InitializeComponent();
         listProduct = _bl?.Product.GetList()!;
+        OrderlistView.ItemsSource = _bl?.Order.GetList();
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
     }
     /// <summary>
@@ -91,12 +83,22 @@ public partial class ProductList : Window
                 new AddOrUpdateProductWindow(_bl, productForList.ID, this).Show();
         }
     }
+    private void OrderlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if (IsMouseCaptureWithin)
+            new UpdateOrder(_bl, ((BO.OrderForList)OrderlistView.SelectedItem).ID).Show();
+    }
     /// <summary>
     /// event double click
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void ProductlistView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
+
+    private void OrderlistView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
 
     }

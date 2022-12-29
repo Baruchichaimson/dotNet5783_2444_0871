@@ -1,8 +1,7 @@
-﻿
-using PL.admin_window;
-using PL.cart_main_windows;
-using PL.new_order_window;
+﻿using PL.cart_main_windows;
+using PL.client_window;
 using System.Windows;
+using PL.admin_window;
 
 namespace PL;
 
@@ -29,9 +28,8 @@ public partial class MainWindow : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void ShowProductButton_Click(object sender, RoutedEventArgs e) => new adminwindowlists().Show();
+    private void ShowProductButton_Click(object sender, RoutedEventArgs e) => new ProductAndOrderList().Show();
 
-    private void ShowNewOrderButton_Click(object sender, RoutedEventArgs e) => new NewOrder().Show();
+    private void ShowNewOrderButton_Click(object sender, RoutedEventArgs e) => new clientwindow().Show();
 
-    private void ShowOrderTrackingButton_Click(object sender, RoutedEventArgs e) => new CartList().Show();
 }

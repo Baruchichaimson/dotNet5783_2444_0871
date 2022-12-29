@@ -3,7 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d"
+         Icon="\images\icon.png"
         Title="CartList" Height="450" Width="800">
     <Window.Resources>
         <Style TargetType="Button" >
@@ -48,7 +50,7 @@
 
 
         </Grid>
-        <ListView x:Name="OrderlistView" d:ItemsSource="{d:SampleData ItemCount=5}"  Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="4" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="CartlistView_MouseDoubleClick" SelectionChanged="CartlistView_SelectionChanged">
+        <ListView x:Name="OrderlistView" d:ItemsSource="{d:SampleData ItemCount=5}"  ItemsSource="{Binding cartItems}" Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="4" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="CartlistView_MouseDoubleClick" SelectionChanged="CartlistView_SelectionChanged">
             <ListView.Resources>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Style.Triggers>
@@ -82,10 +84,10 @@
             </ListView.Background>
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
-                    <GridViewColumn Header="id" DisplayMemberBinding="{Binding ID}"/>
-                    <GridViewColumn Header="Customer Name" DisplayMemberBinding="{Binding CustomerName}"/>
-                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}"/>
-                    <GridViewColumn Header="Amount Of Items" DisplayMemberBinding="{Binding AmountOfItems}"/>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Product ID" DisplayMemberBinding="{Binding ProductID}"/>
+                    <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}"/>
+                    <GridViewColumn Header="Amount" DisplayMemberBinding="{Binding Amount}"/>
                     <GridViewColumn Header="Total Price" DisplayMemberBinding="{Binding TotalPrice}"/>
                 </GridView>
             </ListView.View>
