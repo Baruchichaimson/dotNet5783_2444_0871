@@ -20,6 +20,8 @@
   <ItemGroup>
     <None Remove="images\add-product.jpg" />
     <None Remove="images\Brown and Beige Simple Minimalist Coffee Shop Circle Logo.png" />
+    <None Remove="images\cart.jpg" />
+    <None Remove="images\cart.png" />
     <None Remove="images\icon.png" />
     <None Remove="images\Logo.png" />
     <None Remove="צילום מסך_20221207_231839.png" />
@@ -39,6 +41,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="images\Brown and Beige Simple Minimalist Coffee Shop Circle Logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\cart.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="images\icon.png">

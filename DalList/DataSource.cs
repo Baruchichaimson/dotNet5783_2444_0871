@@ -142,7 +142,7 @@ internal static class DataSource
         {
             ///make new object for the random time for the date of the order we need.
             DateTime randomTime = new DateTime(DateTime.Now.Year, randomNumber.Next(1, DateTime.Now.Month),
-            randomNumber.Next(1, DateTime.Now.Day), randomNumber.Next(0, 24), randomNumber.Next(0, 60), randomNumber.Next(0, 60));
+            randomNumber.Next(1, DateTime.Now.Day), randomNumber.Next(0, 23), randomNumber.Next(0, 59), randomNumber.Next(0, 59));
             randomTime.AddMonths(-1); ///just to not make a problem with future time.
 
             Order newOrder = new Order();

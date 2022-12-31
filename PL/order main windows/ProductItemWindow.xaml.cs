@@ -3,6 +3,7 @@ using BO;
 using PL.admin_window;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,28 +21,29 @@ namespace PL.order_main_windows
     /// <summary>
     /// Interaction logic for ProductItemWindow.xaml
     /// </summary>
-    public partial class ProductItemWindow : Window
+    public partial class ProductItemWindow : Window, INotifyPropertyChanged
     {
         private BlApi.IBl? _bl;
         BO.Cart? cart;
-        Action PropertListChanged;
-        IEnumerable<BO.ProductItem?> myProducts;
-        public static readonly DependencyProperty ProductProp = DependencyProperty.Register(nameof(productItemWindow), typeof(ProductItem), typeof(ProductItemWindow), new PropertyMetadata(null));
-        public ProductItem productItemWindow { get => (ProductItem)GetValue(ProductProp); set => SetValue(ProductProp, value); }
-        public ProductItemWindow(BlApi.IBl? _blForAdd, BO.ProductItem newProductItem , BO.Cart newcart, Action PropertListChanged1)
+        Action<int> ListChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private ProductItem productItem;
+        public ProductItem productItemWindow { get { return productItem; } set { productItem = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("productItemWindow")); } } }
+
+       
+        public ProductItemWindow(BlApi.IBl? _blForAdd, BO.ProductItem newProductItem , BO.Cart newcart, Action<int> SendListChanged)
         {
             _bl = _blForAdd;
             cart = newcart;
             productItemWindow = newProductItem;
-            PropertListChanged = PropertListChanged1;
+            ListChanged = SendListChanged;
             InitializeComponent();
         }
         
         private void addToCart(object sender, RoutedEventArgs e)
         {
             _bl?.Cart.AddProduct(cart, productItemWindow.ID);
-            myProducts = _bl?.Product.GetListProductItem(cart)!;
-            PropertListChanged();
+            ListChanged(productItemWindow.ID);
             Close();
         }
     }

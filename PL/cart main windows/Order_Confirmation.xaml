@@ -1,0 +1,63 @@
+﻿<Window x:Class="PL.cart_main_windows.Order_Confirmation"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        xmlns:local="clr-namespace:PL.cart_main_windows"
+        mc:Ignorable="d"
+        Title="Order_Confirmation" Height="350" Width="500">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+        </Style>
+        <Style TargetType="Button" >
+            <Style.Resources>
+                <Style TargetType="Border" >
+                    <Setter Property="CornerRadius" Value="20"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush TileMode="None" Stretch="UniformToFill" ImageSource="\images\add-product.jpg"/>
+        </Grid.Background>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBox x:Name="CustomerName" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" PreviewTextInput="name_PreviewTextInput" TextWrapping="Wrap"  Text="{Binding customerName ,Mode=TwoWay}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black" />
+            <TextBox x:Name="CustomerEmail" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" PreviewTextInput="email_PreviewTextInput" TextWrapping="Wrap" Text="{Binding customerEmail ,Mode=TwoWay}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black" />
+            <TextBox x:Name="CustomerAddress" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" PreviewTextInput="adrress_PreviewTextInput" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Height="20" Text="{Binding customerAddress ,Mode=TwoWay}" BorderBrush="Black"/>
+
+            <Label x:Name="label0"  Content="Order Confirmation"  Grid.Column="0" Grid.Row="1" HorizontalAlignment="left" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="20" FontFamily="Elephant" Height="36" Foreground="Black"  OpacityMask="Black"/>
+            <Label x:Name="label"  Content="CustomerName" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Height="28" Foreground="Black"  OpacityMask="Black"/>
+            <Label x:Name="label1" Content="CustomerEmail" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"  VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Foreground="Black"/>
+            <Label x:Name="label2" Content="CustomerAddress"  Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"  VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Foreground="Black"/>
+            <Button x:Name="add" Content="order now" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="25" Width="125" Click="order_now"  BorderBrush="Black" />
+            <Image  Source="\images\Logo.png" HorizontalAlignment="Left" Height="100" Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Top" Width="100" Stretch="Fill" Cursor="No" >
+                <Image.OpacityMask>
+                    <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.65" RadiusY="0.65">
+                        <GradientStop Color="#ffffffff" Offset="0.5" />
+                        <GradientStop Color="#00ffffff" Offset="0.8" />
+                    </RadialGradientBrush>
+                </Image.OpacityMask>
+            </Image>
+        </Grid>
+    </Grid>
+</Window>

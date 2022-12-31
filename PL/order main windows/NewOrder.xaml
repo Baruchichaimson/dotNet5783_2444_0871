@@ -48,28 +48,21 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
-            <ComboBox x:Name="CategorySelector" Grid.Column="1" Text="{Binding Category}" Grid.ColumnSpan="2" BorderBrush="Black" VerticalAlignment="Center" HorizontalAlignment="Left"  Width="200" Height="30" SelectionChanged="CategorySelector_SelectionChanged"/>
+            <ComboBox x:Name="CategorySelector" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="Black" VerticalAlignment="Center" HorizontalAlignment="Left"  Width="200" Height="30" SelectionChanged="CategorySelector_SelectionChanged">
+            </ComboBox>
             <Label x:Name="label" Content="Category" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="178" Margin="10,0,0,0" Background="{x:Null}" FontSize="20" FontFamily="Aharoni" FontWeight="Bold" Foreground="#FFD9D9D9"/>
             <Button x:Name="button" Content="Reset List" Cursor="Hand" HorizontalAlignment="Left" Height="27" Grid.Column="3" VerticalAlignment="Center" Width="70" Click="Reset_button_Click" FontWeight="Bold" Foreground="Black"/>
-            <!--<Button x:Name="button1" Content="CART"  Cursor="Hand" HorizontalAlignment="Left" Grid.Column="4" Width="70" Click="Cart_button_Click" FontWeight="Bold" Foreground="Black" Margin="0,14,0,13"/>-->
-            <!--<Button Name="button1" Content="CART"  Cursor="Hand" HorizontalAlignment="Left" Grid.Column="4" Width="70" Click="Cart_button_Click" FontWeight="Bold" Foreground="Black" Margin="0,14,0,13"/>-->
-            <ToggleButton Name="button1" Cursor="Hand" HorizontalAlignment="Left" Grid.Column="4" Width="70" Click="Cart_button_Click" FontWeight="Bold" Foreground="Black" Margin="0,14,0,13">
+            <ToggleButton Name="button1" Cursor="Hand" HorizontalAlignment="Left" Grid.Column="5" Click="Cart_button_Click" FontWeight="Bold" Foreground="Black" Margin="32,7,0,13">
                 <ToggleButton.Template>
                     <ControlTemplate TargetType="ToggleButton">
-                        <TextBlock>CART</TextBlock>
+                        <Image Source="\images\cart.png"  Stretch="Fill"  Width="38" Height="38"></Image>
                     </ControlTemplate>
                 </ToggleButton.Template>
             </ToggleButton>
-            <Popup IsOpen="{Binding IsChecked, ElementName=button1}" StaysOpen="False">
-                
-                <Border Background="LightYellow">
-                    <TextBlock>I'm the popup</TextBlock>
-                </Border>
-            </Popup>
-
-
         </Grid>
+
         <ListView x:Name="ProductItemlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding productItems}" Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" SelectionChanged="ProductlistView_SelectionChanged" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="ProductItemlistView_MouseDoubleClick">
             <ListView.Resources>
                 <Style TargetType="{x:Type ListViewItem}">
@@ -113,6 +106,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
+
         <Label x:Name="label1" Content="NEW ORDER" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" Width="300" Background="{x:Null}" FontSize="40" FontFamily="Aharoni" Foreground="#FFD9D9D9" FontWeight="Bold"/>
     </Grid>
 </Window>
