@@ -57,8 +57,6 @@ public partial class AddOrUpdateProductWindow : Window , INotifyPropertyChanged
         addOrUpdateProdut.Content = "Add";
     }
 
-    
-
     /// <summary>
     /// the button the make the add or update product
     /// </summary>
@@ -74,15 +72,10 @@ public partial class AddOrUpdateProductWindow : Window , INotifyPropertyChanged
                 return;
             }
             if (addOrUpdateProdut?.Content == "Add")
-            {
-              
                 _bl?.Product.Add(productDetail);
-                changeList();
-            }
-              
             else
                 _bl?.Product.Update(productDetail);
-           
+            changeList();
             Close();
         }
         catch(BO.AllreadyExistException ex) when (ex.InnerException is not null)
