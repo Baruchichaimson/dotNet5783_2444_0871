@@ -16,6 +16,12 @@
                 </Style>
             </Style.Resources>
         </Style>
+        <CollectionViewSource x:Key="myCVS" Source="{Binding productItems}">
+            <!-- Specify the property you want to group by using the GroupStyle element -->
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Category" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
     </Window.Resources>
     <Grid Name="MainGrid">
         <Grid.Background>
@@ -63,7 +69,8 @@
             </ToggleButton>
         </Grid>
 
-        <ListView x:Name="ProductItemlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding productItems}" Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="ProductItemlistView_MouseDoubleClick">
+
+        <ListView x:Name="ProductItemlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Source={StaticResource myCVS}}" Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="ProductItemlistView_MouseDoubleClick">
             <ListView.Resources>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Style.Triggers>
@@ -105,6 +112,19 @@
                     <GridViewColumn DisplayMemberBinding="{Binding InStock}" Header="InStock" Width ="100" />
                 </GridView>
             </ListView.View>
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Border BorderThickness="0,0,0,1" BorderBrush="#cccccc" Background="#FF7A5000"  Width="{Binding Path=ActualWidth, ElementName=ProductItemlistView}" HorizontalAlignment="Stretch">
+                                    <TextBlock Text="{Binding Name}"  Foreground="White"/>
+                                </Border>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
         </ListView>
 
         <Label x:Name="label1" Content="NEW ORDER" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" Width="300" Background="{x:Null}" FontSize="40" FontFamily="Aharoni" Foreground="#FFD9D9D9" FontWeight="Bold"/>

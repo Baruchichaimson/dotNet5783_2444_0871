@@ -42,7 +42,14 @@ namespace PL.order_main_windows
         
         private void addToCart(object sender, RoutedEventArgs e)
         {
-            _bl?.Cart.AddProduct(cart, productItemWindow.ID);
+            try
+            {
+                _bl?.Cart.AddProduct(cart, productItemWindow.ID);
+            }
+            catch(BO.IncorrectAmountException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             ListChanged(productItemWindow.ID);
             Close();
         }

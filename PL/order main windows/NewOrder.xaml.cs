@@ -21,7 +21,9 @@ public partial class NewOrder : Window , INotifyPropertyChanged
 {
     private BlApi.IBl? _bl = BlApi.Factory.Get();
     private BO.Cart cart;
-    IEnumerable<IGrouping<BO.CoffeeShop?, ProductItem>> groups;
+    private CartList? cartWindow;
+    private IEnumerable<IGrouping<BO.CoffeeShop?, ProductItem>> groups_p;
+    public IEnumerable<IGrouping<BO.CoffeeShop?, ProductItem>> groups { get { return groups_p; } set { groups_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("groups")); } } }
     public event PropertyChangedEventHandler? PropertyChanged;
     private IEnumerable<BO.ProductItem?>? productItemsp;
     public IEnumerable<BO.ProductItem?>? productItems { get { return productItemsp; } set { productItemsp = value; if (PropertyChanged != null)  { PropertyChanged(this, new PropertyChangedEventArgs("productItems")); } }}
@@ -53,7 +55,14 @@ public partial class NewOrder : Window , INotifyPropertyChanged
         CategorySelector.SelectedIndex = -1;
     }
 
-    private void Cart_button_Click(object sender, RoutedEventArgs e) => new CartList(_bl, cart).Show();
+    private void Cart_button_Click(object sender, RoutedEventArgs e) 
+    {
+        if (cartWindow != null && cartWindow.Visibility == Visibility.Visible)
+            cartWindow.Visibility = Visibility.Collapsed;
+
+        cartWindow = new CartList(_bl, cart);
+        cartWindow.Show();     
+    }
 
     private void ProductItemlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
@@ -61,6 +70,7 @@ public partial class NewOrder : Window , INotifyPropertyChanged
         {
             if (IsMouseCaptureWithin)
                 new ProductItemWindow(_bl, Item , cart, OnChange).Show();
+           
         }
     }
 }

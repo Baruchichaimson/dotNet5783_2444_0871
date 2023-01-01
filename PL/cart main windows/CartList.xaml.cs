@@ -40,7 +40,8 @@ namespace PL.cart_main_windows
 
         private void order_now(object sender, RoutedEventArgs e)
         {
-            new Order_Confirmation(_bl, cart).Show();
+            var newOrderWindow = new Order_Confirmation(_bl, cart);
+            newOrderWindow.Show();
             Close();
         }
     }
