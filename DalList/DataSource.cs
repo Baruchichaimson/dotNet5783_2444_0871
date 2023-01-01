@@ -9,7 +9,7 @@ internal static class DataSource
     ///<summary>
     /// initialization random object.
     /// </summary>
-    static public readonly Random randomNumber = new Random(DateTime.Now.Millisecond);
+    static public readonly Random randomNumber = new Random();
 
     ///<summary>
     /// initialization three list for the three entities.
@@ -141,9 +141,14 @@ internal static class DataSource
         for (int i = 0; i < 20; i++) ///until 20 orders.
         {
             ///make new object for the random time for the date of the order we need.
-            DateTime randomTime = new DateTime(DateTime.Now.Year, randomNumber.Next(1, DateTime.Now.Month),
-            randomNumber.Next(1, DateTime.Now.Day), randomNumber.Next(0, 23), randomNumber.Next(0, 59), randomNumber.Next(0, 59));
-            randomTime.AddMonths(-1); ///just to not make a problem with future time.
+            DateTime currentTime = DateTime.Now;
+
+            // Subtract one month from current time
+            DateTime oneMonthAgo = currentTime.AddMonths(-1);
+
+            // Generate random time between current time and one month ago
+            DateTime randomTime = new DateTime(oneMonthAgo.Year, oneMonthAgo.Month,
+                        randomNumber.Next(1, oneMonthAgo.Day), randomNumber.Next(0, 23), randomNumber.Next(0, 59), randomNumber.Next(0, 59));
 
             Order newOrder = new Order();
 
