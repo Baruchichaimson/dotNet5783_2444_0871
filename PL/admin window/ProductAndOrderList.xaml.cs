@@ -89,8 +89,7 @@ public partial class ProductAndOrderList : Window , INotifyPropertyChanged
             new UpdateOrder(_bl, ((BO.OrderForList)OrderlistView.SelectedItem).ID).Show();
     }
     private void OnChange()
-    {
-        
-        //productList = productList?.Select(x => x);
+    {  
+        productList = productList?.Select(x => x);
     }
 }

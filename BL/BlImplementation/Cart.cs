@@ -52,15 +52,20 @@ namespace BlImplementation
                     }
                     else
                     {
-                        foreach (BO.OrderItem? orderItem in cart.Items)
-                        {
-                            if (orderItem?.ProductID == id)
-                            {
-                                orderItem.Amount++;
-                                orderItem.TotalPrice += product.Price;
-                                break;
-                            }
-                        }
+                        IEnumerable<BO.OrderItem> orderItem = from item in cart.Items
+                                                              where (item.ProductID == id)
+                                                              let amount = item.Amount + 1
+                                                              let price = item.Price + item.TotalPrice
+                                                              select new BO.OrderItem()
+                                                              {
+                                                                  ID = item.ID,
+                                                                  Name = item.Name,
+                                                                  Amount = amount,
+                                                                  TotalPrice = price,
+                                                                  ProductID = item.ProductID,
+                                                                  Price = item.Price
+                                                              };
+                        cart.Items = orderItem.ToList()!;
                     }
                     if (cart.TotalPrice > 0)
                         cart.TotalPrice += product.Price;
