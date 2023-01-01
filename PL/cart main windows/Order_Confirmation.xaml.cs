@@ -23,20 +23,14 @@ namespace PL.cart_main_windows
     public partial class Order_Confirmation : Window, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
-        private string customerName_p;
-        private string customerEmail_p;
-        private string customerAddress_p;
         private BlApi.IBl? _bl;
-        private Cart cart;
-        Regex regex;
-        public string customerName { get { return customerName_p; } set { customerName_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("customerName")); } } }
-        public string customerEmail { get { return customerEmail_p; } set { customerEmail_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("customerEmail")); } } }
-        public string customerAddress { get { return customerAddress_p; } set { customerAddress_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("customerAddress")); } } }
+        private Cart cart_p;
+        public Cart cartDetails { get => cart_p;  set { cart_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("cartDetails")); } } }
         public Order_Confirmation(BlApi.IBl? bl, BO.Cart newCart)
         {
             InitializeComponent();
             _bl = bl;
-            cart = newCart;
+            cartDetails = newCart;
         }
 
         private void name_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -46,26 +40,31 @@ namespace PL.cart_main_windows
 
         private void email_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-
-            regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            e.Handled = regex.IsMatch(e.Text);
+            e.Handled = Regex.IsMatch(e.Text , @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
         }
 
         private void adrress_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
 
-            regex = new Regex(@"^[A-Za-z0-9]+(?:\s[A-Za-z0-9'_-]+)+$");
-            e.Handled = regex.IsMatch(e.Text);
+            e.Handled = Regex.IsMatch(e.Text, @"^[A-Za-z0-9]+(?:\s[A-Za-z0-9'_-]+)+$");
         }
 
         private void order_now(object sender, RoutedEventArgs e)
         {
-            cart.CustomerName = customerName;
-            cart.CustomerEmail = customerEmail; 
-            cart.CustomerAddress = customerAddress;
-            try { _bl.Cart.OrderConfirmation(cart); } catch (BO.EntityDetailsWrongException ex) { MessageBox.Show(ex.Message); }
-          
+            try { _bl?.Cart.OrderConfirmation(cartDetails); }
+            catch (BO.EntityDetailsWrongException ex)
+            { 
+                MessageBox.Show(ex.Message);
+                return; 
+            }
+            catch (BO.CartException ex)
+            {
+                MessageBox.Show(ex.Message); 
+                return;
+            }
             Close();
+            MessageBox.Show("ORDER CONFIRM", "ORDER CONFIRM", MessageBoxButton.OK, MessageBoxImage.Information);
+            
         }
     }
 }

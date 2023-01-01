@@ -28,10 +28,9 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBox x:Name="orderId" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" TextWrapping="Wrap"  VerticalAlignment="Center" Width="120" Height="20"  BorderBrush="Black"/>
 
         <Button x:Name="Button" Grid.Row="0" Grid.Column="1" Click="ShowProductButton1_Click" Content="ORDER TRACKING" HorizontalAlignment="Center"
-                VerticalAlignment="Bottom" Height="70" Foreground="#FF41710E" 
+                VerticalAlignment="Center" Height="70" Foreground="#FF41710E" 
                 FontSize="20" FontWeight="Bold" Width="180" RenderTransformOrigin="0.517,0.874" >
             <Button.Effect>
                 <DropShadowEffect/>

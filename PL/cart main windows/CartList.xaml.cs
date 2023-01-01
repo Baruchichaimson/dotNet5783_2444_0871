@@ -3,6 +3,7 @@ using BO;
 using PL.order_main_windows;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,27 +21,21 @@ namespace PL.cart_main_windows
     /// <summary>
     /// Interaction logic for CartList.xaml
     /// </summary>
-    public partial class CartList : Window
+    public partial class CartList : Window , INotifyPropertyChanged
     {
         private BlApi.IBl? _bl;
         private Cart cart;
-        public static readonly DependencyProperty cartItemsProp = DependencyProperty.Register(nameof(cartItems), typeof(List<OrderItem?>), typeof(CartList), new PropertyMetadata(null));
-        public List<OrderItem?> cartItems  { get => (List<OrderItem?>)GetValue(cartItemsProp); set => SetValue(cartItemsProp, value); }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private List<OrderItem?>? cartItems_p;
+        public List<OrderItem?>? CartItems { get => cartItems_p; set { cartItems_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("CartItems")); } } }
+
         public CartList(BlApi.IBl? bl , BO.Cart newCart)
         {
             InitializeComponent();
             _bl = bl;
             cart = newCart;
-            cartItems = newCart.Items!;
-        }
-
-        private void CartlistView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-        private void CartlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
+            CartItems = newCart.Items!;
         }
 
         private void order_now(object sender, RoutedEventArgs e)

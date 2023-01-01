@@ -39,7 +39,7 @@ namespace BlImplementation
                 };
             }) ?? throw new BO.NullExeption("product list");
                                
-            return myFunc is null ? newCollection : newCollection?.Where(myFunc);
+            return myFunc is null ? newCollection.Select(p => p) : newCollection?.Where(myFunc).Select(p => p);
         }
         public IEnumerable<BO.ProductItem?>? GetListProductItem(BO.Cart cart, Func<BO.ProductItem?, bool>? myFunc = null)
         { 

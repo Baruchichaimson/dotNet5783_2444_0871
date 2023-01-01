@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-         DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         xmlns:local="clr-namespace:PL.cart_main_windows"
         mc:Ignorable="d"
+        Icon="\images\icon.png"
         Title="Order_Confirmation" Height="350" Width="500">
     <Window.Resources>
         <Style TargetType="TextBox">
@@ -41,16 +42,16 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBox x:Name="CustomerName" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" PreviewTextInput="name_PreviewTextInput" TextWrapping="Wrap"  Text="{Binding customerName ,Mode=TwoWay}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black" />
-            <TextBox x:Name="CustomerEmail" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" PreviewTextInput="email_PreviewTextInput" TextWrapping="Wrap" Text="{Binding customerEmail ,Mode=TwoWay}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black" />
-            <TextBox x:Name="CustomerAddress" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" PreviewTextInput="adrress_PreviewTextInput" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Height="20" Text="{Binding customerAddress ,Mode=TwoWay}" BorderBrush="Black"/>
+            <TextBox x:Name="CustomerName" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" PreviewTextInput="name_PreviewTextInput" TextWrapping="Wrap"  Text="{Binding cartDetails.CustomerName ,Mode=TwoWay}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black" />
+            <TextBox x:Name="CustomerEmail" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" PreviewTextInput="email_PreviewTextInput" TextWrapping="Wrap" Text="{Binding cartDetails.CustomerEmail ,Mode=TwoWay}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black" />
+            <TextBox x:Name="CustomerAddress" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" PreviewTextInput="adrress_PreviewTextInput" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Height="20" Text="{Binding cartDetails.CustomerAddress ,Mode=TwoWay}" BorderBrush="Black"/>
 
             <Label x:Name="label0"  Content="Order Confirmation"  Grid.Column="0" Grid.Row="1" HorizontalAlignment="left" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="20" FontFamily="Elephant" Height="36" Foreground="Black"  OpacityMask="Black"/>
             <Label x:Name="label"  Content="CustomerName" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Height="28" Foreground="Black"  OpacityMask="Black"/>
             <Label x:Name="label1" Content="CustomerEmail" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"  VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Foreground="Black"/>
             <Label x:Name="label2" Content="CustomerAddress"  Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"  VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Foreground="Black"/>
             <Button x:Name="add" Content="order now" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="25" Width="125" Click="order_now"  BorderBrush="Black" />
-            <Image  Source="\images\Logo.png" HorizontalAlignment="Left" Height="100" Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Top" Width="100" Stretch="Fill" Cursor="No" >
+            <Image  Source="\images\Logo.png" HorizontalAlignment="Left" Height="100" Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3" VerticalAlignment="Top" Width="100" Stretch="Fill" Cursor="No" >
                 <Image.OpacityMask>
                     <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.65" RadiusY="0.65">
                         <GradientStop Color="#ffffffff" Offset="0.5" />

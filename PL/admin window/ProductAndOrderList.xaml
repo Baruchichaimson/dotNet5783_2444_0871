@@ -91,7 +91,7 @@
 
 
                 </Grid>
-                <ListView x:Name="ProductlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding listProduct}" MouseDoubleClick="ProductlistView_MouseDoubleClick"  Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" SelectionChanged="ProductlistView_SelectionChanged" AutomationProperties.IsColumnHeader="True">
+                <ListView x:Name="ProductlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding productList}" MouseDoubleClick="ProductlistView_MouseDoubleClick"  Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF214B09" FontFamily="Bookman Old Style"  AutomationProperties.IsColumnHeader="True">
                     <ListView.Resources>
                         <Style TargetType="{x:Type ListViewItem}">
                             <Style.Triggers>
@@ -175,7 +175,7 @@
 
 
                 </Grid>
-                <ListView x:Name="OrderlistView" d:ItemsSource="{d:SampleData ItemCount=5}"  Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="4" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="OrderlistView_MouseDoubleClick" SelectionChanged="OrderlistView_SelectionChanged">
+                <ListView x:Name="OrderlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding orderList}" Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="4" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="OrderlistView_MouseDoubleClick">
                     <ListView.Resources>
                         <Style TargetType="{x:Type ListViewItem}">
                             <Style.Triggers>

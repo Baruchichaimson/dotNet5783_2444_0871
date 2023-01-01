@@ -7,34 +7,29 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using PL.new_order_window;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace PL.admin_window;
 
 /// <summary>
 /// Interaction logic for AddOrUpdateProductWindow.xaml
 /// </summary>
-public partial class AddOrUpdateProductWindow : Window
+public partial class AddOrUpdateProductWindow : Window , INotifyPropertyChanged 
 {
     BlApi.IBl? _bl;
-    Regex regex;
-
-    ProductAndOrderList productListWindow;
-    public static readonly DependencyProperty productAddOrUpdateProp = DependencyProperty.Register(nameof(currentProduct), typeof(BO.Product), typeof(AddOrUpdateProductWindow), new PropertyMetadata(null));
-    public BO.Product currentProduct { get => (BO.Product)GetValue(productAddOrUpdateProp); set => SetValue(productAddOrUpdateProp, value); }
-    private IBl? bl;
-    private int iD;
-    private NewOrder newOrder;
-
+    public event PropertyChangedEventHandler? PropertyChanged;
+    private BO.Product Product_p;
+    Action changeList;
+    public BO.Product productDetail { get { return Product_p; } set { Product_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("productdetail")); } } }
     /// <summary>
     /// main constructor 
     /// </summary>
     /// <param name="_blForAdd"></param>
     /// <param name="c"></param>
-    public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, ProductAndOrderList sender , bool c)
+    public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, bool c)
     {
         InitializeComponent(); 
         _bl = _blForAdd;
-        productListWindow = sender;
         categorychoose.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
     }
     /// <summary>
@@ -42,11 +37,11 @@ public partial class AddOrUpdateProductWindow : Window
     /// </summary>
     /// <param name="_blForAdd"></param>
     /// <param name="c"></param>
-    public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, int productId , ProductAndOrderList sender) : this(_blForAdd, sender, true)
+    public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, int productId , Action action) : this(_blForAdd, true)
     {
         //////////////////////////////////////////////////////////////////////////
-        currentProduct = _bl?.Product.GetData(productId)!;
-       // DataContext = currentProduct;  
+        productDetail = _bl?.Product.GetData(productId)!;
+        changeList = action;
         addOrUpdateProdut.Content = "Update";
         id.IsEnabled = false;
     }
@@ -55,19 +50,14 @@ public partial class AddOrUpdateProductWindow : Window
     /// </summary>
     /// <param name="_blForAdd"></param>
     /// <param name="c"></param>
-    public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, ProductAndOrderList sender) : this(_blForAdd, sender, true)
+    public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, Action action) : this(_blForAdd, true)
     {
-        //currentProduct = new BO.Product();
-       // DataContext = currentProduct;
+        changeList = action;
+        productDetail = new BO.Product();
         addOrUpdateProdut.Content = "Add";
     }
 
-    public AddOrUpdateProductWindow(IBl? bl, int iD, NewOrder newOrder)
-    {
-        this.bl = bl;
-        this.iD = iD;
-        this.newOrder = newOrder;
-    }
+    
 
     /// <summary>
     /// the button the make the add or update product
@@ -84,11 +74,16 @@ public partial class AddOrUpdateProductWindow : Window
                 return;
             }
             if (addOrUpdateProdut?.Content == "Add")
-                _bl?.Product.Add(currentProduct);
+            {
+              
+                _bl?.Product.Add(productDetail);
+                changeList();
+            }
+              
             else
-                _bl?.Product.Update(currentProduct);
+                _bl?.Product.Update(productDetail);
+           
             Close();
-            productListWindow.listProduct = _bl?.Product.GetList()!;
         }
         catch(BO.AllreadyExistException ex) when (ex.InnerException is not null)
         {
@@ -104,10 +99,6 @@ public partial class AddOrUpdateProductWindow : Window
         }
     }
 
-    private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        
-    }
     /// <summary>
     /// dont put numbers in the text box
     /// </summary>
@@ -115,8 +106,7 @@ public partial class AddOrUpdateProductWindow : Window
     /// <param name="e"></param>
     private void name_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
-        regex = new Regex("/^[a - z,.'-]+$/i");
-        e.Handled = regex.IsMatch(e.Text);
+        e.Handled = Regex.IsMatch(e.Text , "/^[a - z,.'-]+$/i");
     }
     /// <summary>
     /// dont put latters in the text box
@@ -125,8 +115,7 @@ public partial class AddOrUpdateProductWindow : Window
     /// <param name="e"></param>
     private void id_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
-        regex = new Regex("^[^0-9]+$");
-        e.Handled = regex.IsMatch(e.Text);
+        e.Handled = Regex.IsMatch(e.Text , "^[^0-9]+$");
     }
     /// <summary>
     /// dont put latters in the text box
@@ -135,8 +124,7 @@ public partial class AddOrUpdateProductWindow : Window
     /// <param name="e"></param>
     private void price_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
-        regex = new Regex("/ ^[0 - 9] + (\\.[0 - 9] +)?$");
-        e.Handled = regex.IsMatch(e.Text);
+        e.Handled = Regex.IsMatch(e.Text , "/ ^[0 - 9] + (\\.[0 - 9] +)?$");
     }
     /// <summary>
     /// dont put latters in the text box
@@ -145,16 +133,15 @@ public partial class AddOrUpdateProductWindow : Window
     /// <param name="e"></param>
     private void instoke_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
-        regex = new Regex("^[^0-9]+$");
-        e.Handled = regex.IsMatch(e.Text);
+        e.Handled = Regex.IsMatch(e.Text , "^[^0-9]+$");
     }
-
     private void price_TextChanged(object sender, TextChangedEventArgs e)
     {
+        changeList();
         var textPrice = sender as TextBox;
         if (double.TryParse(textPrice?.Text, out double z))
-            currentProduct.Price = Convert.ToDouble(textPrice?.Text);
+            productDetail.Price = Convert.ToDouble(textPrice?.Text);
         else
-            currentProduct.Price = 0;
+            productDetail.Price = 0;
     }
 }

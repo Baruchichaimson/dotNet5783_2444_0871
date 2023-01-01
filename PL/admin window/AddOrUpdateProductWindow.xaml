@@ -41,11 +41,11 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBox x:Name="name"             Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" PreviewTextInput="name_PreviewTextInput" TextWrapping="Wrap"  Text="{Binding currentProduct.Name}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black"/>
-            <TextBox x:Name="id"               Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" PreviewTextInput="id_PreviewTextInput" TextWrapping="Wrap" Text="{Binding currentProduct.ID}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black" />
-            <ComboBox x:Name="categorychoose"  Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" Text="{Binding currentProduct.Category}" SelectionChanged="comboBox_SelectionChanged" SelectedIndex="0"  BorderBrush="Black"/>
-            <TextBox x:Name="price"            Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" PreviewTextInput="price_PreviewTextInput" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Height="20" Text="{Binding currentProduct.Price}"  TextChanged="price_TextChanged" BorderBrush="Black"/>
-            <TextBox x:Name="instoke"          Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left" PreviewTextInput="instoke_PreviewTextInput" TextWrapping="Wrap"  VerticalAlignment="Center" Width="120"  Text="{Binding currentProduct.InStock}" Height="20" BorderBrush="Black"/>
+            <TextBox x:Name="name"             Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" PreviewTextInput="name_PreviewTextInput" TextWrapping="Wrap"  Text="{Binding productDetail.Name}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black"/>
+            <TextBox x:Name="id"               Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" PreviewTextInput="id_PreviewTextInput" TextWrapping="Wrap" Text="{Binding productDetail.ID}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black" />
+            <ComboBox x:Name="categorychoose"  Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" Text="{Binding productDetail.Category}" SelectedIndex="0"  BorderBrush="Black"/>
+            <TextBox x:Name="price"            Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" PreviewTextInput="price_PreviewTextInput" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Height="20" Text="{Binding productDetail.Price , Mode=TwoWay}" BorderBrush="Black"/>
+            <TextBox x:Name="instoke"          Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left" PreviewTextInput="instoke_PreviewTextInput" TextWrapping="Wrap"  VerticalAlignment="Center" Width="120"  Text="{Binding productDetail.InStock}" Height="20" BorderBrush="Black"/>
             <Button x:Name="addOrUpdateProdut" Grid.Column="3" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Top" Cursor="Hand" Click="addOrUpdateProductButton" Height="33" Width="90" BorderBrush="Black"/>
       
             <Label x:Name="label"  Content="ID"      Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Height="28" Foreground="Black"  OpacityMask="Black"/>
@@ -54,7 +54,7 @@
             <Label x:Name="label3" Content="CATEGORY" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left"  VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Foreground="Black"/>
             <Label x:Name="label4" Content="IN STOCK" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" FontSize="14" Width="110" FontFamily="Elephant" Foreground="Black"/>
 
-            <Slider x:Name="slider" Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding ElementName=price, Path=Text}"  Maximum="5000" Orientation="Vertical" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="22" Height="100"/>
+            <Slider x:Name="slider" Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding  ElementName=price, Path=Text, Mode=TwoWay}"  Maximum="5000" Orientation="Vertical" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="22" Height="100"/>
             <Image  Source="\images\Logo.png" HorizontalAlignment="Left" Height="111" Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Top" Width="119" Stretch="Fill" Cursor="No" >
                 <Image.OpacityMask>
                     <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.65" RadiusY="0.65">

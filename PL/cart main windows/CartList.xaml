@@ -51,7 +51,7 @@
             <Button x:Name="button" Content="order now" Cursor="Hand" Margin="0,10,0,10" HorizontalAlignment="center" Height="27" Grid.Column="2" VerticalAlignment="Center" Width="80" Click="order_now" FontWeight="Bold" Foreground="Black"/>
 
         </Grid>
-        <ListView x:Name="OrderlistView" d:ItemsSource="{d:SampleData ItemCount=5}"  ItemsSource="{Binding cartItems}" Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="4" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="CartlistView_MouseDoubleClick" SelectionChanged="CartlistView_SelectionChanged">
+        <ListView x:Name="OrderlistView" d:ItemsSource="{d:SampleData ItemCount=5}"  ItemsSource="{Binding CartItems}" Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="4" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" AutomationProperties.IsColumnHeader="True">
             <ListView.Resources>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Style.Triggers>

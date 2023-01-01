@@ -30,31 +30,26 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     {
         InitializeComponent();
         cart = new BO.Cart();
-        groups = from item in _bl?.Product.GetListProductItem(cart)
+        productItems = _bl?.Product.GetListProductItem(cart)!;
+        groups = from item in productItems
                  group item by item.Category into x
                  select x;
-        productItems = _bl?.Product.GetListProductItem(cart)!;
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
     }
-     private void OnChange(int productId)
+    private void OnChange(int productId)
     {
-        productItems = productItems.Select(x => { return x; });
-       
+        productItems = productItems?.Select(x => x);
     }
 
     private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (CategorySelector.SelectedIndex >= 0)
-        productItems = groups.FirstOrDefault(item => (BO.CoffeeShop)CategorySelector.SelectedItem == item.Key);
+             productItems = groups.FirstOrDefault(item => (BO.CoffeeShop)CategorySelector.SelectedItem == item.Key);
     }
-    private void ProductlistView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-
-    }
+   
     private void Reset_button_Click(object sender, RoutedEventArgs e)
     {
-        productItems = from item in _bl?.Product.GetListProductItem(cart)!
-                       select item;
+        productItems = groups.SelectMany(x => x);
         CategorySelector.SelectedIndex = -1;
     }
 
@@ -62,12 +57,10 @@ public partial class NewOrder : Window , INotifyPropertyChanged
 
     private void ProductItemlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-
         if (ProductItemlistView.SelectedItem is BO.ProductItem Item)
         {
             if (IsMouseCaptureWithin)
                 new ProductItemWindow(_bl, Item , cart, OnChange).Show();
         }
-
     }
 }

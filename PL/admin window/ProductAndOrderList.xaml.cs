@@ -1,8 +1,8 @@
-﻿using BlApi;
-using BO;
-using DalApi;
+﻿using BO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,17 +11,22 @@ namespace PL.admin_window;
 /// <summary>
 /// Interaction logic for ProductList.xaml
 /// </summary>
-public partial class ProductAndOrderList : Window
+public partial class ProductAndOrderList : Window , INotifyPropertyChanged
 {
     /// <summary>
     /// access to the logical layyer.
     /// </summary>
     private BlApi.IBl? _bl = BlApi.Factory.Get();
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    IEnumerable<IGrouping<BO.CoffeeShop?, ProductForList>> groups;
     /// <summary>
     /// initialize depency property
     /// </summary>
-    public static readonly DependencyProperty ListProp = DependencyProperty.Register(nameof(listProduct), typeof(IEnumerable<BO.ProductForList?>), typeof(ProductAndOrderList), new PropertyMetadata(null));
-    public IEnumerable<BO.ProductForList?> listProduct { get => (IEnumerable<BO.ProductForList?>)GetValue(ListProp); set => SetValue(ListProp, value); }
+    private IEnumerable<BO.ProductForList?>? productListp;
+    public IEnumerable<BO.ProductForList?>? productList { get { return productListp; } set { productListp = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("productList")); } } }
+    private IEnumerable<BO.OrderForList?>? orderListp;
+    public IEnumerable<BO.OrderForList?>? orderList { get { return orderListp; } set { orderListp = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("orderList")); } } }
 
     /// <summary>
     /// constractor
@@ -30,8 +35,12 @@ public partial class ProductAndOrderList : Window
     {
         
         InitializeComponent();
-        listProduct = _bl?.Product.GetList()!;
-        OrderlistView.ItemsSource = _bl?.Order.GetList();
+        productList = _bl?.Product.GetList()!;
+        orderList = _bl?.Order.GetList()!.ToList();
+        groups = from item in productList
+                 group item by item.Category into x
+                 select x;
+        
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
     }
     /// <summary>
@@ -41,18 +50,8 @@ public partial class ProductAndOrderList : Window
     /// <param name="e"></param>
     private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-
-        var combo = sender as ComboBox;
-        var s = Convert.ToString(combo!.SelectedItem);
-        CoffeeShop Categoryname = s switch
-        {
-            "COFFE_MACHINES" => CoffeeShop.COFFE_MACHINES,
-            "CAPSULES" => CoffeeShop.CAPSULES,
-            "ACCESSORIES" => CoffeeShop.ACCESSORIES,
-            "FROTHERS" => CoffeeShop.FROTHERS,
-            "SWEETS" => CoffeeShop.SWEETS
-        };
-        ProductlistView.ItemsSource = _bl?.Product.GetList(element => element?.Category == Categoryname);
+        if (CategorySelector.SelectedIndex >= 0)
+            productList = groups.FirstOrDefault(item => (BO.CoffeeShop)CategorySelector.SelectedItem == item.Key);
     }
     /// <summary>
     /// button to reset the list
@@ -61,7 +60,8 @@ public partial class ProductAndOrderList : Window
     /// <param name="e"></param>
     private void Reset_button_Click(object sender, RoutedEventArgs e)
     {
-        ProductlistView.ItemsSource = _bl?.Product.GetList();
+        productList = groups.SelectMany(x => x);
+        CategorySelector.SelectedIndex = -1;
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
     }
     /// <summary>
@@ -69,7 +69,7 @@ public partial class ProductAndOrderList : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Add_Product_Button_Click(object sender, RoutedEventArgs e) => new AddOrUpdateProductWindow(_bl , this).Show();
+    private void Add_Product_Button_Click(object sender, RoutedEventArgs e) => new AddOrUpdateProductWindow(_bl, OnChange).Show();
     /// <summary>
     /// event double click to open the new window of update product with the id that chooce.
     /// </summary>
@@ -80,7 +80,7 @@ public partial class ProductAndOrderList : Window
         if (ProductlistView.SelectedItem is ProductForList productForList)
         {
             if(IsMouseCaptureWithin)
-                new AddOrUpdateProductWindow(_bl, productForList.ID, this).Show();
+                new AddOrUpdateProductWindow(_bl, productForList.ID, OnChange).Show();
         }
     }
     private void OrderlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -88,18 +88,9 @@ public partial class ProductAndOrderList : Window
         if (IsMouseCaptureWithin)
             new UpdateOrder(_bl, ((BO.OrderForList)OrderlistView.SelectedItem).ID).Show();
     }
-    /// <summary>
-    /// event double click
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void ProductlistView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void OnChange()
     {
-
-    }
-
-    private void OrderlistView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-
+        
+        //productList = productList?.Select(x => x);
     }
 }

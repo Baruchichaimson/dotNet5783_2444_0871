@@ -14,7 +14,7 @@ internal class Program
     /// <summary>
     /// An arttitube of the interface that contains all the logical entities
     /// </summary>
-   static BlApi.IBl? bl = BlApi.Factory.Get;
+   static BlApi.IBl? bl = BlApi.Factory.Get();
 
 
     /// <summary>
