@@ -14,7 +14,7 @@ public partial class clientwindow : Window
     {
         InitializeComponent();
     }
-    private void ShowProductButton2_Click(object sender, RoutedEventArgs e) => new NewOrder().Show();
+    private void ShowProductButton2_Click(object sender, RoutedEventArgs e) => new NewOrder().ShowDialog();
 
-    private void ShowProductButton1_Click(object sender, RoutedEventArgs e) => new OrderTrackingWindow().Show();
+    private void ShowProductButton1_Click(object sender, RoutedEventArgs e) => new OrderTrackingWindow().ShowDialog();
 }

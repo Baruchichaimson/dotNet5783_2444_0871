@@ -19,10 +19,7 @@ using System.Windows.Shapes;
 
 namespace PL.cart_main_windows
 {
-    /// <summary>
-    /// Interaction logic for CartList.xaml
-    /// </summary>
-
+    
     public class OrderItemViewModel : INotifyPropertyChanged
     {
         private Cart cart;
@@ -57,7 +54,7 @@ namespace PL.cart_main_windows
         {
             Item.Amount++;
             Item.TotalPrice += Item.Price;
-            _bl.Cart.UpdateProductAmount(cart,Item.ProductID,Item.Amount);
+            _bl?.Cart.UpdateProductAmount(cart,Item.ProductID,Item.Amount);
             ListChanged();
             OnPropertyChanged("Item");
         }
@@ -68,7 +65,7 @@ namespace PL.cart_main_windows
             {
                 Item.Amount--;
                 Item.TotalPrice -= Item.Price;
-                _bl.Cart.UpdateProductAmount(cart, Item.ProductID, Item.Amount);
+                _bl?.Cart.UpdateProductAmount(cart, Item.ProductID, Item.Amount);
                 ListChanged();
                 OnPropertyChanged("Item");
                 if (Item.Amount == 0)
@@ -82,6 +79,10 @@ namespace PL.cart_main_windows
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+    /// <summary>
+    /// Interaction logic for CartList.xaml
+    /// </summary>
+
     public partial class CartList : Window , INotifyPropertyChanged
     {
         private BlApi.IBl? _bl;
@@ -109,7 +110,7 @@ namespace PL.cart_main_windows
         private void order_now(object sender, RoutedEventArgs e)
         {
             var newOrderWindow = new Order_Confirmation(_bl, cart);
-            newOrderWindow.Show();
+            newOrderWindow.ShowDialog();
             Close();
         }
     }

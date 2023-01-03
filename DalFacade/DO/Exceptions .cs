@@ -18,7 +18,7 @@ namespace DO
     }
     public class NullExeption : Exception
     {
-        public NullExeption(string messege) : base(messege + " is null in DO") { }
+        public NullExeption(string messege) : base(messege + " is not exist") { }
     }
     [Serializable]
     public class DalConfigException : Exception

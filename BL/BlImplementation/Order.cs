@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Xml.Schema;
-using BO;
 
 namespace BlImplementation
 {
@@ -48,7 +47,7 @@ namespace BlImplementation
             {
                 IEnumerable<BO.OrderItem> list = _dal?.OrderItem.List(element => element?.OredrID == idOrder?.Id)?.Select(item =>
                 {
-                    return new BO.OrderItem 
+                    return new BO.OrderItem
                     {
                         ID = (int)item?.OredrID!,
                         ProductID = (int)item?.ProductID!,
@@ -58,7 +57,7 @@ namespace BlImplementation
                         Name = _dal.Product.Get((int)item?.ProductID!).Name
                     };
                 }) ?? throw new BO.NullExeption("Dal") ?? throw new BO.NullExeption("order item list");
-              
+
                 return list.ToList();
             }
             catch (DO.EntityNotFoundException ex)
@@ -69,7 +68,7 @@ namespace BlImplementation
             {
                 throw new BO.NullExeptionForDO(ex);
             }
-           
+
         }
         /// <summary>
         /// Helper function that returns a string with the order details
@@ -92,10 +91,10 @@ namespace BlImplementation
         public IEnumerable<BO.OrderForList?>? GetList()
         {
             IEnumerable<DO.Order?>? list = _dal?.Order.List(element => element is not null) ?? throw new BO.NullExeption("Dal");
-          
-            return list?.Select(element => 
+
+            return list?.Select(element =>
             {
-                List<OrderItem> orderItems = GiveList(element);
+                List<BO.OrderItem> orderItems = GiveList(element);
                 return new BO.OrderForList
                 {
                     ID = (int)element?.Id!,
@@ -113,14 +112,14 @@ namespace BlImplementation
         /// <returns> Order  </returns>
         /// <exception cref="EntityNotFoundException"> trow an Exception when the order was not found in the database</exception>
         public BO.Order GetData(int id)
-        {               
+        {
             if (id > 0)
             {
                 try
                 {
 
-                    DO.Order dataOrder = _dal?.Order.Get(id) ?? throw new NullExeption("Dal");
-                    List<OrderItem> orderItems = GiveList(dataOrder);
+                    DO.Order dataOrder = _dal?.Order.Get(id) ?? throw new BO.NullExeption("Dal");
+                    List<BO.OrderItem> orderItems = GiveList(dataOrder);
 
                     BO.Order order = new()
                     {
@@ -149,7 +148,7 @@ namespace BlImplementation
             throw new BO.IdNotExsitException("Order id not valid");
         }
 
-        private double totalPrice(List<OrderItem> orderItems)
+        private double totalPrice(List<BO.OrderItem> orderItems)
         {
             return orderItems.Sum(x => (double)x?.Price! * (int)x?.Amount!);
         }
@@ -165,8 +164,8 @@ namespace BlImplementation
             try
             {
                 if (_dal?.Order.Get(id).ShipDate is null)
-            {
-               
+                {
+
                     DO.Order updateOrders = _dal?.Order.Get(id) ?? throw new BO.NullExeption("Dal");
                     updateOrders.ShipDate = DateTime.Now;
                     _dal.Order.Update(updateOrders);
@@ -174,7 +173,7 @@ namespace BlImplementation
                     updorder.ShipDate = updateOrders.ShipDate;
                     return updorder;
                 }
-               
+
             }
             catch (DO.EntityNotFoundException ex)
             {
@@ -224,9 +223,10 @@ namespace BlImplementation
         /// <exception cref="EntityNotFoundException">Throws an exception when the order was not found in the database</exception>
         public BO.OrderTracking OrderTracking(int id)
         {
+            DO.Order order;
             try
             {
-                DO.Order order = _dal?.Order.Get(id) ?? throw new BO.NullExeption("Dal");
+                order = _dal?.Order.Get(id) ?? throw new BO.NullExeption("Dal");
                 List<string?> templist = new();
                 templist.Add(GiveOrderDate(order.OrderDate, "created"));
                 if (order.ShipDate is not null)
@@ -242,14 +242,6 @@ namespace BlImplementation
                     orderDetails = templist
                 };
                 return tracking;
-            }
-            catch (DO.EntityNotFoundException ex)
-            {
-                throw new BO.EntityNotFoundException(ex);
-            }
-            catch (DO.AllreadyExistException ex)
-            {
-                throw new BO.AllreadyExistException(ex);
             }
             catch (DO.NullExeption ex)
             {
@@ -275,7 +267,7 @@ namespace BlImplementation
                 int id = 0;
                 if (_dal.Order.Get(orderId).ShipDate is null)
                 {
-                    foreach (var orderItems in _dal?.OrderItem.List(element => element?.OredrID == orderId)?? throw new BO.NullExeption("order item list") ?? throw new BO.NullExeption("Dal"))
+                    foreach (var orderItems in _dal?.OrderItem.List(element => element?.OredrID == orderId) ?? throw new BO.NullExeption("order item list") ?? throw new BO.NullExeption("Dal"))
                     {
                         if (productId == orderItems?.ProductID)
                         {

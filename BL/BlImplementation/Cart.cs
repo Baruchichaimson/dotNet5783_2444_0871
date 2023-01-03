@@ -124,8 +124,8 @@ namespace BlImplementation
                     CustomerAdress = cart.CustomerAddress,
                     CustomerEmail = cart.CustomerEmail,
                     OrderDate = DateTime.Now,
-                    ShipDate = DateTime.MinValue,
-                    DeliveryrDate = DateTime.MinValue
+                    ShipDate = null,
+                    DeliveryrDate = null
                 };
                 int idOrder = _dal?.Order.Add(order) ?? throw new BO.NullExeption("Dal");
                 foreach (var item in cart.Items)

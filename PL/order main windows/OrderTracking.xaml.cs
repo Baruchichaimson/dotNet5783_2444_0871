@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,24 +44,15 @@ namespace PL.order_main_windows
             {
                 order = _bl?.Order.OrderTracking(orderId)!;
                 orderTrackingString = order.ToString()!;
-                get.Visibility = Visibility.Hidden;
             }
-            catch (BO.EntityNotFoundException ex)
+            catch (BO.NullExeptionForDO ex) when (ex.InnerException is not null)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message + ex.InnerException!.Message);
             }
-            catch (BO.AllreadyExistException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            catch (BO.NullExeptionForDO ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            catch (BO.NullExeption ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+        }
+        private void ID_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = Regex.IsMatch(e.Text, "^[^0-9]+$");
         }
     }
 }

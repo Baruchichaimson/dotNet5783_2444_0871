@@ -66,7 +66,7 @@ public partial class NewOrder : Window , INotifyPropertyChanged
             return;
         }
         cartWindow = new CartList(_bl, cart, OnChange);
-        cartWindow.Show();     
+        cartWindow.ShowDialog();     
     }
 
     private void ProductItemlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -76,7 +76,7 @@ public partial class NewOrder : Window , INotifyPropertyChanged
             if (cartWindow != null && cartWindow.Visibility == Visibility.Visible)
                 cartWindow.Visibility = Visibility.Collapsed;
             if (IsMouseCaptureWithin)
-                new ProductItemWindow(_bl, Item , cart, OnChange).Show();
+                new ProductItemWindow(_bl, Item , cart, OnChange).ShowDialog();
            
         }
     }

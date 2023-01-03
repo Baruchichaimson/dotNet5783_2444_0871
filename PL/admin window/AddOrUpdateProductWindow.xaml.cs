@@ -8,8 +8,15 @@ using System.Windows.Input;
 using PL.new_order_window;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Collections;
 
 namespace PL.admin_window;
+
+internal class Categories : IEnumerable
+{
+    static readonly IEnumerator s_enumerator = Enum.GetValues(typeof(BO.CoffeeShop)).GetEnumerator();
+    public IEnumerator GetEnumerator() => s_enumerator;
+}
 
 /// <summary>
 /// Interaction logic for AddOrUpdateProductWindow.xaml
@@ -66,11 +73,6 @@ public partial class AddOrUpdateProductWindow : Window , INotifyPropertyChanged
     {
         try
         { 
-            if (int.TryParse(id.Text, out int x) == false || categorychoose.SelectedItem == null || string.IsNullOrEmpty(name.Text) || double.TryParse(price.Text, out double y) == false || int.TryParse(instoke.Text, out int z) == false)
-            {
-                MessageBox.Show("missing details");
-                return;
-            }
             if (addOrUpdateProdut?.Content == "Add")
                 _bl?.Product.Add(productDetail);
             else
