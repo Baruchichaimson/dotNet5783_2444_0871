@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Controls.Primitives;
 using System.Windows.Navigation;
 using static System.Net.Mime.MediaTypeNames;
+using System.Diagnostics;
 
 namespace PL.new_order_window;
 
@@ -38,7 +39,7 @@ public partial class NewOrder : Window , INotifyPropertyChanged
                  select x;
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
     }
-    private void OnChange(int productId)
+    private void OnChange()
     {
         productItems = productItems?.Select(x => x);
     }
@@ -59,8 +60,12 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     {
         if (cartWindow != null && cartWindow.Visibility == Visibility.Visible)
             cartWindow.Visibility = Visibility.Collapsed;
-
-        cartWindow = new CartList(_bl, cart);
+        if (cart.Items == null || cart.Items.Count == 0)
+        {
+            MessageBox.Show("the cart is empty"); 
+            return;
+        }
+        cartWindow = new CartList(_bl, cart, OnChange);
         cartWindow.Show();     
     }
 
@@ -68,6 +73,8 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     {
         if (ProductItemlistView.SelectedItem is BO.ProductItem Item)
         {
+            if (cartWindow != null && cartWindow.Visibility == Visibility.Visible)
+                cartWindow.Visibility = Visibility.Collapsed;
             if (IsMouseCaptureWithin)
                 new ProductItemWindow(_bl, Item , cart, OnChange).Show();
            

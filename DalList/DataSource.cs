@@ -143,10 +143,10 @@ internal static class DataSource
             ///make new object for the random time for the date of the order we need.
             DateTime currentTime = DateTime.Now;
 
-            // Subtract one month from current time
+            /// Subtract one month from current time
             DateTime oneMonthAgo = currentTime.AddMonths(-1);
 
-            // Generate random time between current time and one month ago
+            /// Generate random time between current time and one month ago
             DateTime randomTime = new DateTime(oneMonthAgo.Year, oneMonthAgo.Month,
                         randomNumber.Next(1, oneMonthAgo.Day), randomNumber.Next(0, 23), randomNumber.Next(0, 59), randomNumber.Next(0, 59));
 

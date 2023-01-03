@@ -25,13 +25,13 @@ namespace PL.order_main_windows
     {
         private BlApi.IBl? _bl;
         BO.Cart? cart;
-        Action<int> ListChanged;
+        Action ListChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
         private ProductItem productItem;
         public ProductItem productItemWindow { get { return productItem; } set { productItem = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("productItemWindow")); } } }
 
        
-        public ProductItemWindow(BlApi.IBl? _blForAdd, BO.ProductItem newProductItem , BO.Cart newcart, Action<int> SendListChanged)
+        public ProductItemWindow(BlApi.IBl? _blForAdd, BO.ProductItem newProductItem , BO.Cart newcart, Action SendListChanged)
         {
             _bl = _blForAdd;
             cart = newcart;
@@ -50,7 +50,7 @@ namespace PL.order_main_windows
             {
                 MessageBox.Show(ex.Message);
             }
-            ListChanged(productItemWindow.ID);
+            ListChanged();
             Close();
         }
     }
