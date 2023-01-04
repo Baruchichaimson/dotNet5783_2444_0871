@@ -70,17 +70,17 @@
         </Grid>
 
 
-        <ListView x:Name="ProductItemlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden"  BorderThickness="0" ItemsSource="{Binding Source={StaticResource myCVS}}" Foreground="#FFD9D9D9" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF030800" FontFamily="Bodoni MT" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="ProductItemlistView_MouseDoubleClick" FontWeight="Bold" >
+        <ListView x:Name="ProductItemlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden"  BorderThickness="0" ItemsSource="{Binding Source={StaticResource myCVS}}" Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF030800" FontFamily="Bodoni MT" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="ProductItemlistView_MouseDoubleClick" FontWeight="Bold" >
             <ListView.Resources>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="Black"/>
-                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="Background" Value="#FFC3EA71"/>
+                            <Setter Property="BorderBrush" Value="#FFC3EA71"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background"  Value="Black"/>
-                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="Background"  Value="#FFC3EA71"/>
+                            <Setter Property="BorderBrush" Value="#FFC3EA71"/>
                         </Trigger>
                     </Style.Triggers>
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -90,7 +90,7 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
                                 <Border BorderThickness="0,0,0,1" BorderBrush="Transparent" Padding="5,0,5,0" Background="Transparent">
-                                    <TextBlock x:Name="ContentHeader" Foreground="#FFD9D9D9"  Text="{TemplateBinding Content}" Padding="10,5,10,0" FontFamily="Bernard MT Condensed" Width="{TemplateBinding Width}" TextAlignment="Center" FontWeight="Bold"/>
+                                    <TextBlock x:Name="ContentHeader" Foreground="Black"  Text="{TemplateBinding Content}" Padding="10,5,10,0" FontSize="14" FontFamily="Cooper BlackCooper Black" Width="{TemplateBinding Width}" TextAlignment="Center" FontWeight="Bold"/>
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
@@ -102,15 +102,15 @@
                 </Style>
             </ListView.Resources>
             <ListView.Background>
-                <ImageBrush  ImageSource="\images\store.png" TileMode="None"/>
+                <ImageBrush  ImageSource="\images\צילום מסך_20221208_213312.png" TileMode="None"/>
             </ListView.Background>
             <ListView.View >
                 <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
                     <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="Product ID" Width ="100" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Product Name" Width ="140" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Product Price"   Width ="100" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width ="140" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Price"   Width ="60" />
                     <GridViewColumn DisplayMemberBinding="{Binding Category}" Header="Categoty" Width ="130" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Amount}" Header="Amount In Cart" Width ="100" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Amount}" Header="Amount In Cart" Width ="140" />
                     <GridViewColumn DisplayMemberBinding="{Binding InStock}" Header="InStock" Width ="100" />
                 </GridView>
             </ListView.View>
@@ -119,8 +119,8 @@
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Border BorderThickness="0,0,0,0.2" BorderBrush="#cccccc" Background="Transparent"  Width="{Binding Path=ActualWidth, ElementName=ProductItemlistView}">
-                                    <TextBlock Text="{Binding Name}" Padding="15,7,5,4" HorizontalAlignment="Left"  Foreground="White" FontFamily="Cooper Black"/>
+                                <Border BorderThickness="0,0,0,0.2" BorderBrush="#FF4E2400" Background="Transparent"  Width="{Binding Path=ActualWidth, ElementName=ProductItemlistView}">
+                                    <TextBlock Text="{Binding Name}" Padding="15,7,5,4" HorizontalAlignment="Left" FontWeight="Light"  Foreground="Black" FontFamily="Bernard MT CondensedBernard MT Condensed"/>
                                 </Border>
                             </StackPanel>
                         </DataTemplate>
