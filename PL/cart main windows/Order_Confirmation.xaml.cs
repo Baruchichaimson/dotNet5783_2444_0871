@@ -62,6 +62,10 @@ namespace PL.cart_main_windows
             {
                 MessageBox.Show(ex.Message); 
                 return;
+            }catch (BO.IncorrectAmountException ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
             }
             Close();
             MessageBox.Show("ORDER CONFIRM", "ORDER CONFIRM", MessageBoxButton.OK, MessageBoxImage.Information);
