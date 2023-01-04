@@ -34,6 +34,7 @@ namespace PL.cart_main_windows
             {
                 _item = value;
                 OnPropertyChanged();
+
             }
         }
 
@@ -96,6 +97,7 @@ namespace PL.cart_main_windows
         public CartList(BlApi.IBl? bl , BO.Cart newCart ,Action action)
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             _bl = bl;
             cart = newCart;
             ListChanged = action;

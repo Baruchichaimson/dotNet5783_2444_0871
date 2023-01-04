@@ -29,6 +29,7 @@ namespace PL.cart_main_windows
         public Order_Confirmation(BlApi.IBl? bl, BO.Cart newCart)
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             _bl = bl;
             cartDetails = newCart;
         }

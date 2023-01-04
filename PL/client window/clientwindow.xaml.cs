@@ -13,6 +13,7 @@ public partial class clientwindow : Window
     public clientwindow()
     {
         InitializeComponent();
+        WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
     }
     private void ShowProductButton2_Click(object sender, RoutedEventArgs e) => new NewOrder().ShowDialog();
 

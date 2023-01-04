@@ -7,7 +7,8 @@
         Icon="\images\icon.png"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d"
-        Title="NewOrder" Height="450" Width="750">
+        Title="NewOrder" Height="650" Width="850">
+
     <Window.Resources>
         <Style TargetType="Button" >
             <Style.Resources>
@@ -23,11 +24,12 @@
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
     </Window.Resources>
-    <Grid Name="MainGrid">
+    <Grid Name="MainGrid" FocusVisualStyle="{x:Null}">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="Black" Offset="1"/>
-                <GradientStop Color="#FF7A5000" Offset="0.898"/>
+                <GradientStop Color="#FF4E2400" Offset="1"/>
+                <GradientStop Color="Black" Offset="0.926"/>
+                <GradientStop Color="Black" Offset="0.467"/>
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
@@ -37,15 +39,14 @@
         </Grid.ColumnDefinitions >
         <Grid.RowDefinitions>
             <RowDefinition Height="80*"/>
-            <RowDefinition Height="500*"/>
+            <RowDefinition Height="500*" />
             <RowDefinition Height="Auto" MinHeight="0"/>
         </Grid.RowDefinitions>
-        <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="3">
+        <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="3" FocusVisualStyle="{x:Null}">
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" >
-                    <GradientStop Color="Black" Offset="0.98"/>
-                    <GradientStop Color="#FF7A5000" Offset="0"/>
-                    <GradientStop Color="#FF030200" Offset="0.84"/>
+                    <GradientStop Color="Black" Offset="0.831"/>
+                    <GradientStop Color="#FF4E2400" Offset="0"/>
                 </LinearGradientBrush>
             </Grid.Background>
             <Grid.ColumnDefinitions>
@@ -56,10 +57,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
-            <ComboBox x:Name="CategorySelector" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="Black" VerticalAlignment="Center" HorizontalAlignment="Left"  Width="200" Height="30" SelectionChanged="CategorySelector_SelectionChanged">
-            </ComboBox>
-            <Label x:Name="label" Content="Category" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="178" Margin="10,0,0,0" Background="{x:Null}" FontSize="20" FontFamily="Aharoni" FontWeight="Bold" Foreground="#FFD9D9D9"/>
-            <Button x:Name="button" Content="Reset List" Cursor="Hand" HorizontalAlignment="Left" Height="27" Grid.Column="3" VerticalAlignment="Center" Width="70" Click="Reset_button_Click" FontWeight="Bold" Foreground="Black"/>
+            <ComboBox x:Name="CategorySelector" Grid.Column="1" FontFamily="Cambria" VerticalAlignment="Center" HorizontalAlignment="Left"  Width="120" Height="18" SelectionChanged="CategorySelector_SelectionChanged" Margin="6,0,0,0"/>
+            <Label x:Name="label" Content="Category:" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="83" Margin="60,0,0,0" Background="{x:Null}" FontSize="20" FontFamily="Bernard MT Condensed" FontWeight="Bold" Foreground="#FFD9D9D9" Height="36" RenderTransformOrigin="0.514,0.355" Grid.ColumnSpan="2"/>
+            <Button x:Name="button" Margin="141,32,0,0" Content="Reset" Cursor="Hand" HorizontalAlignment="Left" Height="18" Grid.Column="1" VerticalAlignment="Top" Width="47" Click="Reset_button_Click" FontSize="10" FontWeight="Bold" Foreground="Black" FontFamily="Bernard MT Condensed" Grid.ColumnSpan="2"/>
             <ToggleButton Name="button1" Cursor="Hand" HorizontalAlignment="Left" Grid.Column="5" Click="Cart_button_Click" FontWeight="Bold" Foreground="Black" Margin="32,7,0,13">
                 <ToggleButton.Template>
                     <ControlTemplate TargetType="ToggleButton">
@@ -70,15 +70,17 @@
         </Grid>
 
 
-        <ListView x:Name="ProductItemlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Source={StaticResource myCVS}}" Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="ProductItemlistView_MouseDoubleClick">
+        <ListView x:Name="ProductItemlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden"  BorderThickness="0" ItemsSource="{Binding Source={StaticResource myCVS}}" Foreground="#FFD9D9D9" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF030800" FontFamily="Bodoni MT" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="ProductItemlistView_MouseDoubleClick" FontWeight="Bold" >
             <ListView.Resources>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#FFC3EA71"/>
+                            <Setter Property="Background" Value="Black"/>
+                            <Setter Property="BorderBrush" Value="Black"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background"  Value="#FFC3EA71"/>
+                            <Setter Property="Background"  Value="Black"/>
+                            <Setter Property="BorderBrush" Value="Black"/>
                         </Trigger>
                     </Style.Triggers>
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -87,8 +89,8 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
-                                <Border BorderThickness="0,0,0,1" BorderBrush="Transparent" Background="Transparent">
-                                    <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Padding="10,5,10,0" Width="{TemplateBinding Width}" TextAlignment="Center" FontWeight="Bold"/>
+                                <Border BorderThickness="0,0,0,1" BorderBrush="Transparent" Padding="5,0,5,0" Background="Transparent">
+                                    <TextBlock x:Name="ContentHeader" Foreground="#FFD9D9D9"  Text="{TemplateBinding Content}" Padding="10,5,10,0" FontFamily="Bernard MT Condensed" Width="{TemplateBinding Width}" TextAlignment="Center" FontWeight="Bold"/>
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
@@ -100,14 +102,14 @@
                 </Style>
             </ListView.Resources>
             <ListView.Background>
-                <ImageBrush ImageSource="\images\צילום מסך_20221208_213312.png" TileMode="None"/>
+                <ImageBrush  ImageSource="\images\store.png" TileMode="None"/>
             </ListView.Background>
-            <ListView.View>
+            <ListView.View >
                 <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
                     <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="Product ID" Width ="100" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Product Name" Width ="120" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Product Name" Width ="140" />
                     <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Product Price"   Width ="100" />
-                    <GridViewColumn DisplayMemberBinding="{Binding Category}" Header="Categoty" Width ="120" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Category}" Header="Categoty" Width ="130" />
                     <GridViewColumn DisplayMemberBinding="{Binding Amount}" Header="Amount In Cart" Width ="100" />
                     <GridViewColumn DisplayMemberBinding="{Binding InStock}" Header="InStock" Width ="100" />
                 </GridView>
@@ -117,8 +119,8 @@
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Border BorderThickness="0,0,0,1" BorderBrush="#cccccc" Background="#FF7A5000"  Width="{Binding Path=ActualWidth, ElementName=ProductItemlistView}" HorizontalAlignment="Stretch">
-                                    <TextBlock Text="{Binding Name}"  Foreground="White"/>
+                                <Border BorderThickness="0,0,0,0.2" BorderBrush="#cccccc" Background="Transparent"  Width="{Binding Path=ActualWidth, ElementName=ProductItemlistView}">
+                                    <TextBlock Text="{Binding Name}" Padding="15,7,5,4" HorizontalAlignment="Left"  Foreground="White" FontFamily="Cooper Black"/>
                                 </Border>
                             </StackPanel>
                         </DataTemplate>
@@ -126,7 +128,8 @@
                 </GroupStyle>
             </ListView.GroupStyle>
         </ListView>
+        <Button x:Name="buttonExit" Margin="7,15,65,5" Content="EXIT" Cursor="Hand" Grid.Row="2" HorizontalAlignment="Right" Height="24" Grid.Column="2" VerticalAlignment="Center" Width="40" FontSize="12" FontWeight="Bold" Foreground="Black" FontFamily="Bernard MT Condensed" Click="buttonExit_Click"/>
 
-        <Label x:Name="label1" Content="NEW ORDER" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" Width="300" Background="{x:Null}" FontSize="40" FontFamily="Aharoni" Foreground="#FFD9D9D9" FontWeight="Bold"/>
+        <Label x:Name="label1" Content="Good coffee for a better day ..." Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="23,8,5,3" VerticalAlignment="Center" Height="50" Width="418" Background="{x:Null}" FontSize="25" FontFamily="Edwardian Script ITC" Foreground="#FFD9D9D9" FontWeight="Bold" RenderTransformOrigin="0.593,0.517"/>
     </Grid>
 </Window>

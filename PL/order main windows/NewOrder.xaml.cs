@@ -23,8 +23,8 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     private BlApi.IBl? _bl = BlApi.Factory.Get();
     private BO.Cart cart;
     private CartList? cartWindow;
-    private IEnumerable<IGrouping<BO.CoffeeShop?, ProductItem>> groups_p;
-    public IEnumerable<IGrouping<BO.CoffeeShop?, ProductItem>> groups { get { return groups_p; } set { groups_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("groups")); } } }
+    private IEnumerable<IGrouping<BO.CoffeeShop?, ProductItem?>>? groups_p;
+    public IEnumerable<IGrouping<BO.CoffeeShop?, ProductItem?>> groups { get { return groups_p; } set { groups_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("groups")); } } }
     public event PropertyChangedEventHandler? PropertyChanged;
     private IEnumerable<BO.ProductItem?>? productItemsp;
     public IEnumerable<BO.ProductItem?>? productItems { get { return productItemsp; } set { productItemsp = value; if (PropertyChanged != null)  { PropertyChanged(this, new PropertyChangedEventArgs("productItems")); } }}
@@ -38,6 +38,9 @@ public partial class NewOrder : Window , INotifyPropertyChanged
                  group item by item.Category into x
                  select x;
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
+        this.WindowStyle = WindowStyle.None;
+        WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+
     }
     private void OnChange()
     {
@@ -79,5 +82,10 @@ public partial class NewOrder : Window , INotifyPropertyChanged
                 new ProductItemWindow(_bl, Item , cart, OnChange).ShowDialog();
            
         }
+    }
+
+    private void buttonExit_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
     }
 }

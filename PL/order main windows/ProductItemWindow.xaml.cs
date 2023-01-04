@@ -38,6 +38,7 @@ namespace PL.order_main_windows
             productItemWindow = newProductItem;
             ListChanged = SendListChanged;
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
         
         private void addToCart(object sender, RoutedEventArgs e)

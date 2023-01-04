@@ -22,6 +22,7 @@ public partial class MainWindow : Window
        // string s = Directory.GetCurrentDirectory();
        // background = new BitmapImage(new Uri(@$"{s}\images\Logo.png"));
         InitializeComponent();
+        WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
     }
     /// <summary>
     /// event to double click to go update the product.

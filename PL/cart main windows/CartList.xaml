@@ -6,7 +6,7 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d"
          Icon="\images\icon.png"
-        Title="CartList" Height="450" Width="800">
+        Title="CartList" Height="300" Width="430">
     <Window.Resources>
         <Style x:Key="ordernow">
             <Style.Resources>

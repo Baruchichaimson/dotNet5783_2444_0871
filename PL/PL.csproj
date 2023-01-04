@@ -24,6 +24,8 @@
     <None Remove="images\cart.png" />
     <None Remove="images\icon.png" />
     <None Remove="images\Logo.png" />
+    <None Remove="images\store.jpg" />
+    <None Remove="images\store.png" />
     <None Remove="צילום מסך_20221207_231839.png" />
   </ItemGroup>
 
@@ -50,6 +52,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="images\Logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\store.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\store.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="images\צילום מסך_20221208_213312.png">
