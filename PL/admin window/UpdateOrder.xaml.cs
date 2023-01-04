@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 namespace PL.admin_window;
 
@@ -6,50 +7,50 @@ namespace PL.admin_window;
 /// <summary>
 /// Interaction logic for UpdateOrder.xaml
 /// </summary>
-public partial class UpdateOrder : Window
+public partial class UpdateOrder : Window , INotifyPropertyChanged
 {
     private BlApi.IBl? _bl;
-
-    private BO.Order currentOrder;
-
-    public UpdateOrder(BlApi.IBl? bl, int orderId)
+    public event PropertyChangedEventHandler? PropertyChanged;
+    private BO.Order OrderDetail_p;
+    public BO.Order OrderDetail { get { return OrderDetail_p; } set { OrderDetail_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("OrderDetail")); } } }
+    Action changeList;
+    public UpdateOrder(BlApi.IBl? bl, int orderId ,Action action)
     {
         InitializeComponent();
         _bl = bl;
-        currentOrder = bl?.Order.GetData(orderId) ?? throw new Exception("");
-        DataContext = currentOrder;
-        UpdateDelivery.Content = "Update Delivery";
-        ItemListView.ItemsSource = currentOrder.Items;
+        changeList = action;
+        OrderDetail = bl?.Order.GetData(orderId)!;
 
-        if (currentOrder.ShipDate is not null)
+        UpdateDelivery.Content = "Update Delivery";
+        ItemListView.ItemsSource = OrderDetail.Items;
+
+        if (OrderDetail.ShipDate is not null)
             UpdateShip.Visibility = Visibility.Hidden;
         else
             UpdateDelivery.Visibility = Visibility.Hidden;
 
-        if (currentOrder.DeliveryrDate is not null)
+        if (OrderDetail.DeliveryrDate is not null)
             UpdateDelivery.Visibility = Visibility.Hidden;
     }
 
     private void UpdateDeliveryDate(object sender, RoutedEventArgs e)
     {
-        currentOrder = _bl?.Order.DeliveryUpdate(currentOrder.ID)!;
-        DataContext = currentOrder;
-        Status.Text = currentOrder.Status.ToString();
+        OrderDetail = _bl?.Order.DeliveryUpdate(OrderDetail.ID)!;
+        changeList();
         MessageBox.Show("SUCCSES", "SUCCSES", MessageBoxButton.OK, MessageBoxImage.Information);
         UpdateDelivery.Visibility = Visibility.Hidden;
+        Close();
     }
 
 
     private void UpdateShipDate(object sender, RoutedEventArgs e)
     {
-        currentOrder = _bl?.Order.UpdateShippingDate(currentOrder.ID)!;
-        DataContext = currentOrder;
-        Status.Text = currentOrder.Status.ToString();
+        OrderDetail = _bl?.Order.UpdateShippingDate(OrderDetail.ID)!;
+        changeList();
         MessageBox.Show("SUCCSES", "SUCCSES", MessageBoxButton.OK, MessageBoxImage.Information);
         UpdateShip.Visibility = Visibility.Hidden;
         UpdateDelivery.Visibility = Visibility.Visible;
     }
-
 }
 
 

@@ -29,8 +29,8 @@ public partial class MainWindow : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void ShowProductButton_Click(object sender, RoutedEventArgs e) => new ProductAndOrderList().Show();
+    private void ShowProductButton_Click(object sender, RoutedEventArgs e) => new ProductAndOrderList().ShowDialog();
 
-    private void ShowNewOrderButton_Click(object sender, RoutedEventArgs e) => new clientwindow().Show();
+    private void ShowNewOrderButton_Click(object sender, RoutedEventArgs e) => new clientwindow().ShowDialog();
 
 }

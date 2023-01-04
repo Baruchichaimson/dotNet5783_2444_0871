@@ -69,7 +69,7 @@ public partial class ProductAndOrderList : Window , INotifyPropertyChanged
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Add_Product_Button_Click(object sender, RoutedEventArgs e) => new AddOrUpdateProductWindow(_bl, OnChange).ShowDialog();
+    private void Add_Product_Button_Click(object sender, RoutedEventArgs e) => new AddOrUpdateProductWindow(_bl, OnChangeProduct).ShowDialog();
     /// <summary>
     /// event double click to open the new window of update product with the id that chooce.
     /// </summary>
@@ -80,16 +80,20 @@ public partial class ProductAndOrderList : Window , INotifyPropertyChanged
         if (ProductlistView.SelectedItem is ProductForList productForList)
         {
             if(IsMouseCaptureWithin)
-                new AddOrUpdateProductWindow(_bl, productForList.ID, OnChange).ShowDialog();
+                new AddOrUpdateProductWindow(_bl, productForList.ID, OnChangeProduct).ShowDialog();
         }
     }
     private void OrderlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         if (IsMouseCaptureWithin)
-            new UpdateOrder(_bl, ((BO.OrderForList)OrderlistView.SelectedItem).ID).ShowDialog();
+            new UpdateOrder(_bl, ((BO.OrderForList)OrderlistView.SelectedItem).ID, OnChangeOrder).ShowDialog();
     }
-    private void OnChange()
+    private void OnChangeProduct()
     {  
         productList = productList?.Select(x => x);
+    }
+    private void OnChangeOrder()
+    {
+        orderList = orderList?.Select(x => x);
     }
 }
