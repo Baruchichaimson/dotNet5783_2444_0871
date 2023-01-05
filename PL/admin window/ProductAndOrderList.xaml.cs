@@ -36,7 +36,7 @@ public partial class ProductAndOrderList : Window , INotifyPropertyChanged
         
         InitializeComponent();
         productList = _bl?.Product.GetList()!;
-        orderList = _bl?.Order.GetList()!.ToList();
+        orderList = _bl?.Order.GetList()!;
         groups = from item in productList
                  group item by item.Category into x
                  select x;

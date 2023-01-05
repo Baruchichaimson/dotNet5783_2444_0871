@@ -15,9 +15,7 @@
                 </Style>
             </Style.Resources>
         </Style>
-       
     </Window.Resources>
-    
     <Grid Name="MainGrid">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -99,7 +97,7 @@
                         </Setter.Value>
                     </Setter>
                     <Setter Property="OverridesDefaultStyle" Value="True" />
-                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="Foreground" Value="Black"/>
                     <Setter Property="FontFamily" Value="Segoe UI" />
                     <Setter Property="FontSize" Value="12" />
                 </Style>
@@ -115,11 +113,10 @@
                     <GridViewColumn Header="Amount" DisplayMemberBinding="{Binding Item.Amount}"/>
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>
-
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Style="{StaticResource ButtonStyle}" Content="+" Margin="2,0,2,0" Width="15" Command="{Binding IncreaseAmountCommand}" CommandParameter="{Binding}" />
-                                    <Button Style="{StaticResource ButtonStyle}" Content="-" Margin="2,0,2,0"   Width="15" Command="{Binding DecreaseAmountCommand}" CommandParameter="{Binding}" />
+                                    <Button Style="{StaticResource ButtonStyle}" Content="+" Margin="2,0,2,0" Width="15" Command="{Binding IncreaseAmountCommand}"/>
+                                    <Button Style="{StaticResource ButtonStyle}" Content="-" Margin="2,0,2,0"   Width="15" Command="{Binding DecreaseAmountCommand}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>

@@ -1,12 +1,8 @@
-﻿using BlApi;
-using BO;
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using PL.new_order_window;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Collections;
 

@@ -8,10 +8,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Controls.Primitives;
-using System.Windows.Navigation;
-using static System.Net.Mime.MediaTypeNames;
-using System.Diagnostics;
 
 namespace PL.new_order_window;
 

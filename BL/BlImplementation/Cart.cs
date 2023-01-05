@@ -32,7 +32,7 @@ namespace BlImplementation
             {
                 cart.Items = new();
             }
-            bool prodactExistInCart  = cart.Items.Exists(x => x?.ProductID == id);
+            bool prodactExistInCart = cart.Items.Exists(x => x?.ProductID == id);
             try
             {
                 DO.Product product = _dal?.Product.GetElement(element => element?.Id == id) ?? throw new BO.NullExeption("Dal");
@@ -80,7 +80,7 @@ namespace BlImplementation
                 throw new BO.NullExeptionForDO(ex);
             }
             throw new BO.IncorrectAmountException("not enough amount in stock");
-                
+
         }
         /// <summary>
         /// the function check that all the details on the order is 
@@ -104,7 +104,7 @@ namespace BlImplementation
                 {
 
                     DO.Product product = _dal?.Product.Get(orderItem?.ProductID ?? throw new BO.NullExeption("item in cart")) ?? throw new BO.NullExeption("Dal");
-                        ;
+                    ;
 
                     if (orderItem.Amount > product.Instock || orderItem.Amount <= 0)
                     {
@@ -131,7 +131,7 @@ namespace BlImplementation
                 foreach (var item in cart.Items)
                 {
                     if (item is null)
-                        throw  new BO.NullExeption("cart item");
+                        throw new BO.NullExeption("cart item");
 
                     DO.OrderItem orderItem = new()
                     {
@@ -171,7 +171,7 @@ namespace BlImplementation
         /// <exception cref="BO.CartException">throw exeption when product not in cart</exception>
         public BO.Cart UpdateProductAmount(BO.Cart cart, int id, int newAmount)
         {
-            if(cart.Items is null)
+            if (cart.Items is null)
             {
                 throw new BO.CartException("the cart is empty");
             }

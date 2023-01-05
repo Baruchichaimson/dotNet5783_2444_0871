@@ -299,12 +299,16 @@ namespace BlImplementation
                         else
                             throw new BO.IncorrectAmountException("reduce amount to much");
                         if (item.Amount == 0)
+                        {
                             _dal.OrderItem.Delete(item.Id);
+                            if (_dal?.OrderItem.List(x => x?.OredrID == orderId)?.Count() == 0)
+                                _dal?.Order.Delete(orderId);
+                        }
                         else
                             _dal.OrderItem.Update(item);
                     }
                     product.Instock -= amount;
-                    _dal.Product.Update(product);
+                    _dal?.Product.Update(product);
                 }
                 else
                     throw new BO.EntityDetailsWrongException("the order is allready been sent");
