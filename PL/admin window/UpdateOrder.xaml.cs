@@ -12,7 +12,7 @@ public partial class UpdateOrder : Window , INotifyPropertyChanged
     private BlApi.IBl? _bl;
     public event PropertyChangedEventHandler? PropertyChanged;
     private BO.Order OrderDetail_p;
-    public BO.Order OrderDetail { get { return OrderDetail_p; } set { OrderDetail_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("OrderDetail")); } } }
+    public BO.Order OrderDetail = new BO.Order();// { get { return OrderDetail_p; } set { OrderDetail_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("OrderDetail")); } } }
     Action changeList;
     public UpdateOrder(BlApi.IBl? bl, int orderId ,Action action)
     {
@@ -36,7 +36,7 @@ public partial class UpdateOrder : Window , INotifyPropertyChanged
     private void UpdateDeliveryDate(object sender, RoutedEventArgs e)
     {
         OrderDetail = _bl?.Order.DeliveryUpdate(OrderDetail.ID)!;
-        changeList();
+        //changeList();
         MessageBox.Show("SUCCSES", "SUCCSES", MessageBoxButton.OK, MessageBoxImage.Information);
         UpdateDelivery.Visibility = Visibility.Hidden;
         Close();
@@ -46,7 +46,7 @@ public partial class UpdateOrder : Window , INotifyPropertyChanged
     private void UpdateShipDate(object sender, RoutedEventArgs e)
     {
         OrderDetail = _bl?.Order.UpdateShippingDate(OrderDetail.ID)!;
-        changeList();
+        //changeList();
         MessageBox.Show("SUCCSES", "SUCCSES", MessageBoxButton.OK, MessageBoxImage.Information);
         UpdateShip.Visibility = Visibility.Hidden;
         UpdateDelivery.Visibility = Visibility.Visible;
