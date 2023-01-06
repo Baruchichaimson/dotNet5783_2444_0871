@@ -88,9 +88,37 @@ public class OrderItemViewModel : INotifyPropertyChanged
 /// <summary>
 /// Interaction logic for UpdateOrder.xaml
 /// </summary>
-public partial class UpdateOrder : Window , INotifyPropertyChanged
+public partial class OrderDatails : Window , INotifyPropertyChanged
 {
+    public static readonly DependencyProperty UpdateShipProperty =
+       DependencyProperty.Register("updateShip", typeof(Visibility), typeof(OrderDatails), new PropertyMetadata(Visibility.Hidden));
+    public static readonly DependencyProperty UpdateDeliveryProperty =
+      DependencyProperty.Register("updateDelivery", typeof(Visibility), typeof(OrderDatails), new PropertyMetadata(Visibility.Hidden));
+    public static readonly DependencyProperty ManegerProdactsButtensProperty =
+      DependencyProperty.Register("manegerProdactsButtens", typeof(Visibility), typeof(OrderDatails), new PropertyMetadata(Visibility.Hidden));
+
+    [DependencyProperty]
+    public Visibility updateShip
+    {
+        get { return (Visibility)GetValue(UpdateShipProperty); }
+        set { SetValue(UpdateShipProperty, value); }
+    }
+    [DependencyProperty]
+    public Visibility updateDelivery
+    {
+        get { return (Visibility)GetValue(UpdateDeliveryProperty); }
+        set { SetValue(UpdateDeliveryProperty, value); }
+    }
+    [DependencyProperty]
+    public Visibility manegerProdactsButtens
+    {
+        get { return (Visibility)GetValue(ManegerProdactsButtensProperty); }
+        set { SetValue(ManegerProdactsButtensProperty, value); }
+    }
+
     private BlApi.IBl? _bl;
+
+    
     public event PropertyChangedEventHandler? PropertyChanged;
     private IEnumerable<OrderItemViewModel?>? orderItems_p;
     public IEnumerable<OrderItemViewModel?>? OrderItems { get => orderItems_p; set { orderItems_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("OrderItems")); } } }
@@ -98,24 +126,26 @@ public partial class UpdateOrder : Window , INotifyPropertyChanged
     private BO.Order? OrderDetail_p;
     public BO.Order? OrderDetail { get { return OrderDetail_p; } set { OrderDetail_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("OrderDetail")); } } }
     Action changeList;
-    public UpdateOrder(BlApi.IBl? bl, int orderId ,Action action)
+    public OrderDatails(BlApi.IBl? bl, int orderId ,Action action) : this (bl, orderId)
+    {
+        changeList = action;
+        manegerProdactsButtens = Visibility.Visible;
+        if (OrderDetail.ShipDate is not null)
+            updateDelivery = Visibility.Visible;
+        else
+            updateShip = Visibility.Visible;
+    }
+    public OrderDatails(BlApi.IBl? bl, int orderId)
     {
         InitializeComponent();
         _bl = bl;
-        changeList = action;
         OrderDetail = bl?.Order.GetData(orderId)!;
+        updateShip = Visibility.Hidden;
+        updateDelivery = Visibility.Hidden;
+        manegerProdactsButtens = Visibility.Hidden;
         OrderItems = from item in OrderDetail.Items
-                    select new OrderItemViewModel( _bl , OrderDetail , ChangeAmountItem) { Item = item };
+                     select new OrderItemViewModel(_bl, OrderDetail, ChangeAmountItem) { Item = item };
 
-        UpdateDelivery.Content = "Update Delivery";
-
-        if (OrderDetail.ShipDate is not null)
-            UpdateShip.Visibility = Visibility.Hidden;
-        else
-            UpdateDelivery.Visibility = Visibility.Hidden;
-
-        if (OrderDetail.DeliveryrDate is not null)
-            UpdateDelivery.Visibility = Visibility.Hidden;
     }
 
     private void UpdateDeliveryDate(object sender, RoutedEventArgs e)
@@ -123,7 +153,7 @@ public partial class UpdateOrder : Window , INotifyPropertyChanged
         OrderDetail = _bl?.Order.DeliveryUpdate(OrderDetail!.ID)!;
         changeList();
         MessageBox.Show("SUCCSES", "SUCCSES", MessageBoxButton.OK, MessageBoxImage.Information);
-        UpdateDelivery.Visibility = Visibility.Hidden;
+        updateDelivery = Visibility.Hidden;
         Close();
     }
 
@@ -133,8 +163,8 @@ public partial class UpdateOrder : Window , INotifyPropertyChanged
         OrderDetail = _bl?.Order.UpdateShippingDate(OrderDetail!.ID)!;
         changeList();
         MessageBox.Show("SUCCSES", "SUCCSES", MessageBoxButton.OK, MessageBoxImage.Information);
-        UpdateShip.Visibility = Visibility.Hidden;
-        UpdateDelivery.Visibility = Visibility.Visible;
+        updateShip = Visibility.Hidden;
+        updateDelivery = Visibility.Visible;
     }
     private void ChangeAmountItem()
     {

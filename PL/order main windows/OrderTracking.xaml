@@ -47,6 +47,7 @@
 
 
             <Button x:Name="get" Content="GET ORDER DETAILS" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="25" Width="125" Click="GetDetails_Click"  BorderBrush="Black" />
+            <Button x:Name="getIems" Content="GET ORDER ITEMS" Grid.Column="2" Grid.Row="7" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="25" Width="125" Click="GetItems_Click"  BorderBrush="Black" />
 
             <Image  Source="\images\Logo.png" HorizontalAlignment="Center" Height="200" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="4" VerticalAlignment="Top" Width="200" Stretch="Fill" Cursor="No" >
                 <Image.OpacityMask>
