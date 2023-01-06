@@ -1,4 +1,5 @@
 ﻿using BO;
+using PL.admin_window;
 using PL.new_order_window;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace PL.order_main_windows
     /// <summary>
     /// Interaction logic for OrderTrackingWindow.xaml
     /// </summary>
-    public partial class OrderTrackingWindow : Window , INotifyPropertyChanged
+    public partial class OrderTrackingWindow : Window, INotifyPropertyChanged
     {
         private BlApi.IBl? _bl = BlApi.Factory.Get();
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -53,6 +54,23 @@ namespace PL.order_main_windows
         private void ID_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = Regex.IsMatch(e.Text, "^[^0-9]+$");
+        }
+
+        private void GetItems_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                new OrderDatails(_bl, orderId).Show();
+
+            }
+            catch (BO.IdNotExsitException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (BO.NullExeptionForDO ex) when (ex.InnerException is not null)
+            {
+                MessageBox.Show(ex.Message + ex.InnerException!.Message);
+            }
         }
     }
 }

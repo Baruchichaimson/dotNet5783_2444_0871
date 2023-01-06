@@ -86,7 +86,7 @@ public partial class ProductAndOrderList : Window , INotifyPropertyChanged
     private void OrderlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         if (IsMouseCaptureWithin)
-            new UpdateOrder(_bl, ((BO.OrderForList)OrderlistView.SelectedItem).ID, OnChangeOrder).ShowDialog();
+            new OrderDatails(_bl, ((BO.OrderForList)OrderlistView.SelectedItem).ID, OnChangeOrder).ShowDialog();
     }
     private void OnChangeProduct()
     {  
