@@ -15,7 +15,16 @@ public partial class clientwindow : Window
         InitializeComponent();
         WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
     }
+    /// <summary>
+    /// finction to the button the open to me the list with the item in store.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void ShowProductButton2_Click(object sender, RoutedEventArgs e) => new NewOrder().ShowDialog();
-
+    /// <summary>
+    /// function to the button the open to me the window to order tracking.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void ShowProductButton1_Click(object sender, RoutedEventArgs e) => new OrderTrackingWindow().ShowDialog();
 }

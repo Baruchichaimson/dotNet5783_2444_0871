@@ -9,15 +9,6 @@
         Icon="\images\icon.png"
         WindowStartupLocation="CenterScreen"
         Title="ProductAndOrderList" Height="640" Width="800">
-    <Window.Resources>
-        <Style TargetType="Button" >
-            <Style.Resources>
-                <Style TargetType="Border" >
-                    <Setter Property="CornerRadius" Value="20"/>
-                </Style>
-            </Style.Resources>
-        </Style>
-    </Window.Resources>
     <TabControl>
         <TabControl.Resources>
             <Style TargetType="TabItem">

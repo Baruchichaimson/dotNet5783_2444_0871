@@ -7,7 +7,9 @@ using System.ComponentModel;
 using System.Collections;
 
 namespace PL.admin_window;
-
+/// <summary>
+/// class to the category that make enumerator to put in the combo box option of the category
+/// </summary>
 internal class Categories : IEnumerable
 {
     static readonly IEnumerator s_enumerator = Enum.GetValues(typeof(BO.CoffeeShop)).GetEnumerator();
@@ -126,6 +128,11 @@ public partial class AddOrUpdateProductWindow : Window , INotifyPropertyChanged
     {
         e.Handled = Regex.IsMatch(e.Text , "^[^0-9]+$");
     }
+    /// <summary>
+    /// function to conect the text box with the slider in too way with dependency property.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void price_TextChanged(object sender, TextChangedEventArgs e)
     {
         changeList();

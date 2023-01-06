@@ -55,7 +55,7 @@
             <ComboBox x:Name="CategorySelector" Grid.Column="1" FontFamily="Cambria" VerticalAlignment="Center" HorizontalAlignment="Left"  Width="120" Height="18" SelectionChanged="CategorySelector_SelectionChanged" Margin="6,0,0,0"/>
             <Label x:Name="label" Content="Category:" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="83" Margin="60,0,0,0" Background="{x:Null}" FontSize="20" FontFamily="Bernard MT Condensed" FontWeight="Bold" Foreground="#FFD9D9D9" Height="36" RenderTransformOrigin="0.514,0.355" Grid.ColumnSpan="2"/>
             <Button x:Name="button" Margin="141,32,0,0" Content="Reset" Cursor="Hand" HorizontalAlignment="Left" Height="20" Grid.Column="1" VerticalAlignment="Top" Width="50" Click="Reset_button_Click" FontSize="10" Foreground="Black" FontFamily="Bernard MT Condensed" Grid.ColumnSpan="2"/>
-            <ToggleButton Name="button1" Cursor="Hand" HorizontalAlignment="Left" Grid.Column="5" Click="Cart_button_Click" FontWeight="Bold" Foreground="Black" Margin="32,7,0,13">
+            <ToggleButton Name="button1" Cursor="Hand" HorizontalAlignment="Left" Grid.Column="5" Click="Cart_button_Click" FontWeight="Bold" Foreground="Black" Margin="32,7,0,0" Height="60" VerticalAlignment="Top">
                 <ToggleButton.Template>
                     <ControlTemplate TargetType="ToggleButton">
                         <Image Source="\images\cart.png"  Stretch="Fill"  Width="50" Height="50"></Image>
@@ -65,7 +65,9 @@
                     <ListView x:Name="listView" >
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <uc:UserControl1 />
+                                <Popup x:Name="popup" AllowsTransparency="True" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <uc:UserControl1 x:Name="Heder" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                                </Popup>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

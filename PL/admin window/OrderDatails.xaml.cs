@@ -9,7 +9,9 @@ using System.Windows;
 using System.Windows.Input;
 
 namespace PL.admin_window;
-
+/// <summary>
+///  class to input in him more function we need on the list we have in bo layer.
+/// </summary>
 public class OrderItemViewModel : INotifyPropertyChanged
 {
     private BlApi.IBl? _bl;
@@ -29,7 +31,12 @@ public class OrderItemViewModel : INotifyPropertyChanged
     public ICommand IncreaseAmountCommand { get; set; }
     public ICommand DecreaseAmountCommand { get; set; }
 
-
+    /// <summary>
+    /// constractor
+    /// </summary>
+    /// <param name="bl"></param>
+    /// <param name="order"></param>
+    /// <param name="action">deleget</param>
     public OrderItemViewModel(IBl? bl , BO.Order order , Action action)
     {
         IncreaseAmountCommand = new RelayCommand(IncreaseAmount);
@@ -38,7 +45,9 @@ public class OrderItemViewModel : INotifyPropertyChanged
         ChangeAmountItem = action;
         myOrder = order;
     }
-
+    /// <summary>
+    /// function to increase the amount with property change.
+    /// </summary>
     private void IncreaseAmount()
     {
         try
@@ -57,7 +66,9 @@ public class OrderItemViewModel : INotifyPropertyChanged
             MessageBox.Show(ex.Message);
         }
     }
-
+    /// <summary>
+    /// function to decrease the amount with property change.
+    /// </summary>
     private void DecreaseAmount()
     {
         try
@@ -126,15 +137,28 @@ public partial class OrderDatails : Window , INotifyPropertyChanged
     private BO.Order? OrderDetail_p;
     public BO.Order? OrderDetail { get { return OrderDetail_p; } set { OrderDetail_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("OrderDetail")); } } }
     Action changeList;
+    /// <summary>
+    /// constractor that make visibilty the buttons in corrently
+    /// </summary>
+    /// <param name="bl"></param>
+    /// <param name="orderId"></param>
+    /// <param name="action"></param>
     public OrderDatails(BlApi.IBl? bl, int orderId ,Action action) : this (bl, orderId)
     {
         changeList = action;
         manegerProdactsButtens = Visibility.Visible;
-        if (OrderDetail.ShipDate is not null)
+        if (OrderDetail?.ShipDate is not null)
             updateDelivery = Visibility.Visible;
         else
             updateShip = Visibility.Visible;
+        if (OrderDetail?.DeliveryrDate is not null)
+            updateDelivery = Visibility.Hidden;
     }
+    /// <summary>
+    /// constarctor that in the start every button is hidden and put on the text box the all details of the order.
+    /// </summary>
+    /// <param name="bl"></param>
+    /// <param name="orderId"></param>
     public OrderDatails(BlApi.IBl? bl, int orderId)
     {
         InitializeComponent();
@@ -147,25 +171,52 @@ public partial class OrderDatails : Window , INotifyPropertyChanged
                      select new OrderItemViewModel(_bl, OrderDetail, ChangeAmountItem) { Item = item };
 
     }
-
+    /// <summary>
+    /// function to the button update delivery and update aoutomatcly.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void UpdateDeliveryDate(object sender, RoutedEventArgs e)
     {
-        OrderDetail = _bl?.Order.DeliveryUpdate(OrderDetail!.ID)!;
-        changeList();
-        MessageBox.Show("SUCCSES", "SUCCSES", MessageBoxButton.OK, MessageBoxImage.Information);
-        updateDelivery = Visibility.Hidden;
+        try
+        {
+            OrderDetail = _bl?.Order.DeliveryUpdate(OrderDetail!.ID)!;
+            changeList();
+            MessageBox.Show("SUCCSES", "SUCCSES", MessageBoxButton.OK, MessageBoxImage.Information);
+            updateDelivery = Visibility.Hidden;
+        }
+        catch(BO.EntityDetailsWrongException ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
         Close();
     }
 
-
+    /// <summary>
+    /// function to the button update shipe date and update aoutomatcly.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void UpdateShipDate(object sender, RoutedEventArgs e)
     {
-        OrderDetail = _bl?.Order.UpdateShippingDate(OrderDetail!.ID)!;
-        changeList();
-        MessageBox.Show("SUCCSES", "SUCCSES", MessageBoxButton.OK, MessageBoxImage.Information);
-        updateShip = Visibility.Hidden;
-        updateDelivery = Visibility.Visible;
+        try
+        {
+            OrderDetail = _bl?.Order.UpdateShippingDate(OrderDetail!.ID)!;
+            changeList();
+            MessageBox.Show("SUCCSES", "SUCCSES", MessageBoxButton.OK, MessageBoxImage.Information);
+            updateShip = Visibility.Hidden;
+            updateDelivery = Visibility.Visible;
+        }
+        catch(BO.EntityDetailsWrongException ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
     }
+    /// <summary>
+    /// function to moove the deleget to the class with new
+    /// function that we build in the command to update 
+    /// aoutomatcly the amount and the total price if we click on the button + or -
+    /// </summary>
     private void ChangeAmountItem()
     {
         try

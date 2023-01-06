@@ -83,15 +83,26 @@ public partial class ProductAndOrderList : Window , INotifyPropertyChanged
                 new AddOrUpdateProductWindow(_bl, productForList.ID, OnChangeProduct).ShowDialog();
         }
     }
+    /// <summary>
+    /// function to the mouse double click that send us the window with the details of the product
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void OrderlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         if (IsMouseCaptureWithin)
             new OrderDatails(_bl, ((BO.OrderForList)OrderlistView.SelectedItem).ID, OnChangeOrder).ShowDialog();
     }
+    /// <summary>
+    /// deleget for the product list that we want to update him aoutomaticly.
+    /// </summary>
     private void OnChangeProduct()
     {  
         productList = productList?.Select(x => x);
     }
+    /// <summary>
+    /// deleget for the order list that we want to update him aoutomaticly.
+    /// </summary>
     private void OnChangeOrder()
     {
         orderList = orderList?.Select(x => x);

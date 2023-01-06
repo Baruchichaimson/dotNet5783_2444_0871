@@ -11,5 +11,9 @@
                 </Style>
             </Style.Resources>
         </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+        </Style>
     </Application.Resources>
 </Application>

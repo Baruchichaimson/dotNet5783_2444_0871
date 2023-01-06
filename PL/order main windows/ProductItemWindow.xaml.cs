@@ -30,7 +30,13 @@ namespace PL.order_main_windows
         private ProductItem productItem;
         public ProductItem productItemWindow { get { return productItem; } set { productItem = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("productItemWindow")); } } }
 
-       
+       /// <summary>
+       /// constractor
+       /// </summary>
+       /// <param name="_blForAdd"></param>
+       /// <param name="newProductItem"></param>
+       /// <param name="newcart"></param>
+       /// <param name="SendListChanged"></param>
         public ProductItemWindow(BlApi.IBl? _blForAdd, BO.ProductItem newProductItem , BO.Cart newcart, Action SendListChanged)
         {
             _bl = _blForAdd;
@@ -40,7 +46,11 @@ namespace PL.order_main_windows
             InitializeComponent();
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         }
-        
+        /// <summary>
+        /// function to the button add to cart and active the delget to update aoutomaticly in the list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void addToCart(object sender, RoutedEventArgs e)
         {
             try
