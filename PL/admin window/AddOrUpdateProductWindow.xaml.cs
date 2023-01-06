@@ -27,10 +27,10 @@ public partial class AddOrUpdateProductWindow : Window , INotifyPropertyChanged
     Action changeList;
     public BO.Product productDetail { get { return Product_p; } set { Product_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("productdetail")); } } }
     /// <summary>
-    /// main constructor 
+    /// Constructor for the AddOrUpdateProductWindow class.
     /// </summary>
-    /// <param name="_blForAdd"></param>
-    /// <param name="c"></param>
+    /// <param name="_blForAdd">An optional parameter of type BlApi.IBl that represents the business logic object.</param>
+    /// <param name="c">A boolean value that determines whether the window is being used to add or update a product.</param>
     public AddOrUpdateProductWindow(BlApi.IBl? _blForAdd, bool c)
     {
         InitializeComponent(); 

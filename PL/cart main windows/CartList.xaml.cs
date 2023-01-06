@@ -43,12 +43,12 @@ namespace PL.cart_main_windows
         public ICommand IncreaseAmountCommand { get; set; }
         public ICommand DecreaseAmountCommand { get; set; }
         /// <summary>
-        /// constractor that make for us 2 function from command
+        /// Constructor for the OrderItemViewModel class.
         /// </summary>
-        /// <param name="cart"></param>
-        /// <param name="bl"></param>
-        /// <param name="action">deleget</param>
-        /// <param name="deleteProduct">deleget</param>
+        /// <param name="cart">An object of type Cart that represents the cart.</param>
+        /// <param name="bl">An optional parameter of type IBl that represents the business logic object.</param>
+        /// <param name="action">A delegate that represents an action to be taken when the list changes.</param>
+        /// <param name="deleteProduct">A delegate that represents an action to be taken when a product is deleted.</param>
         public OrderItemViewModel(Cart cart, IBl? bl, Action action, Action deleteProduct)
         {
             IncreaseAmountCommand = new RelayCommand(IncreaseAmount);
@@ -88,9 +88,9 @@ namespace PL.cart_main_windows
 
         public event PropertyChangedEventHandler PropertyChanged;
         /// <summary>
-        /// the function run on all the event that sign up and active them to up or down the amount and the total price
+        /// Method that is called when a property is changed.
         /// </summary>
-        /// <param name="propertyName"></param>
+        /// <param name="propertyName">The name of the property that has changed. This parameter is optional and will default to null if not provided.</param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -109,11 +109,11 @@ namespace PL.cart_main_windows
         private IEnumerable<OrderItemViewModel?>? cartItems_p;
         public IEnumerable<OrderItemViewModel?>? CartItems { get => cartItems_p; set { cartItems_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("CartItems")); } } }
         /// <summary>
-        /// constractor
+        /// Constructor for the CartList class.
         /// </summary>
-        /// <param name="bl"></param>
-        /// <param name="newCart"></param>
-        /// <param name="action">delgete</param>
+        /// <param name="bl">An optional parameter of type BlApi.IBl that represents the business logic object.</param>
+        /// <param name="newCart">An object of type BO.Cart that represents the new cart.</param>
+        /// <param name="action">A delegate that represents an action to be taken when the list changes.</param>
         public CartList(BlApi.IBl? bl , BO.Cart newCart ,Action action)
         {
             InitializeComponent();
@@ -132,11 +132,11 @@ namespace PL.cart_main_windows
             CartItems = from item in cart.Items!
                         select new OrderItemViewModel(cart, _bl, ListChanged, DeleteProduct) { Item = item };
         }
-        /// <summary>
-        /// the function to the button that start the order anf confirmat him.
+        ///<summary>
+        /// Event handler for the order now button. Opens the Order Confirmation window and closes the current window.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The object that raised the event.</param>
+        /// <param name="e">Event arguments.</param>
         private void order_now(object sender, RoutedEventArgs e)
         {
             var newOrderWindow = new Order_Confirmation(_bl, cart);

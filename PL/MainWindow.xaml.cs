@@ -19,16 +19,14 @@ public partial class MainWindow : Window
     /// </summary>
     public MainWindow()
     {
-       // string s = Directory.GetCurrentDirectory();
-       // background = new BitmapImage(new Uri(@$"{s}\images\Logo.png"));
         InitializeComponent();
         WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
     }
     /// <summary>
     /// event to double click to go update the product.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">The object that raised the event.</param>
+    /// <param name="e">Event arguments.</param>
     private void ShowProductButton_Click(object sender, RoutedEventArgs e) => new ProductAndOrderList().ShowDialog();
 
     private void ShowNewOrderButton_Click(object sender, RoutedEventArgs e) => new clientwindow().ShowDialog();

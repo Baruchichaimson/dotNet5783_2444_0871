@@ -49,8 +49,8 @@ namespace PL.order_main_windows
         /// function that if we put id of order in the text box we got the status on him.
         /// aotomticly with the property change
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The object that raised the event.</param>
+        /// <param name="e">Event arguments.</param>
         private void GetDetails_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -66,8 +66,8 @@ namespace PL.order_main_windows
         /// <summary>
         /// function to remove the option to input latters in the text box of id.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The object that raised the event.</param>
+        /// <param name="e">Event arguments.</param>
         private void ID_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = Regex.IsMatch(e.Text, "^[^0-9]+$");
@@ -75,8 +75,8 @@ namespace PL.order_main_windows
         /// <summary>
         /// function to get the order details .
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The object that raised the event.</param>
+        /// <param name="e">Event arguments.</param>
         private void GetItems_Click(object sender, RoutedEventArgs e)
         {
             try

@@ -9,6 +9,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Controls.Primitives;
+using BlApi;
+using System.Runtime.CompilerServices;
 
 namespace PL.new_order_window;
 
@@ -54,18 +56,18 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     /// <summary>
     /// Activating a group linq in the combo box
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">The object that raised the event.</param>
+    /// <param name="e">Event arguments.</param>
     private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (CategorySelector.SelectedIndex >= 0)
              productItems = groups.FirstOrDefault(item => (BO.CoffeeShop)CategorySelector.SelectedItem == item.Key);
     }
-   /// <summary>
-   /// function to the button reset to the list
-   /// </summary>
-   /// <param name="sender"></param>
-   /// <param name="e"></param>
+    /// <summary>
+    /// function to the button reset to the list
+    /// </summary>
+    /// <param name="sender">The object that raised the event.</param>
+    /// <param name="e">Event arguments.</param>
     private void Reset_button_Click(object sender, RoutedEventArgs e)
     {
         productItems = groups.SelectMany(x => x);
@@ -74,10 +76,11 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     /// <summary>
     /// function to button that open the cart
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">The object that raised the event.</param>
+    /// <param name="e">Event arguments.</param>
     private void Cart_button_Click(object sender, RoutedEventArgs e) 
     {
+        userControl.Visibility = Visibility.Visible;
         if (cartWindow != null && cartWindow.Visibility == Visibility.Visible)
             cartWindow.Visibility = Visibility.Collapsed;
         if (cart.Items == null || cart.Items.Count == 0)
@@ -91,8 +94,8 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     /// <summary>
     /// function to the mouse double click on the list that open the details on the item.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">The object that raised the event.</param>
+    /// <param name="e">Event arguments.</param>
     private void ProductItemlistView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         if (ProductItemlistView.SelectedItem is BO.ProductItem Item)
@@ -107,8 +110,8 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     /// <summary>
     /// function to the button exist to close the window replace the button x that we have in all window.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">The object that raised the event.</param>
+    /// <param name="e">Event arguments.</param>
     private void buttonExit_Click(object sender, RoutedEventArgs e)
     {
         Close();

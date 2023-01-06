@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.new_order_window"
-        xmlns:uc="clr-namespace:PL.order_main_windows"
+        xmlns:local1="clr-namespace:PL.order_main_windows"
         Icon="\images\icon.png"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d"
@@ -61,17 +61,19 @@
                         <Image Source="\images\cart.png"  Stretch="Fill"  Width="50" Height="50"></Image>
                     </ControlTemplate>
                 </ToggleButton.Template>
-                <Grid x:Name="userControl">
-                    <ListView x:Name="listView" >
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Popup x:Name="popup" AllowsTransparency="True" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <uc:UserControl1 x:Name="Heder" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
-                                </Popup>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
+                <StackPanel>
+                    <Grid x:Name="userControl" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <ListView x:Name="listView" >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Popup x:Name="popup" AllowsTransparency="True" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <local1:UserControl1 x:Name="myUserControl" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                                    </Popup>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </StackPanel>
             </ToggleButton>
         </Grid>
 
