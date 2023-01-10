@@ -36,6 +36,7 @@
             <RowDefinition Height="500*" />
             <RowDefinition Height="Auto" MinHeight="0"/>
         </Grid.RowDefinitions>
+
         <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="3" FocusVisualStyle="{x:Null}">
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" >
@@ -61,24 +62,10 @@
                         <Image Source="\images\cart.png"  Stretch="Fill"  Width="50" Height="50"></Image>
                     </ControlTemplate>
                 </ToggleButton.Template>
-                <StackPanel>
-                    <Grid x:Name="userControl" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <ListView x:Name="listView" >
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Popup x:Name="popup" AllowsTransparency="True" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <local1:UserControl1 x:Name="myUserControl" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
-                                    </Popup>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Grid>
-                </StackPanel>
             </ToggleButton>
         </Grid>
 
-
-        <ListView x:Name="ProductItemlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden"  BorderThickness="0" ItemsSource="{Binding Source={StaticResource myCVS}}" Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF030800" FontFamily="Bookman Old Style" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="ProductItemlistView_MouseDoubleClick" >
+        <ListView x:Name="ProductItemlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden"  BorderThickness="0" ItemsSource="{Binding Source={StaticResource myCVS}}" Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF030800" FontFamily="Bookman Old Style" AutomationProperties.IsColumnHeader="True" MouseDoubleClick="ProductItemlistView_MouseDoubleClick">
             <ListView.Resources>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Style.Triggers>
@@ -137,7 +124,7 @@
             </ListView.GroupStyle>
         </ListView>
         <Button x:Name="buttonExit"  Content="EXIT" Cursor="Hand" Grid.Row="2" HorizontalAlignment="Center" BorderThickness="4" BorderBrush="#FF34470C"  Height="40" Grid.Column="2" VerticalAlignment="Center" Width="60" FontSize="12" FontWeight="Bold" Foreground="Black" FontFamily="Bernard MT Condensed" Click="buttonExit_Click"/>
-
+        <local1:UserControl1 x:Name="myUserControl" Grid.Column="2"  HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.516,0.97" Margin="79,10,0,0" Height="307" Width="255" ToggleButton.Checked="Cart_button_Click" Grid.RowSpan="2" Visibility="Collapsed"/>
         <Label x:Name="label1" Content="Good coffee for a better day ..." Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="23,0,0,0" VerticalAlignment="Center" Height="56" Width="418" Background="{x:Null}" FontSize="35" FontFamily="Edwardian Script ITC" Foreground="#FFD9D9D9" FontWeight="Bold" />
     </Grid>
 </Window>

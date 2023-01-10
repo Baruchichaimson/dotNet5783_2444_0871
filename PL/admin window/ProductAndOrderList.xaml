@@ -82,7 +82,7 @@
 
 
                 </Grid>
-                <ListView x:Name="ProductlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding productList}" MouseDoubleClick="ProductlistView_MouseDoubleClick"  Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF214B09" FontFamily="Bookman Old Style"  AutomationProperties.IsColumnHeader="True">
+                <ListView x:Name="ProductlistView" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding productList}" ScrollViewer.VerticalScrollBarVisibility="Hidden" MouseDoubleClick="ProductlistView_MouseDoubleClick"  Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="#FF214B09" FontFamily="Bookman Old Style"  AutomationProperties.IsColumnHeader="True">
                     <ListView.Resources>
                         <Style TargetType="{x:Type ListViewItem}">
                             <Style.Triggers>

@@ -28,7 +28,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBox x:Name="name"             Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" PreviewTextInput="name_PreviewTextInput" TextWrapping="Wrap"  Text="{Binding productDetail.Name}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black"/>
+            <TextBox x:Name="name"             Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" PreviewTextInput="name_PreviewTextInput"  TextWrapping="Wrap"  Text="{Binding productDetail.Name}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black"/>
             <TextBox x:Name="id"               Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" PreviewTextInput="id_PreviewTextInput" TextWrapping="Wrap" Text="{Binding productDetail.ID}" VerticalAlignment="Center" Width="120" Height="20" BorderBrush="Black" />
             <ComboBox x:Name="categorychoose"  Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" Text="{Binding productDetail.Category}" SelectedIndex="0"  BorderBrush="Black"/>
             <TextBox x:Name="price"            Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" PreviewTextInput="price_PreviewTextInput" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Height="20" Text="{Binding productDetail.Price , Mode=TwoWay}" BorderBrush="Black"/>
