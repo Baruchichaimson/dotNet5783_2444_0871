@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:PL.order_main_windows"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="300">
-    <Grid>
+    <Grid Margin="-78,0,0,-46">
         <Path x:Name="container"
             HorizontalAlignment="Left" 
             VerticalAlignment="Center"
@@ -26,11 +26,11 @@
                   L10,10
                   z"
             Fill="#FF976E07"
-            Height="185"
-            Width="195"
+            Height="244"
+            Width="241"
             Stroke="#FF976E07"
             Stretch="Fill"
-            Margin="61,0,0,0" RenderTransformOrigin="0.5,0.5">
+            Margin="67,0,0,0" RenderTransformOrigin="0.5,0.5">
             <Path.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -41,6 +41,116 @@
             </Path.RenderTransform>
         </Path>
         <TextBlock x:Name="poupText" FontSize="20" Panel.ZIndex="1" HorizontalAlignment="Center"/>
+        <Grid Name="MainGrid">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="1"/>
+                    <GradientStop Color="#FF7A5000" Offset="0.898"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="267*"/>
+                <ColumnDefinition Width="267*"/>
+                <ColumnDefinition Width="233*"/>
+                <ColumnDefinition Width="34*"/>
+            </Grid.ColumnDefinitions >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="500*"/>
+                <RowDefinition Height="Auto" MinHeight="0"/>
+            </Grid.RowDefinitions>
+            <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="4">
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0.98"/>
+                        <GradientStop Color="#FF7A5000" Offset="0"/>
+                        <GradientStop Color="#FF030200" Offset="0.84"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions >
+                <Label x:Name="label" Content="CART" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="178" Margin="10,0,0,0" Background="{x:Null}" FontSize="20" FontFamily="Aharoni" FontWeight="Bold" Foreground="#FFD9D9D9"/>
+
+            </Grid>
+            <ListView x:Name="OrderlistView" d:ItemsSource="{d:SampleData ItemCount=5}"  ItemsSource="{Binding CartItems}" Foreground="#FF34470C" Margin="0,2,0,0" Grid.Row="1" Grid.ColumnSpan="4" BorderBrush="#FF214B09" FontFamily="Bookman Old Style" AutomationProperties.IsColumnHeader="True">
+                <ListView.Resources>
+                    <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="#FF7A5000"/>
+                        <Setter Property="Foreground" Value="#FFD9D9D9"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="#FF000000"
+                                    BorderThickness="0.2"
+                                    CornerRadius="10">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFD9D9D9"/>
+                                <Setter Property="Foreground" Value="#FF7A5000"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFC3EA71"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background"  Value="#FFC3EA71"/>
+                            </Trigger>
+                        </Style.Triggers>
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    </Style>
+                    <Style x:Key="GridViewColumnHeaderStyle1" TargetType="{x:Type GridViewColumnHeader}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+                                    <Border BorderThickness="0,0,0,1" BorderBrush="Transparent" Background="Transparent">
+                                        <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Padding="10,5,10,0" Width="{TemplateBinding Width}" TextAlignment="Center" FontWeight="Bold"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="OverridesDefaultStyle" Value="True" />
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="FontFamily" Value="Segoe UI" />
+                        <Setter Property="FontSize" Value="12" />
+                    </Style>
+                </ListView.Resources>
+                <ListView.Background>
+                    <ImageBrush ImageSource="\images\צילום מסך_20221208_213312.png" TileMode="None"/>
+                </ListView.Background>
+                <ListView.View>
+                    <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Item.Name}"/>
+                        <GridViewColumn Header="Product ID" DisplayMemberBinding="{Binding Item.ProductID}"/>
+                        <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Item.Price}"/>
+                        <GridViewColumn Header="Amount" DisplayMemberBinding="{Binding Item.Amount}"/>
+                        <GridViewColumn>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Style="{StaticResource ButtonStyle}" Content="+" Margin="2,0,2,0" Width="15" Command="{Binding IncreaseAmountCommand}"/>
+                                        <Button Style="{StaticResource ButtonStyle}" Content="-" Margin="2,0,2,0"   Width="15" Command="{Binding DecreaseAmountCommand}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Total Price" DisplayMemberBinding="{Binding Item.TotalPrice}"/>
+
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
     </Grid>
     <UserControl.Style>
         <Style>

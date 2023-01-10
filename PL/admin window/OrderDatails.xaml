@@ -71,7 +71,7 @@
             <Button x:Name="UpdateShip" Content="Update Ship Date" Visibility="{Binding updateShip}" Grid.Column="3" Grid.Row="10" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="25" Width="125" Click="UpdateShipDate" BorderBrush="Black" />
             <Button x:Name="UpdateDelivery" Content="Update Delivery Date" Visibility="{Binding updateDelivery}" Grid.Column="3" Grid.Row="10" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="25" Width="125" Click="UpdateDeliveryDate" BorderBrush="Black" />
 
-            <ListView x:Name="ItemListView" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding OrderItems}" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="6" BorderBrush="Black">
+            <ListView x:Name="ItemListView" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding OrderItems}" ScrollViewer.VerticalScrollBarVisibility="Hidden" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="6" BorderBrush="Black">
                 <ListView.Resources>
                     <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="#FF7A5000"/>

@@ -37,8 +37,8 @@
             <Label x:Name="label"  Content="CustomerName" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Height="28" Foreground="Black"  OpacityMask="Black"/>
             <Label x:Name="label1" Content="CustomerEmail" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"  VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Foreground="Black"/>
             <Label x:Name="label2" Content="CustomerAddress"  Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"  VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Foreground="Black"/>
-            <Button x:Name="add" Content="order now" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="25" Width="125" Click="order_now"  BorderBrush="Black" />
-            <Image  Source="\images\Logo.png" HorizontalAlignment="Left" Height="100" Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3" VerticalAlignment="Top" Width="100" Stretch="Fill" Cursor="No" >
+            <Button x:Name="add" Content="order now" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="7" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="35" Width="125" Click="order_now" Cursor="Hand"  BorderBrush="Black" />
+            <Image  Source="\images\Logo.png" HorizontalAlignment="Left" Height="100" Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3" VerticalAlignment="Top" Width="100" Stretch="Fill" Cursor="No"  >
                 <Image.OpacityMask>
                     <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.65" RadiusY="0.65">
                         <GradientStop Color="#ffffffff" Offset="0.5" />

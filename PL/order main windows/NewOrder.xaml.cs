@@ -26,6 +26,7 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     public IEnumerable<IGrouping<BO.CoffeeShop?, ProductItem?>> groups { get { return groups_p; } set { groups_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("groups")); } } }
     public event PropertyChangedEventHandler? PropertyChanged;
     private IEnumerable<BO.ProductItem?>? productItemsp;
+
     public IEnumerable<BO.ProductItem?>? productItems { get { return productItemsp; } set { productItemsp = value; if (PropertyChanged != null)  { PropertyChanged(this, new PropertyChangedEventArgs("productItems")); } }}
     /// <summary>
     /// constractor to window with all item in store.
@@ -78,9 +79,8 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     /// </summary>
     /// <param name="sender">The object that raised the event.</param>
     /// <param name="e">Event arguments.</param>
-    private void Cart_button_Click(object sender, RoutedEventArgs e) 
+    private void Cart_button_Click(object sender, RoutedEventArgs e)
     {
-        userControl.Visibility = Visibility.Visible;
         if (cartWindow != null && cartWindow.Visibility == Visibility.Visible)
             cartWindow.Visibility = Visibility.Collapsed;
         if (cart.Items == null || cart.Items.Count == 0)
@@ -89,7 +89,8 @@ public partial class NewOrder : Window , INotifyPropertyChanged
             return;
         }
         cartWindow = new CartList(_bl, cart, OnChange);
-        cartWindow.ShowDialog();     
+       myUserControl.Visibility = Visibility.Visible;
+      //cartWindow.ShowDialog();     
     }
     /// <summary>
     /// function to the mouse double click on the list that open the details on the item.
