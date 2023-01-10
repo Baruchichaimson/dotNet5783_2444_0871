@@ -1,11 +1,12 @@
-﻿using DalApi;
+﻿using Dal;
+using DalApi;
 
 namespace Dal
 {
-    internal sealed class DalList : IDal
+    internal sealed class DalXml : IDal
     {
-        public static IDal Instance { get; } = new DalList();
-        private DalList() { }
+        public static IDal Instance { get; } = new DalXml();
+        private DalXml() { }
         public IProduct Product { get; } = new DalProduct();
         public IOrder Order { get; } = new DalOrder();
         public IOrderItem OrderItem { get; } = new DalOrederItem();
