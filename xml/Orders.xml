@@ -115,8 +115,7 @@
     <CustomerAdress>441 Delladonna Terrace</CustomerAdress>
     <OrderDate>2022-12-01T13:07:11</OrderDate>
     <ShipDate>2022-12-03T13:07:11</ShipDate>
-    <DeliveryrDate
-      xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
   </Order>
   <Order>
     <Id>14</Id>
@@ -125,8 +124,7 @@
     <CustomerAdress>7277 Di Loreto Circle</CustomerAdress>
     <OrderDate>2022-12-04T14:48:55</OrderDate>
     <ShipDate>2022-12-05T14:48:55</ShipDate>
-    <DeliveryrDate
-      xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
   </Order>
   <Order>
     <Id>15</Id>
@@ -135,8 +133,7 @@
     <CustomerAdress>6 Service Park</CustomerAdress>
     <OrderDate>2022-12-06T06:56:43</OrderDate>
     <ShipDate>2022-12-08T06:56:43</ShipDate>
-    <DeliveryrDate
-      xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
   </Order>
   <Order>
     <Id>16</Id>
@@ -145,19 +142,7 @@
     <CustomerAdress>16826 Vera Street</CustomerAdress>
     <OrderDate>2022-12-04T18:19:19</OrderDate>
     <ShipDate>2022-12-06T18:19:19</ShipDate>
-    <DeliveryrDate
-      xsi:nil="true" />
-  </Order>
-  <Order>
-    <Id>17</Id>
-    <CustomerName>Dion Massy</CustomerName>
-    <CustomerEmail>cfoxcrofty@twitter.com</CustomerEmail>
-    <CustomerAdress>0 Kipling Pass</CustomerAdress>
-    <OrderDate>2022-12-06T08:40:46</OrderDate>
-    <ShipDate
-      xsi:nil="true" />
-    <DeliveryrDate
-      xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
   </Order>
   <Order>
     <Id>18</Id>
@@ -165,10 +150,8 @@
     <CustomerEmail>isansung@quantcast.com</CustomerEmail>
     <CustomerAdress>50 Oakridge Street</CustomerAdress>
     <OrderDate>2022-12-04T11:49:24</OrderDate>
-    <ShipDate
-      xsi:nil="true" />
-    <DeliveryrDate
-      xsi:nil="true" />
+    <ShipDate xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
   </Order>
   <Order>
     <Id>19</Id>
@@ -176,10 +159,8 @@
     <CustomerEmail>grussq@independent.co.uk</CustomerEmail>
     <CustomerAdress>55098 Pleasure Trail</CustomerAdress>
     <OrderDate>2022-12-02T16:24:21</OrderDate>
-    <ShipDate
-      xsi:nil="true" />
-    <DeliveryrDate
-      xsi:nil="true" />
+    <ShipDate xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
   </Order>
   <Order>
     <Id>20</Id>
@@ -187,9 +168,16 @@
     <CustomerEmail>lsimsz@woothemes.com</CustomerEmail>
     <CustomerAdress>65798 Brown Court</CustomerAdress>
     <OrderDate>2022-12-09T19:37:43</OrderDate>
-    <ShipDate
-      xsi:nil="true" />
-    <DeliveryrDate
-      xsi:nil="true" />
+    <ShipDate xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
+  </Order>
+  <Order>
+    <Id>17</Id>
+    <CustomerName>Dion Massy</CustomerName>
+    <CustomerEmail>cfoxcrofty@twitter.com</CustomerEmail>
+    <CustomerAdress>0 Kipling Pass</CustomerAdress>
+    <OrderDate>2022-12-06T08:40:46</OrderDate>
+    <ShipDate>2023-01-12T12:33:18.8764633+02:00</ShipDate>
+    <DeliveryrDate>2023-01-12T12:33:21.7846387+02:00</DeliveryrDate>
   </Order>
 </ArrayOfOrder>

@@ -37,7 +37,7 @@ namespace Dal
             try
             {
                 orderElemnt = (from order in orders.Elements()
-                               where Convert.ToInt32(order.Element("id")!.Value) == idToDelete
+                               where Convert.ToInt32(order.Element("Id")!.Value) == idToDelete
                                select order).FirstOrDefault();
                 orderElemnt?.Remove();
                 orders.Save(XMLTools.GetDir() + $"{s_order}.xml");
@@ -87,9 +87,10 @@ namespace Dal
             try
             {
                 orderElement = (from order in orders.Elements()
-                               where Convert.ToInt32(order.Element("id")!.Value) == newEntity.Id
-                               select order).FirstOrDefault();
+                               where order.Element("Id") != null && Convert.ToInt32(order.Element("Id").Value) == newEntity.Id
+                                select order).FirstOrDefault();
                 orderElement?.Remove();
+                orders.Save(XMLTools.GetDir() + $"{s_order}.xml");
                 orders.Add(OrderToXElement(newEntity));
                 orders.Save(XMLTools.GetDir() + $"{s_order}.xml");
             }
