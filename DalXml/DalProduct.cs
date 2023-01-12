@@ -4,7 +4,7 @@ namespace Dal;
 
 internal class DalProduct : IProduct
 {
-    const string s_product = @"Product";
+    const string s_product = @"Products";
     public int Add(Product product)
     {
         List<Product?> products = XMLTools.LoadListFromXMLSerializer<Product>(s_product);
@@ -31,7 +31,7 @@ internal class DalProduct : IProduct
         return product;
     }
 
-    public Product GetElement(Func<Product?, bool>? myFunc)
+    public Product GetElement(Func<Product?, bool>? myFunc = null)
     {
         List<Product?> products = XMLTools.LoadListFromXMLSerializer<Product>(s_product);
 

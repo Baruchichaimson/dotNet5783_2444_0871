@@ -97,14 +97,14 @@ public partial class ProductAndOrderList : Window , INotifyPropertyChanged
     /// deleget for the product list that we want to update him aoutomaticly.
     /// </summary>
     private void OnChangeProduct()
-    {  
-        productList = productList?.Select(x => x);
+    {
+        productList = _bl.Product.GetList();
     }
     /// <summary>
     /// deleget for the order list that we want to update him aoutomaticly.
     /// </summary>
     private void OnChangeOrder()
     {
-        orderList = orderList?.Select(x => x);
+        orderList = _bl.Order.GetList();
     }
 }

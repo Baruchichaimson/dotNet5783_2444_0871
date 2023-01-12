@@ -6,9 +6,9 @@ namespace Dal
 {
     internal class DalOrederItem : IOrderItem
     {
-        const string s_orderItem = @"OrederItem";
-        const string s_product = @"Product";
-        const string s_order = @"Order";
+        const string s_orderItem = @"OrderItems";
+        const string s_product = @"Products";
+        const string s_order = @"Orders";
         const string s_idConfig = @"ConfigId";
         const string itemId = @"orderItemId";       
         XElement configId = File.Exists(XMLTools.GetDir() + $"{s_idConfig}.xml") ? XElement.Load(XMLTools.GetDir() + $"{s_idConfig}.xml") : throw new NullExeption($"{s_idConfig}");

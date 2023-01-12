@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
+using DO;
+using System.Xml;
 
 namespace Dal
 {
-    static class XMLTools
+    public static class XMLTools
     {
         const string s_dir = @"..\xml\";
         static XMLTools()
@@ -27,7 +29,13 @@ namespace Dal
                 XmlSerializer serializer = new XmlSerializer(typeof(List<T?>));
                 using (FileStream stream = new FileStream(filePath, FileMode.Create,FileAccess.Write,FileShare.None))
                 {
-                    serializer.Serialize(stream, list);
+                    XmlWriterSettings settings = new XmlWriterSettings();
+                    settings.Indent = true;
+                    settings.NewLineOnAttributes = true;
+                    using (XmlWriter writer = XmlWriter.Create(stream, settings))
+                    {
+                        serializer.Serialize(writer, list);
+                    }
                 }
             }
             catch (Exception ex)

@@ -13,9 +13,9 @@ namespace Dal
 
     internal class DalOrder : IOrder
     {
-        const string s_orderItem = @"OrederItem";
-        const string s_product = @"Product";
-        const string s_order = @"Order";
+        const string s_orderItem = @"OrderItems";
+        const string s_product = @"Products";
+        const string s_order = @"Orders";
         const string s_idConfig = @"ConfigId.xml";
         const string orderId = "orderId";
         XElement configId = File.Exists(XMLTools.GetDir() + s_idConfig) ? XElement.Load(XMLTools.GetDir() + s_idConfig) : throw new NullExeption($"{s_idConfig}");
@@ -70,6 +70,11 @@ namespace Dal
 
         public IEnumerable<Order?>? List(Func<Order?, bool>? myFunc = null)
         {
+            if (myFunc is null)
+            {
+                return (from order in orders.Elements()
+                        select XElementToNullOrder(order));
+            }
             return (from order in orders.Elements()
                     where myFunc(XElementToOrder(order))
                     select XElementToNullOrder(order));
@@ -102,9 +107,9 @@ namespace Dal
                 CustomerName = (string)element.Element("CustomerName")!,
                 CustomerEmail = (string)element.Element("CustomerEmail")!,
                 CustomerAdress = (string)element.Element("CustomerAdress")!,
-                OrderDate = (DateTime?)element.Element("OrderDate"),
-                ShipDate = (DateTime?)element.Element("ShipDate"),
-                DeliveryrDate = (DateTime?)element.Element("DeliveryrDate"),
+                OrderDate = DateTime.TryParse(element.Element("OrderDate").Value, out var orderDate) ? orderDate : null,
+                ShipDate = DateTime.TryParse(element.Element("ShipDate").Value, out var shipDate) ? shipDate : null,
+                DeliveryrDate = DateTime.TryParse(element.Element("DeliveryrDate").Value, out var deliveryrDate) ? deliveryrDate : null,
             };
             return order;
         }
@@ -116,9 +121,9 @@ namespace Dal
                 CustomerName = (string)element.Element("CustomerName")!,
                 CustomerEmail = (string)element.Element("CustomerEmail")!,
                 CustomerAdress = (string)element.Element("CustomerAdress")!,
-                OrderDate = (DateTime?)element.Element("OrderDate"),
-                ShipDate = (DateTime?)element.Element("ShipDate"),
-                DeliveryrDate = (DateTime?)element.Element("DeliveryrDate"),
+                OrderDate = DateTime.TryParse(element.Element("OrderDate").Value, out var orderDate) ? orderDate : null,
+                ShipDate = DateTime.TryParse(element.Element("ShipDate").Value, out var shipDate) ? shipDate : null,
+                DeliveryrDate = DateTime.TryParse(element.Element("DeliveryrDate").Value, out var deliveryrDate) ? deliveryrDate : null,
             };
             return order;
         }
