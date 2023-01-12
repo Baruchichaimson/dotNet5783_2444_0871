@@ -23,7 +23,8 @@ namespace Dal
 
         public int Add(Order newOrder)
         {
-            newOrder.Id = Convert.ToInt32(configId.Element(orderId)?.Value ?? "-1");
+            newOrder.Id = Convert.ToInt32(configId.Element(orderId)?.Value ?? "-1") ;
+            configId.Element(orderId)!.Value = (newOrder.Id + 1).ToString();
             orders.Add(OrderToXElement(newOrder));
             orders.Save(XMLTools.GetDir() + $"{s_order}.xml");
 

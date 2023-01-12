@@ -89,8 +89,8 @@ public partial class NewOrder : Window , INotifyPropertyChanged
             return;
         }
         cartWindow = new CartList(_bl, cart, OnChange);
-       myUserControl.Visibility = Visibility.Visible;
-      //cartWindow.ShowDialog();     
+      // myUserControl.Visibility = Visibility.Visible;
+      cartWindow.ShowDialog();     
     }
     /// <summary>
     /// function to the mouse double click on the list that open the details on the item.
