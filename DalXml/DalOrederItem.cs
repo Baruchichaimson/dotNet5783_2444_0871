@@ -9,9 +9,9 @@ namespace Dal
         const string s_orderItem = @"OrderItems";
         const string s_product = @"Products";
         const string s_order = @"Orders";
-        const string s_idConfig = @"ConfigId";
+        const string s_idConfig = @"ConfigId.xml";
         const string itemId = @"orderItemId";       
-        XElement configId = File.Exists(XMLTools.GetDir() + $"{s_idConfig}.xml") ? XElement.Load(XMLTools.GetDir() + $"{s_idConfig}.xml") : throw new NullExeption($"{s_idConfig}");
+        XElement configId = File.Exists(XMLTools.GetDir() + s_idConfig) ? XElement.Load(XMLTools.GetDir() + s_idConfig) : throw new NullExeption($"{s_idConfig}");
         public int Add(OrderItem orderItem)
         {
             List<OrderItem?> orderItems = XMLTools.LoadListFromXMLSerializer<OrderItem>(s_orderItem);
@@ -28,6 +28,7 @@ namespace Dal
 
             orderItem.Id = Convert.ToInt32(configId.Element(itemId)?.Value ?? "-1");
             configId.Element(itemId)!.Value = (orderItem.Id + 1).ToString();
+            configId.Save(XMLTools.GetDir() + s_idConfig);
             orderItems.Add(orderItem);
             XMLTools.SaveListToXMLSerializer(orderItems, s_orderItem);
             return orderItem.Id;

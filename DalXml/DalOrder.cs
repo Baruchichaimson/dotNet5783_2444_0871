@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace Dal
@@ -25,6 +26,7 @@ namespace Dal
         {
             newOrder.Id = Convert.ToInt32(configId.Element(orderId)?.Value ?? "-1") ;
             configId.Element(orderId)!.Value = (newOrder.Id + 1).ToString();
+            configId.Save(XMLTools.GetDir() + s_idConfig);
             orders.Add(OrderToXElement(newOrder));
             orders.Save(XMLTools.GetDir() + $"{s_order}.xml");
 
@@ -108,26 +110,29 @@ namespace Dal
                 CustomerName = (string)element.Element("CustomerName")!,
                 CustomerEmail = (string)element.Element("CustomerEmail")!,
                 CustomerAdress = (string)element.Element("CustomerAdress")!,
-                OrderDate = DateTime.TryParse(element.Element("OrderDate").Value, out var orderDate) ? orderDate : null,
-                ShipDate = DateTime.TryParse(element.Element("ShipDate").Value, out var shipDate) ? shipDate : null,
-                DeliveryrDate = DateTime.TryParse(element.Element("DeliveryrDate").Value, out var deliveryrDate) ? deliveryrDate : null,
+                OrderDate = (DateTime.TryParse(element.Element("OrderDate").Value, out var orderDate) && orderDate != DateTime.MinValue) ? orderDate : null,
+                ShipDate = (DateTime.TryParse(element.Element("ShipDate").Value, out var shipDate) && shipDate != DateTime.MinValue) ? shipDate : null,
+                DeliveryrDate = (DateTime.TryParse(element.Element("DeliveryrDate").Value, out var deliveryrDate) && deliveryrDate != DateTime.MinValue) ? deliveryrDate : null,
             };
             return order;
+
         }
         private Order? XElementToNullOrder(XElement element)
         {
-            Order? order = new Order
+            var order = new Order
             {
                 Id = (int)element.Element("Id")!,
                 CustomerName = (string)element.Element("CustomerName")!,
                 CustomerEmail = (string)element.Element("CustomerEmail")!,
                 CustomerAdress = (string)element.Element("CustomerAdress")!,
-                OrderDate = DateTime.TryParse(element.Element("OrderDate").Value, out var orderDate) ? orderDate : null,
-                ShipDate = DateTime.TryParse(element.Element("ShipDate").Value, out var shipDate) ? shipDate : null,
-                DeliveryrDate = DateTime.TryParse(element.Element("DeliveryrDate").Value, out var deliveryrDate) ? deliveryrDate : null,
+                OrderDate = (DateTime.TryParse(element.Element("OrderDate").Value, out var orderDate) && orderDate != DateTime.MinValue) ? orderDate : null,
+                ShipDate = (DateTime.TryParse(element.Element("ShipDate").Value, out var shipDate) && shipDate != DateTime.MinValue) ? shipDate : null,
+                DeliveryrDate = (DateTime.TryParse(element.Element("DeliveryrDate").Value, out var deliveryrDate) && deliveryrDate != DateTime.MinValue) ? deliveryrDate : null,
             };
             return order;
+
         }
+
         private XElement OrderToXElement(Order order)
         {
             var element = new XElement("Order",
@@ -135,12 +140,13 @@ namespace Dal
                 new XElement("CustomerName", order.CustomerName),
                 new XElement("CustomerEmail", order.CustomerEmail),
                 new XElement("CustomerAdress", order.CustomerAdress),
-                new XElement("OrderDate", order.OrderDate),
-                new XElement("ShipDate", order.ShipDate),
-                new XElement("DeliveryrDate", order.DeliveryrDate)
+                new XElement("OrderDate", order.OrderDate.HasValue ? order.OrderDate.Value : default(DateTime)),
+                new XElement("ShipDate", order.ShipDate.HasValue ? order.ShipDate.Value : default(DateTime)),
+                new XElement("DeliveryrDate", order.DeliveryrDate.HasValue ? order.DeliveryrDate.Value : default(DateTime))
             );
             return element;
         }
+
 
 
     }
