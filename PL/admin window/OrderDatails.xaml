@@ -13,13 +13,6 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
             <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
         </Style>
-        <Style TargetType="Button" >
-            <Style.Resources>
-                <Style TargetType="Border" >
-                    <Setter Property="CornerRadius" Value="20"/>
-                </Style>
-            </Style.Resources>
-        </Style>
     </Window.Resources>
     <Grid>
         <Grid.Background>
