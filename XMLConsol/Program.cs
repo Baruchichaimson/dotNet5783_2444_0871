@@ -12,7 +12,7 @@ namespace Dal;
 
 internal class Program
 {
-    private static IDal dallist = Factory.Get();
+    private static IDal dallist = Factory.Get()!;
     const string s_orderItem = @"OrderItems";
     const string s_product = @"Products";
     const string s_order = @"Orders";

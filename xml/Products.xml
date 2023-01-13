@@ -29,13 +29,6 @@
     <Instock>30</Instock>
   </Product>
   <Product>
-    <Id>268530</Id>
-    <Name>ATELIER</Name>
-    <Categoryname>COFFE_MACHINES</Categoryname>
-    <Price>100</Price>
-    <Instock>25</Instock>
-  </Product>
-  <Product>
     <Id>321525</Id>
     <Name>ARPEGGIO</Name>
     <Categoryname>CAPSULES</Categoryname>
@@ -48,13 +41,6 @@
     <Categoryname>CAPSULES</Categoryname>
     <Price>191</Price>
     <Instock>26</Instock>
-  </Product>
-  <Product>
-    <Id>302629</Id>
-    <Name>VOLLUTO</Name>
-    <Categoryname>CAPSULES</Categoryname>
-    <Price>220</Price>
-    <Instock>39</Instock>
   </Product>
   <Product>
     <Id>876259</Id>
@@ -174,5 +160,26 @@
     <Categoryname>SWEETS</Categoryname>
     <Price>112</Price>
     <Instock>27</Instock>
+  </Product>
+  <Product>
+    <Id>268530</Id>
+    <Name>ATELIER</Name>
+    <Categoryname>COFFE_MACHINES</Categoryname>
+    <Price>2534</Price>
+    <Instock>25</Instock>
+  </Product>
+  <Product>
+    <Id>302629</Id>
+    <Name>VOLLUTO</Name>
+    <Categoryname>CAPSULES</Categoryname>
+    <Price>220</Price>
+    <Instock>35</Instock>
+  </Product>
+  <Product>
+    <Id>346450</Id>
+    <Name>sfdbbbbb</Name>
+    <Categoryname>COFFE_MACHINES</Categoryname>
+    <Price>4644</Price>
+    <Instock>35</Instock>
   </Product>
 </ArrayOfProduct>

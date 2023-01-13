@@ -358,13 +358,6 @@
     <Amount>3</Amount>
   </OrderItem>
   <OrderItem>
-    <Id>52</Id>
-    <ProductID>302629</ProductID>
-    <OredrID>18</OredrID>
-    <Price>220</Price>
-    <Amount>6</Amount>
-  </OrderItem>
-  <OrderItem>
     <Id>53</Id>
     <ProductID>866325</ProductID>
     <OredrID>19</OredrID>
@@ -412,5 +405,12 @@
     <OredrID>20</OredrID>
     <Price>220</Price>
     <Amount>5</Amount>
+  </OrderItem>
+  <OrderItem>
+    <Id>52</Id>
+    <ProductID>302629</ProductID>
+    <OredrID>18</OredrID>
+    <Price>220</Price>
+    <Amount>10</Amount>
   </OrderItem>
 </ArrayOfOrderItem>

@@ -49,14 +49,14 @@
                 </LinearGradientBrush>
             </Grid.Background>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="267*"/>
-                <ColumnDefinition Width="267*"/>
-                <ColumnDefinition Width="233*"/>
-                <ColumnDefinition Width="34*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="500*"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto" MinHeight="0"/>
             </Grid.RowDefinitions>
             <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="4">
