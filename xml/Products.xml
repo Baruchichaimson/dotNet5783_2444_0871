@@ -1,199 +1,178 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfProduct xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Product>
-    <Id>964684</Id>
+    <Id>696513</Id>
     <Name>PIXIE</Name>
     <Categoryname>COFFE_MACHINES</Categoryname>
-    <Price>243</Price>
+    <Price>244</Price>
     <Instock>0</Instock>
   </Product>
   <Product>
-    <Id>197255</Id>
+    <Id>598112</Id>
     <Name>CITIZE</Name>
     <Categoryname>COFFE_MACHINES</Categoryname>
-    <Price>258</Price>
-    <Instock>25</Instock>
+    <Price>185</Price>
+    <Instock>24</Instock>
   </Product>
   <Product>
-    <Id>771123</Id>
+    <Id>696482</Id>
     <Name>ESSENZA</Name>
     <Categoryname>COFFE_MACHINES</Categoryname>
-    <Price>163</Price>
-    <Instock>28</Instock>
-  </Product>
-  <Product>
-    <Id>352481</Id>
-    <Name>ESSENZA_PLUSE</Name>
-    <Categoryname>COFFE_MACHINES</Categoryname>
-    <Price>117</Price>
-    <Instock>32</Instock>
-  </Product>
-  <Product>
-    <Id>973282</Id>
-    <Name>ATELIER</Name>
-    <Categoryname>COFFE_MACHINES</Categoryname>
-    <Price>143</Price>
+    <Price>137</Price>
     <Instock>37</Instock>
   </Product>
   <Product>
-    <Id>784653</Id>
+    <Id>523001</Id>
+    <Name>ESSENZA_PLUSE</Name>
+    <Categoryname>COFFE_MACHINES</Categoryname>
+    <Price>184</Price>
+    <Instock>33</Instock>
+  </Product>
+  <Product>
+    <Id>496495</Id>
+    <Name>ATELIER</Name>
+    <Categoryname>COFFE_MACHINES</Categoryname>
+    <Price>268</Price>
+    <Instock>45</Instock>
+  </Product>
+  <Product>
+    <Id>485059</Id>
     <Name>ARPEGGIO</Name>
     <Categoryname>CAPSULES</Categoryname>
-    <Price>102</Price>
-    <Instock>39</Instock>
-  </Product>
-  <Product>
-    <Id>710306</Id>
-    <Name>ROMA</Name>
-    <Categoryname>CAPSULES</Categoryname>
-    <Price>143</Price>
-    <Instock>40</Instock>
-  </Product>
-  <Product>
-    <Id>188835</Id>
-    <Name>VOLLUTO</Name>
-    <Categoryname>CAPSULES</Categoryname>
-    <Price>242</Price>
-    <Instock>24</Instock>
-  </Product>
-  <Product>
-    <Id>109570</Id>
-    <Name>RISTRETO</Name>
-    <Categoryname>CAPSULES</Categoryname>
-    <Price>265</Price>
-    <Instock>34</Instock>
-  </Product>
-  <Product>
-    <Id>707897</Id>
-    <Name>SCURO</Name>
-    <Categoryname>CAPSULES</Categoryname>
-    <Price>189</Price>
-    <Instock>24</Instock>
-  </Product>
-  <Product>
-    <Id>908266</Id>
-    <Name>COFFE_MUG</Name>
-    <Categoryname>ACCESSORIES</Categoryname>
-    <Price>119</Price>
-    <Instock>39</Instock>
-  </Product>
-  <Product>
-    <Id>702168</Id>
-    <Name>VARSILO</Name>
-    <Categoryname>ACCESSORIES</Categoryname>
-    <Price>115</Price>
-    <Instock>46</Instock>
-  </Product>
-  <Product>
-    <Id>860349</Id>
-    <Name>NOMAD_SMALL</Name>
-    <Categoryname>ACCESSORIES</Categoryname>
-    <Price>147</Price>
-    <Instock>40</Instock>
-  </Product>
-  <Product>
-    <Id>957632</Id>
-    <Name>NOMAD_LARGE</Name>
-    <Categoryname>ACCESSORIES</Categoryname>
-    <Price>218</Price>
-    <Instock>46</Instock>
-  </Product>
-  <Product>
-    <Id>229233</Id>
-    <Name>SHAKER</Name>
-    <Categoryname>ACCESSORIES</Categoryname>
-    <Price>119</Price>
-    <Instock>32</Instock>
-  </Product>
-  <Product>
-    <Id>142694</Id>
-    <Name>BARISTA</Name>
-    <Categoryname>FROTHERS</Categoryname>
-    <Price>187</Price>
+    <Price>153</Price>
     <Instock>49</Instock>
   </Product>
   <Product>
-    <Id>573623</Id>
-    <Name>AROCHINO</Name>
-    <Categoryname>FROTHERS</Categoryname>
-    <Price>207</Price>
-    <Instock>44</Instock>
+    <Id>172339</Id>
+    <Name>ROMA</Name>
+    <Categoryname>CAPSULES</Categoryname>
+    <Price>202</Price>
+    <Instock>22</Instock>
   </Product>
   <Product>
-    <Id>957568</Id>
-    <Name>AROCHINO_2</Name>
-    <Categoryname>FROTHERS</Categoryname>
-    <Price>257</Price>
-    <Instock>34</Instock>
+    <Id>352222</Id>
+    <Name>VOLLUTO</Name>
+    <Categoryname>CAPSULES</Categoryname>
+    <Price>161</Price>
+    <Instock>26</Instock>
   </Product>
   <Product>
-    <Id>153952</Id>
-    <Name>AROCHINO_3</Name>
-    <Categoryname>FROTHERS</Categoryname>
-    <Price>205</Price>
+    <Id>233713</Id>
+    <Name>RISTRETO</Name>
+    <Categoryname>CAPSULES</Categoryname>
+    <Price>222</Price>
+    <Instock>41</Instock>
+  </Product>
+  <Product>
+    <Id>791802</Id>
+    <Name>SCURO</Name>
+    <Categoryname>CAPSULES</Categoryname>
+    <Price>114</Price>
+    <Instock>32</Instock>
+  </Product>
+  <Product>
+    <Id>185614</Id>
+    <Name>COFFE_MUG</Name>
+    <Categoryname>ACCESSORIES</Categoryname>
+    <Price>166</Price>
+    <Instock>29</Instock>
+  </Product>
+  <Product>
+    <Id>358263</Id>
+    <Name>VARSILO</Name>
+    <Categoryname>ACCESSORIES</Categoryname>
+    <Price>139</Price>
+    <Instock>45</Instock>
+  </Product>
+  <Product>
+    <Id>649325</Id>
+    <Name>NOMAD_SMALL</Name>
+    <Categoryname>ACCESSORIES</Categoryname>
+    <Price>179</Price>
+    <Instock>36</Instock>
+  </Product>
+  <Product>
+    <Id>960785</Id>
+    <Name>NOMAD_LARGE</Name>
+    <Categoryname>ACCESSORIES</Categoryname>
+    <Price>274</Price>
+    <Instock>26</Instock>
+  </Product>
+  <Product>
+    <Id>757561</Id>
+    <Name>SHAKER</Name>
+    <Categoryname>ACCESSORIES</Categoryname>
+    <Price>204</Price>
     <Instock>20</Instock>
   </Product>
   <Product>
-    <Id>458389</Id>
-    <Name>AROCHINO_4</Name>
+    <Id>312510</Id>
+    <Name>BARISTA</Name>
     <Categoryname>FROTHERS</Categoryname>
-    <Price>234</Price>
-    <Instock>24</Instock>
+    <Price>162</Price>
+    <Instock>33</Instock>
   </Product>
   <Product>
-    <Id>419261</Id>
-    <Name>AMARETTI_COOKIES</Name>
-    <Categoryname>SWEETS</Categoryname>
-    <Price>220</Price>
-    <Instock>25</Instock>
-  </Product>
-  <Product>
-    <Id>591878</Id>
-    <Name>MILK_CHOOCOLATE</Name>
-    <Categoryname>SWEETS</Categoryname>
-    <Price>206</Price>
+    <Id>572877</Id>
+    <Name>AROCHINO</Name>
+    <Categoryname>FROTHERS</Categoryname>
+    <Price>113</Price>
     <Instock>39</Instock>
   </Product>
   <Product>
-    <Id>136170</Id>
-    <Name>MINI_COOKIES</Name>
-    <Categoryname>SWEETS</Categoryname>
-    <Price>112</Price>
-    <Instock>27</Instock>
+    <Id>222156</Id>
+    <Name>AROCHINO_2</Name>
+    <Categoryname>FROTHERS</Categoryname>
+    <Price>187</Price>
+    <Instock>23</Instock>
   </Product>
   <Product>
-    <Id>262240</Id>
-    <Name>ORANGE_COOKIES</Name>
-    <Categoryname>SWEETS</Categoryname>
-    <Price>282</Price>
-    <Instock>37</Instock>
-  </Product>
-  <Product>
-    <Id>716004</Id>
-    <Name>DARK_CHOOCOLATE</Name>
-    <Categoryname>SWEETS</Categoryname>
-    <Price>190</Price>
+    <Id>924961</Id>
+    <Name>AROCHINO_3</Name>
+    <Categoryname>FROTHERS</Categoryname>
+    <Price>118</Price>
     <Instock>20</Instock>
   </Product>
   <Product>
-    <Id>268530</Id>
-    <Name>ATELIER</Name>
-    <Categoryname>COFFE_MACHINES</Categoryname>
-    <Price>2534</Price>
-    <Instock>25</Instock>
+    <Id>926616</Id>
+    <Name>AROCHINO_4</Name>
+    <Categoryname>FROTHERS</Categoryname>
+    <Price>156</Price>
+    <Instock>37</Instock>
   </Product>
   <Product>
-    <Id>302629</Id>
-    <Name>VOLLUTO</Name>
-    <Categoryname>CAPSULES</Categoryname>
-    <Price>220</Price>
-    <Instock>35</Instock>
+    <Id>940753</Id>
+    <Name>AMARETTI_COOKIES</Name>
+    <Categoryname>SWEETS</Categoryname>
+    <Price>167</Price>
+    <Instock>34</Instock>
   </Product>
   <Product>
-    <Id>346450</Id>
-    <Name>sfdbbbbb</Name>
-    <Categoryname>COFFE_MACHINES</Categoryname>
-    <Price>4644</Price>
-    <Instock>35</Instock>
+    <Id>564230</Id>
+    <Name>MILK_CHOOCOLATE</Name>
+    <Categoryname>SWEETS</Categoryname>
+    <Price>153</Price>
+    <Instock>29</Instock>
+  </Product>
+  <Product>
+    <Id>916846</Id>
+    <Name>MINI_COOKIES</Name>
+    <Categoryname>SWEETS</Categoryname>
+    <Price>170</Price>
+    <Instock>48</Instock>
+  </Product>
+  <Product>
+    <Id>879436</Id>
+    <Name>ORANGE_COOKIES</Name>
+    <Categoryname>SWEETS</Categoryname>
+    <Price>270</Price>
+    <Instock>20</Instock>
+  </Product>
+  <Product>
+    <Id>544473</Id>
+    <Name>DARK_CHOOCOLATE</Name>
+    <Categoryname>SWEETS</Categoryname>
+    <Price>277</Price>
+    <Instock>27</Instock>
   </Product>
 </ArrayOfProduct>
