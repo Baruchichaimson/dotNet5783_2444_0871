@@ -11,12 +11,13 @@ namespace Dal
         const string s_order = @"Orders";
         const string s_idConfig = @"ConfigId.xml";
         const string itemId = @"orderItemId";       
-        XElement configId = File.Exists(XMLTools.GetDir() + s_idConfig) ? XElement.Load(XMLTools.GetDir() + s_idConfig) : throw new NullExeption($"{s_idConfig}");
+       
         public int Add(OrderItem orderItem)
         {
             List<OrderItem?> orderItems = XMLTools.LoadListFromXMLSerializer<OrderItem>(s_orderItem);
             List<Product?> products = XMLTools.LoadListFromXMLSerializer<Product>(s_product);
             List<Order?> orders = XMLTools.LoadListFromXMLSerializer<Order>(s_order);
+            XElement configId = File.Exists(XMLTools.GetDir() + s_idConfig) ? XElement.Load(XMLTools.GetDir() + s_idConfig) : throw new NullExeption($"{s_idConfig}");
 
             if (!products.Exists(element => element?.Id == orderItem.ProductID))
                 throw new EntityNotFoundException("Product");
@@ -25,10 +26,12 @@ namespace Dal
 
             if (List(element => element?.OredrID == orderItem.OredrID)?.ToList().Exists(element => element?.ProductID == orderItem.ProductID) ?? throw new NullExeption("order item list"))
                 throw new AllreadyExistException("product in order");
-
-            orderItem.Id = Convert.ToInt32(configId.Element(itemId)?.Value ?? "-1");
-            configId.Element(itemId)!.Value = (orderItem.Id + 1).ToString();
-            configId.Save(XMLTools.GetDir() + s_idConfig);
+            lock (XmlLock.s_lock)
+            {
+                orderItem.Id = Convert.ToInt32(configId.Element(itemId)?.Value ?? "-1");
+                configId.Element(itemId)!.Value = (orderItem.Id + 1).ToString();
+                configId.Save(XMLTools.GetDir() + s_idConfig);
+            }
             orderItems.Add(orderItem);
             XMLTools.SaveListToXMLSerializer(orderItems, s_orderItem);
             return orderItem.Id;

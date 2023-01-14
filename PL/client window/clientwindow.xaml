@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL.admin_window"
          Icon="\images\icon.png"
         mc:Ignorable="d"
-        Title="clientwindow" Height="450" Width="600">
+        Title="clientwindow" Height="500" Width="800">
     <Window.Resources>
         <Style TargetType="Button">
             <Style.Resources>
@@ -31,7 +31,7 @@
 
         <Button x:Name="Button" Grid.Row="0" Grid.Column="1" Click="ShowProductButton1_Click" Content="ORDER TRACKING" HorizontalAlignment="Center"
                 VerticalAlignment="Center" Height="70" Foreground="#FF41710E" 
-                FontSize="20" FontWeight="Bold" Width="180" RenderTransformOrigin="0.517,0.874" >
+                FontSize="20" FontWeight="Bold" Width="200" RenderTransformOrigin="0.517,0.874" >
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>

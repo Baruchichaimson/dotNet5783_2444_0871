@@ -18,15 +18,21 @@ namespace Dal
         const string s_product = @"Products";
         const string s_order = @"Orders";
         const string s_idConfig = @"ConfigId.xml";
-        const string orderId = "orderId";
-        XElement configId = File.Exists(XMLTools.GetDir() + s_idConfig) ? XElement.Load(XMLTools.GetDir() + s_idConfig) : throw new NullExeption($"{s_idConfig}");
+        const string orderId = @"orderId";
         XElement orders = File.Exists(XMLTools.GetDir() + $"{s_order}.xml") ? XElement.Load(XMLTools.GetDir() + $"{s_order}.xml") : throw new NullExeption($"{s_order}");
+
 
         public int Add(Order newOrder)
         {
-            newOrder.Id = Convert.ToInt32(configId.Element(orderId)?.Value ?? "-1") ;
-            configId.Element(orderId)!.Value = (newOrder.Id + 1).ToString();
-            configId.Save(XMLTools.GetDir() + s_idConfig);
+            XElement configId = File.Exists(XMLTools.GetDir() + s_idConfig) ? XElement.Load(XMLTools.GetDir() + s_idConfig) : throw new NullExeption($"{s_idConfig}");
+
+
+            lock (XmlLock.s_lock)
+            {
+                newOrder.Id = Convert.ToInt32(configId.Element(orderId)?.Value ?? "-1");
+                configId.Element(orderId)!.Value = (newOrder.Id + 1).ToString();
+                configId.Save(XMLTools.GetDir() + s_idConfig);
+            }
             orders.Add(OrderToXElement(newOrder));
             orders.Save(XMLTools.GetDir() + $"{s_order}.xml");
 

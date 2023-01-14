@@ -117,7 +117,7 @@ public partial class AddOrUpdateProductWindow : Window , INotifyPropertyChanged
     /// <param name="e"></param>
     private void price_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
-        e.Handled = Regex.IsMatch(e.Text , "/ ^[0 - 9] + (\\.[0 - 9] +)?$");
+        e.Handled = !Regex.IsMatch(e.Text , @"^[0-9]*(?:\.[0-9]*)?$");
     }
     /// <summary>
     /// dont put latters in the text box
