@@ -5,7 +5,7 @@ internal class DalProduct : IProduct
 {
     const string s_product = @"Products";
     /// <summary>
-    /// Add a new product to the XML file and return its Id.
+    /// Add a new product to the XML file and return its Id
     /// </summary>
     /// <param name="product">The product object to be added.</param>
     /// <returns>The Id of the added product.</returns>
