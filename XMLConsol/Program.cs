@@ -39,29 +39,21 @@ internal class Program
         while (true) ///ask the user until he will put zero.
         {
             Console.WriteLine("Press your choice \nexit press: 0 \nfor load xml products press: 1 \nfor load xml orders press: 2 \nfor load xml order items press: 3");
-
             int.TryParse(Console.ReadLine(), out int userChoice); ///the user must select which entity wants to perform actions
-            //try
-            //{
-                switch (userChoice)
-                {
-                    case (int)UserForMain.EXIT:
-                        return;
-                    case (int)UserForMain.PRODUCT:
-                        LoadProducts();
-                        break;
-                    case (int)UserForMain.ORDER:
-                        LoadOrders();
-                        break;
-                    case (int)UserForMain.ORDER_ITEM:
-                        LoadOrderItems();
-                        break;
-                }
-            //}
-            //catch (Exception ex) ///make catch to the all throw we have in the program.
-            //{
-            //    Console.WriteLine(ex.Message);
-            //}
+            switch (userChoice)
+            {
+                case (int)UserForMain.EXIT:
+                    return;
+                case (int)UserForMain.PRODUCT:
+                    LoadProducts();
+                    break;
+                case (int)UserForMain.ORDER:
+                    LoadOrders();
+                    break;
+                case (int)UserForMain.ORDER_ITEM:
+                    LoadOrderItems();
+                    break;
+            }
         }
     }
 }

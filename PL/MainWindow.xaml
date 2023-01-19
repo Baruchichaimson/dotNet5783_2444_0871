@@ -40,7 +40,7 @@
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Button x:Name="Button2" Grid.Row="1" Grid.Column="1" Click="ShowNewOrderButton_Click" Cursor="Hand" Content="CLAIENT" HorizontalAlignment="Center"
+        <Button x:Name="Button2" Grid.Row="1" Grid.Column="1" Click="ShowNewOrderButton_Click" Cursor="Hand" Content="CUSTOMER" HorizontalAlignment="Center"
                 VerticalAlignment="Center"  Height="90" Foreground="#FF41710E" 
                 FontSize="40" FontWeight="Bold" Width="230" RenderTransformOrigin="0.517,0.874" Background="#7FE1E1E1" >
             <Button.Effect>

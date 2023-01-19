@@ -1,19 +1,11 @@
 ﻿using DalApi;
 using DO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace Dal
 {
     internal class DalOrder : IOrder
     {
-        const string s_orderItem = @"OrderItems";
-        const string s_product = @"Products";
         const string s_order = @"Orders";
         const string s_idConfig = @"ConfigId.xml";
         const string orderId = @"orderId";
@@ -145,9 +137,9 @@ namespace Dal
                 CustomerName = (string)element.Element("CustomerName")!,
                 CustomerEmail = (string)element.Element("CustomerEmail")!,
                 CustomerAdress = (string)element.Element("CustomerAdress")!,
-                OrderDate = (DateTime.TryParse(element.Element("OrderDate").Value, out var orderDate) && orderDate != DateTime.MinValue) ? orderDate : null,
-                ShipDate = (DateTime.TryParse(element.Element("ShipDate").Value, out var shipDate) && shipDate != DateTime.MinValue) ? shipDate : null,
-                DeliveryrDate = (DateTime.TryParse(element.Element("DeliveryrDate").Value, out var deliveryrDate) && deliveryrDate != DateTime.MinValue) ? deliveryrDate : null,
+                OrderDate = (DateTime.TryParse(element.Element("OrderDate")?.Value, out var orderDate) && orderDate != DateTime.MinValue) ? orderDate : null,
+                ShipDate = (DateTime.TryParse(element.Element("ShipDate")?.Value, out var shipDate) && shipDate != DateTime.MinValue) ? shipDate : null,
+                DeliveryrDate = (DateTime.TryParse(element.Element("DeliveryrDate")?.Value, out var deliveryrDate) && deliveryrDate != DateTime.MinValue) ? deliveryrDate : null,
             };
             return order;
 
@@ -165,9 +157,9 @@ namespace Dal
                 CustomerName = (string)element.Element("CustomerName")!,
                 CustomerEmail = (string)element.Element("CustomerEmail")!,
                 CustomerAdress = (string)element.Element("CustomerAdress")!,
-                OrderDate = (DateTime.TryParse(element.Element("OrderDate").Value, out var orderDate) && orderDate != DateTime.MinValue) ? orderDate : null,
-                ShipDate = (DateTime.TryParse(element.Element("ShipDate").Value, out var shipDate) && shipDate != DateTime.MinValue) ? shipDate : null,
-                DeliveryrDate = (DateTime.TryParse(element.Element("DeliveryrDate").Value, out var deliveryrDate) && deliveryrDate != DateTime.MinValue) ? deliveryrDate : null,
+                OrderDate = (DateTime.TryParse(element.Element("OrderDate")?.Value, out var orderDate) && orderDate != DateTime.MinValue) ? orderDate : null,
+                ShipDate = (DateTime.TryParse(element.Element("ShipDate")?.Value, out var shipDate) && shipDate != DateTime.MinValue) ? shipDate : null,
+                DeliveryrDate = (DateTime.TryParse(element.Element("DeliveryrDate")?.Value, out var deliveryrDate) && deliveryrDate != DateTime.MinValue) ? deliveryrDate : null,
             };
             return order;
 

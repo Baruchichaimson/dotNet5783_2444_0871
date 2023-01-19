@@ -13,16 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PL.order_main_windows
+namespace PL.order_main_windows;
+
+/// <summary>
+/// Interaction logic for UserControl1.xaml
+/// </summary>
+public partial class UserControl1 : UserControl
 {
-    /// <summary>
-    /// Interaction logic for UserControl1.xaml
-    /// </summary>
-    public partial class UserControl1 : UserControl
+    public UserControl1()
     {
-        public UserControl1()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

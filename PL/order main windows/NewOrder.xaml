@@ -124,7 +124,6 @@
             </ListView.GroupStyle>
         </ListView>
         <Button x:Name="buttonExit"  Content="EXIT" Cursor="Hand" Grid.Row="2" HorizontalAlignment="Center" BorderThickness="4" BorderBrush="#FF34470C"  Height="40" Grid.Column="2" VerticalAlignment="Center" Width="60" FontSize="12" FontWeight="Bold" Foreground="Black" FontFamily="Bernard MT Condensed" Click="buttonExit_Click"/>
-        <local1:UserControl1 x:Name="myUserControl" Grid.Column="2"  HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.516,0.97" Margin="79,10,0,0" Height="307" Width="255" ToggleButton.Checked="Cart_button_Click" Grid.RowSpan="2" Visibility="Collapsed"/>
         <Label x:Name="label1" Content="Good coffee for a better day ..." Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="23,0,0,0" VerticalAlignment="Center" Height="56" Width="418" Background="{x:Null}" FontSize="35" FontFamily="Edwardian Script ITC" Foreground="#FFD9D9D9" FontWeight="Bold" />
     </Grid>
 </Window>

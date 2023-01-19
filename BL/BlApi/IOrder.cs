@@ -36,18 +36,22 @@ namespace BlApi
         /// <returns></returns>
         public BO.Order DeliveryUpdate(int id);
         /// <summary>
-        /// the function receives an order id and displays the order status
+        /// The function receives an order id and returns the current status of the order.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">The ID of the order to be tracked.</param>
+        /// <returns>An object containing the status of the order.</returns>
         public BO.OrderTracking OrderTracking(int id);
         /// <summary>
-        /// the function allowed the manger to update the cart items.
+        /// The function allows a manager to update the quantity of a specific product in a cart.
         /// </summary>
-        /// <param name="orderId"></param>
-        /// <param name="productId"></param>
-        /// <param name="amount"></param>
+        /// <param name="orderId">The ID of the order to be updated.</param>
+        /// <param name="productId">The ID of the product to be updated.</param>
+        /// <param name="amount">The new quantity of the product in the cart.</param>
         public void UpdateAdmin(int orderId, int productId, int amount);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public int? getOldOrder();
     }
 }

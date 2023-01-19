@@ -115,8 +115,7 @@
     <CustomerAdress>16826 Vera Street</CustomerAdress>
     <OrderDate>2022-12-01T21:08:47</OrderDate>
     <ShipDate>2022-12-03T21:08:47</ShipDate>
-    <DeliveryrDate
-      xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
   </Order>
   <Order>
     <Id>14</Id>
@@ -125,8 +124,7 @@
     <CustomerAdress>7 Pawling Center</CustomerAdress>
     <OrderDate>2022-12-09T12:45:11</OrderDate>
     <ShipDate>2022-12-11T12:45:11</ShipDate>
-    <DeliveryrDate
-      xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
   </Order>
   <Order>
     <Id>15</Id>
@@ -135,8 +133,7 @@
     <CustomerAdress>7 Pawling Center</CustomerAdress>
     <OrderDate>2022-12-10T22:43:09</OrderDate>
     <ShipDate>2022-12-12T22:43:09</ShipDate>
-    <DeliveryrDate
-      xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
   </Order>
   <Order>
     <Id>16</Id>
@@ -145,8 +142,7 @@
     <CustomerAdress>28 Sundown Crossing</CustomerAdress>
     <OrderDate>2022-12-09T06:26:01</OrderDate>
     <ShipDate>2022-12-10T06:26:01</ShipDate>
-    <DeliveryrDate
-      xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
   </Order>
   <Order>
     <Id>17</Id>
@@ -154,10 +150,8 @@
     <CustomerEmail>bkrolman11@weather.com</CustomerEmail>
     <CustomerAdress>56 Old Gate Center</CustomerAdress>
     <OrderDate>2022-12-09T02:40:37</OrderDate>
-    <ShipDate
-      xsi:nil="true" />
-    <DeliveryrDate
-      xsi:nil="true" />
+    <ShipDate xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
   </Order>
   <Order>
     <Id>18</Id>
@@ -165,10 +159,8 @@
     <CustomerEmail>lfillera@pcworld.com</CustomerEmail>
     <CustomerAdress>441 Delladonna Terrace</CustomerAdress>
     <OrderDate>2022-12-03T04:09:04</OrderDate>
-    <ShipDate
-      xsi:nil="true" />
-    <DeliveryrDate
-      xsi:nil="true" />
+    <ShipDate xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
   </Order>
   <Order>
     <Id>19</Id>
@@ -176,10 +168,8 @@
     <CustomerEmail>pkiernan8@github.com</CustomerEmail>
     <CustomerAdress>539 Erie Road</CustomerAdress>
     <OrderDate>2022-12-03T08:11:01</OrderDate>
-    <ShipDate
-      xsi:nil="true" />
-    <DeliveryrDate
-      xsi:nil="true" />
+    <ShipDate xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
   </Order>
   <Order>
     <Id>20</Id>
@@ -187,9 +177,16 @@
     <CustomerEmail>lsimsz@woothemes.com</CustomerEmail>
     <CustomerAdress>99020 Warrior Place</CustomerAdress>
     <OrderDate>2022-12-09T05:58:49</OrderDate>
-    <ShipDate
-      xsi:nil="true" />
-    <DeliveryrDate
-      xsi:nil="true" />
+    <ShipDate xsi:nil="true" />
+    <DeliveryrDate xsi:nil="true" />
+  </Order>
+  <Order>
+    <Id>21</Id>
+    <CustomerName>JBB</CustomerName>
+    <CustomerEmail>VHGC@JB.JK</CustomerEmail>
+    <CustomerAdress>JKGK</CustomerAdress>
+    <OrderDate>2023-01-15T20:04:55.6896434+02:00</OrderDate>
+    <ShipDate>2023-01-15T20:05:09.9556478+02:00</ShipDate>
+    <DeliveryrDate>2023-01-15T20:05:11.4589658+02:00</DeliveryrDate>
   </Order>
 </ArrayOfOrder>

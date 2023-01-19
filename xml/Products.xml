@@ -22,20 +22,6 @@
     <Instock>22</Instock>
   </Product>
   <Product>
-    <Id>890993</Id>
-    <Name>ESSENZA_PLUSE</Name>
-    <Categoryname>COFFE_MACHINES</Categoryname>
-    <Price>281</Price>
-    <Instock>25</Instock>
-  </Product>
-  <Product>
-    <Id>826121</Id>
-    <Name>ATELIER</Name>
-    <Categoryname>COFFE_MACHINES</Categoryname>
-    <Price>179</Price>
-    <Instock>27</Instock>
-  </Product>
-  <Product>
     <Id>421349</Id>
     <Name>ARPEGGIO</Name>
     <Categoryname>CAPSULES</Categoryname>
@@ -174,5 +160,19 @@
     <Categoryname>SWEETS</Categoryname>
     <Price>148</Price>
     <Instock>35</Instock>
+  </Product>
+  <Product>
+    <Id>890993</Id>
+    <Name>ESSENZA_PLUSE</Name>
+    <Categoryname>COFFE_MACHINES</Categoryname>
+    <Price>281</Price>
+    <Instock>25</Instock>
+  </Product>
+  <Product>
+    <Id>826121</Id>
+    <Name>ATELIER</Name>
+    <Categoryname>COFFE_MACHINES</Categoryname>
+    <Price>179</Price>
+    <Instock>14</Instock>
   </Product>
 </ArrayOfProduct>
