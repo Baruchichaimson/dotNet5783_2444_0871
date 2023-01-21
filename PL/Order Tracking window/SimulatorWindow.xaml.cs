@@ -121,8 +121,6 @@ public partial class SimulatorWindow : Window
         Simulator.Simulator.DeRegisterToUpdtes(updateProgres);
         Simulator.Simulator.DeRegisterToStop(stopWorker);
         Simulator.Simulator.DeRegisterToComplete(UpdateComplete);
-
-        MessageBox.Show("Simulation stop");
         Close();
     }
 
