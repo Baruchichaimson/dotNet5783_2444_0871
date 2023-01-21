@@ -27,8 +27,7 @@ public static class Simulator
 
             while (run)
             {
-
-                    int? id = bl!.Order.getOldOrder();
+                int? id = bl!.Order.getOldOrder();
                 if (id is not null)
                 {
                     order = bl!.Order.GetData((int)id!);

@@ -116,19 +116,18 @@ public partial class SimulatorWindow : Window
         }
     }
 
-    private void worker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
+    private void worker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e , string message)
     {
         Simulator.Simulator.DeRegisterToUpdtes(updateProgres);
         Simulator.Simulator.DeRegisterToStop(stopWorker);
         Simulator.Simulator.DeRegisterToComplete(UpdateComplete);
 
-        //MessageBox.Show("Simulation stop");
+        MessageBox.Show(message);
         Close();
     }
 
-    private void stopWorker(string message)
+    private void stopWorker()
     {
-        MessageBox.Show(message);
         worker.CancelAsync();
     }
 
@@ -138,7 +137,6 @@ public partial class SimulatorWindow : Window
         duration = treatDuration;
         ProccessDetails proc = new()
         {
-
             id = order.ID,
             CurrentStatus = order.Status,
             NextStatus = status,
