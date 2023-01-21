@@ -2,6 +2,8 @@
 using PL.client_window;
 using System.Windows;
 using PL.admin_window;
+using BO;
+using PL.Order_Tracking_window;
 
 namespace PL;
 
@@ -28,7 +30,7 @@ public partial class MainWindow : Window
     /// <param name="sender">The object that raised the event.</param>
     /// <param name="e">Event arguments.</param>
     private void ShowProductButton_Click(object sender, RoutedEventArgs e) => new ProductAndOrderList().ShowDialog();
-
     private void ShowNewOrderButton_Click(object sender, RoutedEventArgs e) => new clientwindow().ShowDialog();
+    private void OrderTrackingButton_Click(object sender, RoutedEventArgs e) => new SimulatorWindow().ShowDialog();
 
 }

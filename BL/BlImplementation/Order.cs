@@ -8,7 +8,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Xml.Schema;
 using Google.Api.Ads.AdWords.v201809;
-using BO;
 
 namespace BlImplementation
 {
@@ -328,20 +327,19 @@ namespace BlImplementation
                 throw new BO.NullExeptionForDO(ex);
             }
         }
-
         public int? getOldOrder()
         {
-        var groupsOrder = from item in _dal?.Order.List()
-                              group item by Status((DO.Order)item) into x
-                              select x;
-            foreach (var item in groupsOrder)
+            try
             {
-                if (item.Key == BO.OrderStatus.CONFIRMED)
-                    return item.OrderBy(e => e.Value.OrderDate).First()!.Value.Id;
-                if (item.Key == BO.OrderStatus.SHIPPED)
-                    return item.OrderBy(e => e.Value.ShipDate).First()!.Value.Id;
+                IEnumerable<DO.Order?> oldOrders = _dal?.Order.List(order => order?.DeliveryrDate is null);
+                return oldOrders!.Select(order => order.GetValueOrDefault())
+                           .MinBy(x => x.ShipDate is not null ? x.ShipDate : x.OrderDate).Id;
             }
-            return null;
+            catch
+            {
+                return null;
+                //throw new BO.NotOldeOrderExcepton("ther is no old order more");
+            }
         }
     }
 }
