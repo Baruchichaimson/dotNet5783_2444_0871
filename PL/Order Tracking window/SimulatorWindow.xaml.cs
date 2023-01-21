@@ -116,17 +116,15 @@ public partial class SimulatorWindow : Window
         }
     }
 
-    private void worker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e , string message)
+    private void worker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
     {
         Simulator.Simulator.DeRegisterToUpdtes(updateProgres);
         Simulator.Simulator.DeRegisterToStop(stopWorker);
         Simulator.Simulator.DeRegisterToComplete(UpdateComplete);
-
-        MessageBox.Show(message);
         Close();
     }
 
-    private void stopWorker()
+    private void stopWorker(string message)
     {
         worker.CancelAsync();
         MessageBox.Show(message);
