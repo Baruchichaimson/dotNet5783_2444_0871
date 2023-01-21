@@ -54,6 +54,12 @@ namespace BO
        
     }
     [Serializable]
+    public class NotOldeOrderExcepton : Exception
+    {
+        public NotOldeOrderExcepton(string messege) : base(messege) { }
+
+    }
+    [Serializable]
     public class NullExeptionForDO : Exception
     {
         public NullExeptionForDO(Exception inner, string messege = "") : base(messege, inner) { }

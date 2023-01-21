@@ -39,10 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DalXml", "DalXml\DalXml.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XMLConsol", "XMLConsol\XMLConsol.csproj", "{A3FD0AC8-68D5-480C-87C2-C903F395922A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator", "Simulator\Simulator.csproj", "{FDF7CE25-BCB1-4151-B679-95250E344FFE}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3C34ECD1-BE8E-4B71-9918-FF892AB02185} = {3C34ECD1-BE8E-4B71-9918-FF892AB02185}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simulator", "Simulator\Simulator.csproj", "{FDF7CE25-BCB1-4151-B679-95250E344FFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
