@@ -129,6 +129,8 @@ public partial class SimulatorWindow : Window
     private void stopWorker()
     {
         worker.CancelAsync();
+        MessageBox.Show(message);
+
     }
 
     private void updateProgres(BO.Order order, OrderStatus? status, DateTime tretTime, int treatDuration)

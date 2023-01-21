@@ -59,8 +59,9 @@ public static class Simulator
 
     public static void StopSimulation(string messeage)
     {
-        stopSimulator?.Invoke(messeage);
         run = false;
+        stopSimulator?.Invoke(messeage);
+       
     }
 
     public static void RegisterToStop(Action<string> action) => stopSimulator += action;
@@ -71,5 +72,6 @@ public static class Simulator
 
     public static void RegisterToUpdtes(Action<Order, OrderStatus?, DateTime, int> action) => updateSimulator += action;
     public static void DeRegisterToUpdtes(Action<Order, OrderStatus?, DateTime, int> action) => updateSimulator -= action;
+
 
 }
