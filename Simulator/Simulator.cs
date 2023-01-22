@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using BO;
+using DalApi;
 
 namespace Simulator;
 
@@ -33,13 +34,13 @@ public static class Simulator
                     order = bl!.Order.GetData((int)id!);
                     updatePlWindow?.Invoke(order, order.Status + 1, DateTime.Now, processTime);
                     Thread.Sleep(processTime * 1000);
-
-                    if (order.Status == OrderStatus.CONFIRMED)
+                    
+                    if (order.Status == OrderStatus.CONFIRMED && order.ShipDate is null)
                     {
                         bl!.Order.UpdateShippingDate(order.ID);
                         UpdateComplete?.Invoke(OrderStatus.SHIPPED);
                     }
-                    else
+                    else if(order.DeliveryrDate is null)
                     {
                         bl!.Order.DeliveryUpdate(order.ID);
                         UpdateComplete?.Invoke(OrderStatus.PROVIDED);
