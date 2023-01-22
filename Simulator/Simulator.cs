@@ -33,15 +33,15 @@ public static class Simulator
                     processTime = random.Next(3, 8);
 
                     order = _bl?.Order.GetData((int)id!);
-                    updatePlWindow?.Invoke(order, order.Status + 1, DateTime.Now, processTime);
+                    updatePlWindow?.Invoke(order, order?.Status + 1, DateTime.Now, processTime);
                     Thread.Sleep(processTime * 1000);
 
-                    if (order.Status == OrderStatus.CONFIRMED)
+                    if (order?.Status == OrderStatus.CONFIRMED)
                     {
                         _bl?.Order.UpdateShippingDate(order.ID);
                         UpdateComplete?.Invoke(OrderStatus.SHIPPED);
                     }
-                    else if(order.ShipDate is not null)
+                    else if(order?.ShipDate is not null)
                     {
                         _bl?.Order.DeliveryUpdate(order.ID);
                         UpdateComplete?.Invoke(OrderStatus.PROVIDED);
