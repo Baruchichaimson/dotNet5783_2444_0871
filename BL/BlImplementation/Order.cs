@@ -206,7 +206,7 @@ namespace BlImplementation
                 {
                     DO.Order updateOrdersData = _dal.Order.Get(id);
                     updateOrdersData.DeliveryrDate = DateTime.Now;
-                    lock (_)
+                    lock (_dal)
                     {
                         _dal.Order.Update(updateOrdersData); 
                     }
