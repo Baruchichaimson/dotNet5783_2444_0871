@@ -164,6 +164,7 @@ namespace BlImplementation
         {
             try
             {
+
                 if (_dal?.Order.Get(id).ShipDate is null)
                 {
 
@@ -197,8 +198,10 @@ namespace BlImplementation
         /// <exception cref="EntityDetailsWrongException">Throws an exception when the order deliverd or not shiped </exception>
         public BO.Order DeliveryUpdate(int id)
         {
+            IEnumerable<DO.Order?>? list = _dal!.Order.List();
             try
             {
+                
                 if (_dal?.Order.Get(id).ShipDate is not null && _dal.Order.Get(id).DeliveryrDate is null)
                 {
                     DO.Order updateOrdersData = _dal.Order.Get(id);

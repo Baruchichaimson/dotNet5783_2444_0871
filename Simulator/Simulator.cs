@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using BO;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Simulator;
 
@@ -8,7 +9,7 @@ public static class Simulator
     static IBl? _bl = Factory.Get();
     private static Random random = new Random(DateTime.Now.Millisecond);
     private volatile static bool run;
-    private static Order? order;
+    private volatile static BO.Order order;
     public static Action? actionForAdmin;
     private static event Action<string>? stopSimulator;
     private static event Action<Order, OrderStatus?, DateTime, int>? updatePlWindow;
@@ -35,13 +36,13 @@ public static class Simulator
                     order = _bl?.Order.GetData((int)id!);
                     updatePlWindow?.Invoke(order, order?.Status + 1, DateTime.Now, processTime);
                     Thread.Sleep(processTime * 1000);
-
-                    if (order?.Status == OrderStatus.CONFIRMED)
+                    
+                    if ( _bl?.Order.GetData((int)id!).ShipDate is null && _bl?.Order.GetData((int)id!).DeliveryrDate is null)
                     {
                         _bl?.Order.UpdateShippingDate(order.ID);
                         UpdateComplete?.Invoke(OrderStatus.SHIPPED);
                     }
-                    else if(order?.ShipDate is not null)
+                    else if(_bl?.Order.GetData((int)id!).ShipDate is not null && _bl?.Order.GetData((int)id!).DeliveryrDate is null)
                     {
                         _bl?.Order.DeliveryUpdate(order.ID);
                         UpdateComplete?.Invoke(OrderStatus.PROVIDED);
