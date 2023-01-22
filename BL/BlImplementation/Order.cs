@@ -329,17 +329,11 @@ namespace BlImplementation
         }
         public int? getOldOrder()
         {
-            try
-            {
-                IEnumerable<DO.Order?> oldOrders = _dal?.Order.List(order => order?.DeliveryrDate is null);
-                return oldOrders!.Select(order => order.GetValueOrDefault())
-                           .MinBy(x => x.ShipDate is not null ? x.ShipDate : x.OrderDate).Id;
-            }
-            catch
-            {
-                return null;
-                //throw new BO.NotOldeOrderExcepton("ther is no old order more");
-            }
+            var orders = _dal?.Order.List(order => order?.DeliveryrDate is null)!
+                .Select(order => order.GetValueOrDefault());
+            if (orders?.Count() != 0)
+                return orders?.MinBy(o => o.ShipDate is not null ? o.ShipDate : o.OrderDate).Id;
+            return null;
         }
     }
 }

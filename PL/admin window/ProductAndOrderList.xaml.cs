@@ -33,7 +33,7 @@ public partial class ProductAndOrderList : Window , INotifyPropertyChanged
     /// </summary>
     public ProductAndOrderList()
     {
-        
+        Simulator.Simulator.RegisterToAdmin(OnChangeOrder);
         InitializeComponent();
         productList = _bl?.Product.GetList()!;
         orderList = _bl?.Order.GetList()!;
@@ -98,13 +98,13 @@ public partial class ProductAndOrderList : Window , INotifyPropertyChanged
     /// </summary>
     private void OnChangeProduct()
     {
-        productList = _bl.Product.GetList();
+        productList = _bl?.Product.GetList();
     }
     /// <summary>
     /// deleget for the order list that we want to update him aoutomaticly.
     /// </summary>
     private void OnChangeOrder()
     {
-        orderList = _bl.Order.GetList();
+        orderList = _bl?.Order.GetList();
     }
 }
