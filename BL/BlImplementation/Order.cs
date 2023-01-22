@@ -170,7 +170,10 @@ namespace BlImplementation
 
                     DO.Order updateOrders = _dal?.Order.Get(id) ?? throw new BO.NullExeption("Dal");
                     updateOrders.ShipDate = DateTime.Now;
-                    _dal.Order.Update(updateOrders);
+                    lock (_dal)
+                    {
+                        _dal.Order.Update(updateOrders); 
+                    }
                     BO.Order updorder = GetData(id);
                     updorder.ShipDate = updateOrders.ShipDate;
                     return updorder;
@@ -203,7 +206,10 @@ namespace BlImplementation
                 {
                     DO.Order updateOrdersData = _dal.Order.Get(id);
                     updateOrdersData.DeliveryrDate = DateTime.Now;
-                    _dal.Order.Update(updateOrdersData);
+                    lock (_)
+                    {
+                        _dal.Order.Update(updateOrdersData); 
+                    }
                     BO.Order updateOrderLogic = GetData(id);
                     updateOrderLogic.ShipDate = updateOrderLogic.ShipDate;
                     return updateOrderLogic;

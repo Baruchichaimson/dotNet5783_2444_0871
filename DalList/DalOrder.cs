@@ -1,7 +1,6 @@
-﻿
-using DO;
+﻿using DO;
 using DalApi;
-using System.Linq;
+using System.Runtime.CompilerServices;
 //using System.Security.Principal;
 namespace Dal;
 /// <summary>
@@ -32,6 +31,7 @@ internal class DalOrder : IOrder
     /// Function to update an order
     /// </summary>
     /// <param name="newOrder"> order with the new details</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Order newOrder)
     {     
         DataSource.Orders.Remove(GetElement(element => element?.Id == newOrder.Id));
