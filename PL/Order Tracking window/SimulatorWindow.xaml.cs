@@ -19,7 +19,9 @@ public partial class SimulatorWindow : Window
     private Stopwatch stopwatch;
     private BackgroundWorker worker;
     /// <summary>
-    /// 
+    /// Defines a public string property 'MyClock'
+    /// with a getter and setter for accessing and updating 
+    /// the value of the MyClock dependency property.
     /// </summary>
     public string MyClock
     {
@@ -27,7 +29,9 @@ public partial class SimulatorWindow : Window
         set { SetValue(MyClockProperty, value); }
     }
     /// <summary>
-    /// 
+    /// Defines a public double property 'MyProgressBarValue'
+    /// with a getter and setter for accessing and updating the 
+    /// value of the MyProgressBarValue dependency property.
     /// </summary>
     public double MyProgressBarValue
     {
@@ -35,7 +39,8 @@ public partial class SimulatorWindow : Window
         set { SetValue(MyProgressBarValueProperty, value); }
     }
     /// <summary>
-    /// 
+    /// Defines a public ProccessDetails property 'MyProccessDetails' with a getter 
+    /// and setter for accessing and updating the value of the MyProccessDetails dependency property.
     /// </summary>
     public ProccessDetails MyProccessDetails
     {
@@ -53,7 +58,12 @@ public partial class SimulatorWindow : Window
     public static readonly DependencyProperty MyProgressBarValueProperty =
         DependencyProperty.Register("MyProgressBarValue", typeof(double), typeof(SimulatorWindow));
     /// <summary>
-    /// 
+    /// Initializes the SimulatorWindow by calling InitializeComponent, 
+    /// creating a new Stopwatch object and starting it, setting the initial 
+    /// values for MyClock, MyProgressBarValue, and creating a new 
+    /// BackgroundWorker object with specified settings. It also assigns event
+    /// handlers for the worker's DoWork, ProgressChanged, 
+    /// and RunWorkerCompleted events and starts the worker.
     /// </summary>
     public SimulatorWindow()
     {
@@ -76,10 +86,13 @@ public partial class SimulatorWindow : Window
         worker.RunWorkerAsync();
     }
     /// <summary>
-    /// 
+    /// Registers the updateProgres, stopWorker and UpdateComplete methods as event handlers
+    /// for updates, stop and completion events of the Simulator class. Then starts the
+    /// simulation and continuously sleeps for 1 second and reports progress for the clock 
+    /// while the worker is not canceled.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">The object that raised the event.</param>
+    /// <param name="e">The event data.</param>
     private void worker_DoWork(object? sender, DoWorkEventArgs e)
     {
         Simulator.Simulator.RegisterToUpdtes(updateProgres);
@@ -93,10 +106,12 @@ public partial class SimulatorWindow : Window
         }
     }
     /// <summary>
-    /// 
+    /// Handles the progress changed event of the worker. 
+    /// It changes the value of MyClock, MyProgressBarValue
+    /// and MyProccessDetails depending on the progress percentage passed as an argument.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">The object that raised the event.</param>
+    /// <param name="e"> The event data, which includes the progress percentage and an optional user state object.</param>
     private void worker_ProgressChanged(object? sender, ProgressChangedEventArgs e)
     {
         switch ((Progress)e.ProgressPercentage)
@@ -115,10 +130,13 @@ public partial class SimulatorWindow : Window
         }
     }
     /// <summary>
-    /// 
+    /// Handles the completion event of the worker. It deregisters the updateProgres,
+    /// stopWorker and UpdateComplete methods as event handlers 
+    /// for updates, stop and completion events of the Simulato
+    /// r class. Then it closes the window.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender"> The object that raised the event.</param>
+    /// <param name="e">The event data, which includes the results of the background operation.</param>
     private void worker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
     {
         Simulator.Simulator.DeRegisterToUpdtes(updateProgres);
@@ -127,21 +145,23 @@ public partial class SimulatorWindow : Window
         Close();
     }
     /// <summary>
-    /// 
+    /// Stops the background worker and shows a message box with the provided message.
     /// </summary>
-    /// <param name="message"></param>
+    /// <param name="message">The message to be displayed in the message box.</param>
     private void stopWorker(string message)
     {
         worker.CancelAsync();
         MessageBox.Show(message);
     }
     /// <summary>
-    /// 
+    /// Updates the progress by creating a new ProccessDetails object 
+    /// with the provided order, status, treat time, and treat duration, 
+    /// then sets the work time and percent and reports the progress with the new ProccessDetails object.
     /// </summary>
-    /// <param name="order"></param>
-    /// <param name="status"></param>
-    /// <param name="tretTime"></param>
-    /// <param name="treatDuration"></param>
+    /// <param name="order">The order that is currently being processed.</param>
+    /// <param name="status">The next status of the order.</param>
+    /// <param name="tretTime">The time of the treatment.</param>
+    /// <param name="treatDuration">The duration of the treatment.</param>
     private void updateProgres(BO.Order order, OrderStatus? status, DateTime tretTime, int treatDuration)
     {
         precent = 0;
@@ -158,21 +178,25 @@ public partial class SimulatorWindow : Window
         worker.ReportProgress((int)Progress.Update, proc);
     }
     /// <summary>
-    /// 
+    /// Reports the progress with the status of the order which is complete.
     /// </summary>
-    /// <param name="status"></param>
+    /// <param name="status">The status of the order that is complete.</param>
     private void UpdateComplete(OrderStatus? status)
     => worker.ReportProgress((int)Progress.Complete, status);
     /// <summary>
-    /// 
+    /// Stops the simulation by calling the StopSimulation 
+    /// method of the Simulator class and providing the message 'Simulation stop
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender"> The object that raised the event.</param>
+    /// <param name="e">The event data.</param>
     private void Stop_Click(object sender, RoutedEventArgs e)
     => Simulator.Simulator.StopSimulation("Simulation stop");
 }
 /// <summary>
-/// 
+/// "Defines a class ProccessDetails that contains properties for 
+/// storing information about the process status of an order,
+/// including its ID, current status, next status, current
+/// treatment time, and estimated treatment time.
 /// </summary>
 public class ProccessDetails : DependencyObject
 {
