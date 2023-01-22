@@ -37,7 +37,7 @@ public static class Simulator
 
                     updateSimulator?.Invoke(order, order.Status + 1, DateTime.Now, treatTime);
 
-                    Thread.Sleep(treatTime * 1000);
+                    Thread.Sleep(treatTime * 1);
 
                     if (order.Status == OrderStatus.CONFIRMED)
                     {
