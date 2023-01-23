@@ -42,7 +42,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
-            <Label x:Name="label3" Content="ORDER TRACKING" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="270" Background="{x:Null}" FontSize="30" Grid.ColumnSpan="3" FontFamily="Aharoni" FontWeight="Bold" Foreground="#FFD9D9D9"/>
+            <Label x:Name="label3" Content="SIMULATOR" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="270" Background="{x:Null}" FontSize="30" Grid.ColumnSpan="3" FontFamily="Aharoni" FontWeight="Bold" Foreground="#FFD9D9D9"/>
         </Grid>
         <TextBox Text="{Binding CurrentTreatTime}" Grid.Column="1" Grid.Row="3" Height="30" Width="130" VerticalAlignment="Top" HorizontalAlignment="Left"  Background="White" BorderThickness="3" BorderBrush="#FF562307" IsEnabled="False"/>
         <TextBox Text="{Binding CurrentStatus}" Grid.Column="1" Grid.Row="4" Height="30" Width="90" VerticalAlignment="Center" BorderThickness="5" BorderBrush="#FF562307" HorizontalAlignment="Left" FontWeight="Bold" FontFamily="Aharoni" TextAlignment="Center" IsEnabled="False"/>

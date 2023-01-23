@@ -39,12 +39,12 @@ public partial class SimulatorWindow : Window
         set { SetValue(MyProgressBarValueProperty, value); }
     }
     /// <summary>
-    /// Defines a public ProccessDetails property 'MyProccessDetails' with a getter 
+    /// Defines a public OrderDetails property 'MyProccessDetails' with a getter 
     /// and setter for accessing and updating the value of the MyProccessDetails dependency property.
     /// </summary>
-    public ProccessDetails MyProccessDetails
+    public OrderDetails MyProccessDetails
     {
-        get { return (ProccessDetails)GetValue(MyProccessDetailsProperty); }
+        get { return (OrderDetails)GetValue(MyProccessDetailsProperty); }
         set { SetValue(MyProccessDetailsProperty, value); }
     }
 
@@ -52,7 +52,7 @@ public partial class SimulatorWindow : Window
     /// Using a DependencyProperty as the backing store for MyProccessDetails.  This enables animation, styling, binding, etc...
     /// </summary>
     public static readonly DependencyProperty MyProccessDetailsProperty =
-        DependencyProperty.Register("MyProccessDetails", typeof(ProccessDetails), typeof(SimulatorWindow));
+        DependencyProperty.Register("MyProccessDetails", typeof(OrderDetails), typeof(SimulatorWindow));
     public static readonly DependencyProperty MyClockProperty =
         DependencyProperty.Register("MyClock", typeof(string), typeof(SimulatorWindow));
     public static readonly DependencyProperty MyProgressBarValueProperty =
@@ -71,7 +71,7 @@ public partial class SimulatorWindow : Window
         stopwatch = new Stopwatch();
         stopwatch.Start();
         MyClock = stopwatch.Elapsed.ToString().Substring(0, 8);
-
+        this.WindowStyle = WindowStyle.None;
         MyProgressBarValue = 0;
 
         worker = new BackgroundWorker()
@@ -95,7 +95,7 @@ public partial class SimulatorWindow : Window
     /// <param name="e">The event data.</param>
     private void worker_DoWork(object? sender, DoWorkEventArgs e)
     {
-        Simulator.Simulator.RegisterToUpdtes(updateProgres);
+        Simulator.Simulator.RegisterToUpdtes(UpdateProgress);
         Simulator.Simulator.RegisterToStop(stopWorker);
         Simulator.Simulator.RegisterToComplete(UpdateComplete);
         Simulator.Simulator.StartSimulation();
@@ -112,21 +112,17 @@ public partial class SimulatorWindow : Window
     /// </summary>
     /// <param name="sender">The object that raised the event.</param>
     /// <param name="e"> The event data, which includes the progress percentage and an optional user state object.</param>
-    private void worker_ProgressChanged(object? sender, ProgressChangedEventArgs e)
+    private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
     {
-        switch ((Progress)e.ProgressPercentage)
+        var progress = (Progress)e.ProgressPercentage;
+        if (progress == Progress.Clock)
         {
-            case Progress.Clock:
-                MyClock = stopwatch.Elapsed.ToString().Substring(0, 8);
-                MyProgressBarValue = (precent++ * 100 / workTime);
-                break;
-            case Progress.Update:
-                MyProccessDetails = (e.UserState as ProccessDetails)!;
-                break;
-            case Progress.Complete:
-                break;
-            default:
-                break;
+            MyClock = stopwatch.Elapsed.ToString().Substring(0, 8);
+            MyProgressBarValue = precent++ * 100 / workTime;
+        }
+        else if (progress == Progress.Update)
+        {
+            MyProccessDetails = (e.UserState as OrderDetails)!;
         }
     }
     /// <summary>
@@ -139,7 +135,7 @@ public partial class SimulatorWindow : Window
     /// <param name="e">The event data, which includes the results of the background operation.</param>
     private void worker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
     {
-        Simulator.Simulator.DeRegisterToUpdtes(updateProgres);
+        Simulator.Simulator.DeRegisterToUpdtes(UpdateProgress);
         Simulator.Simulator.DeRegisterToStop(stopWorker);
         Simulator.Simulator.DeRegisterToComplete(UpdateComplete);
         Close();
@@ -154,28 +150,28 @@ public partial class SimulatorWindow : Window
         MessageBox.Show(message);
     }
     /// <summary>
-    /// Updates the progress by creating a new ProccessDetails object 
+    /// Updates the progress by creating a new OrderDetails object 
     /// with the provided order, status, treat time, and treat duration, 
-    /// then sets the work time and percent and reports the progress with the new ProccessDetails object.
+    /// then sets the work time and percent and reports the progress with the new OrderDetails object.
     /// </summary>
     /// <param name="order">The order that is currently being processed.</param>
     /// <param name="status">The next status of the order.</param>
     /// <param name="tretTime">The time of the treatment.</param>
-    /// <param name="treatDuration">The duration of the treatment.</param>
-    private void updateProgres(BO.Order order, OrderStatus? status, DateTime tretTime, int treatDuration)
+    /// <param name="timeOfProcces">The duration of the treatment.</param>
+    private void UpdateProgress(BO.Order order, OrderStatus? status, DateTime treatTime, int timeOfProcces)
     {
         precent = 0;
-        workTime = treatDuration;
-        ProccessDetails proc = new()
+        workTime = timeOfProcces;
+        var process = new OrderDetails
         {
             id = order.ID,
             CurrentStatus = order.Status,
             NextStatus = status,
-            CurrentTreatTime = tretTime,
-            EstimatedTreatTime = tretTime + TimeSpan.FromSeconds(treatDuration)
+            CurrentTreatTime = treatTime,
+            EstimatedTreatTime = treatTime + TimeSpan.FromSeconds(timeOfProcces)
         };
 
-        worker.ReportProgress((int)Progress.Update, proc);
+        worker.ReportProgress((int)Progress.Update, process);
     }
     /// <summary>
     /// Reports the progress with the status of the order which is complete.
@@ -193,12 +189,12 @@ public partial class SimulatorWindow : Window
     => Simulator.Simulator.StopSimulation("Simulation stop");
 }
 /// <summary>
-/// "Defines a class ProccessDetails that contains properties for 
+/// "Defines a class OrderDetails that contains properties for 
 /// storing information about the process status of an order,
 /// including its ID, current status, next status, current
 /// treatment time, and estimated treatment time.
 /// </summary>
-public class ProccessDetails : DependencyObject
+public class OrderDetails : DependencyObject
 {
     public int id { get; set; }
     public OrderStatus? CurrentStatus { get; set; }

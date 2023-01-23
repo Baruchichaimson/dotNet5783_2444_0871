@@ -14,6 +14,8 @@ public static class Simulator
     private static event Action<string>? stopSimulator;
     private static event Action<Order, OrderStatus?, DateTime, int>? updatePlWindow;
     private static event Action<OrderStatus?>? UpdateComplete;
+    private static bool _isRunning = false;
+
     /// <summary>
     /// Starts the simulation of processing and updating orders. 
     /// Continuously checks for old orders, updates their status,
@@ -22,29 +24,32 @@ public static class Simulator
     public static void StartSimulation()
     {
         int processTime;
+        while (_isRunning)
+        {
+            Thread.Sleep(100);
+        }
         new Thread(() =>
         {
             run = true;
-
+            _isRunning = true;
             while (run)
             {
                 int? id = _bl?.Order.getOldOrder();
                 if (id is not null)
                 {
                     processTime = random.Next(3, 8);
-
-                    order = _bl?.Order.GetData((int)id!);
+                    order = _bl?.Order.GetData((int)id!)!;
                     updatePlWindow?.Invoke(order, order?.Status + 1, DateTime.Now, processTime);
                     Thread.Sleep(processTime * 1000);
                     
-                    if ( _bl?.Order.GetData((int)id!).ShipDate is null && _bl?.Order.GetData((int)id!).DeliveryrDate is null)
+                    if (order?.Status == OrderStatus.CONFIRMED && order.ShipDate is null)
                     {
                         _bl?.Order.UpdateShippingDate(order.ID);
                         UpdateComplete?.Invoke(OrderStatus.SHIPPED);
                     }
-                    else if(_bl?.Order.GetData((int)id!).ShipDate is not null && _bl?.Order.GetData((int)id!).DeliveryrDate is null)
+                    else if (order?.ShipDate is not null && order?.DeliveryrDate is null)
                     {
-                        _bl?.Order.DeliveryUpdate(order.ID);
+                        _bl?.Order.DeliveryUpdate(order!.ID);
                         UpdateComplete?.Invoke(OrderStatus.PROVIDED);
                     }
                     actionForAdmin?.Invoke();
@@ -53,6 +58,7 @@ public static class Simulator
                     StopSimulation("ther is no more old order");
                 Thread.Sleep(1000);
             }
+            _isRunning = false;
         }).Start();
     }
     /// <summary>
