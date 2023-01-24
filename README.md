@@ -16,3 +16,5 @@ bonus 10 : we use Command to make the button in the list view automatically upda
            Icommand to wrap the list of the order with new function the update the amount and the
            price of the items.
 bonus 11 : we use all the time in any window with data binding with out creat new function in the BO.
+bonus 12 : progress bar.
+bonus 13 : automatically update for the list order in the admin for the simulator.

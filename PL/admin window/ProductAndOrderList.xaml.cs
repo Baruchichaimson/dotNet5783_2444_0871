@@ -34,6 +34,7 @@ public partial class ProductAndOrderList : Window , INotifyPropertyChanged
     public ProductAndOrderList()
     {
         Simulator.Simulator.RegisterToAdmin(OnChangeOrder);
+        this.Closed += MainWindow_Closed;
         InitializeComponent();
         productList = _bl?.Product.GetList()!;
         orderList = _bl?.Order.GetList()!;
@@ -42,6 +43,12 @@ public partial class ProductAndOrderList : Window , INotifyPropertyChanged
                  select x;
         
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
+    }
+
+    private void MainWindow_Closed(object sender, EventArgs e)
+    {
+        // Perform actions when the window is closed
+        Simulator.Simulator.DeRegisterToAdmin(OnChangeOrder);
     }
     /// <summary>
     /// category selector in the combo box
