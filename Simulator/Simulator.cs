@@ -9,7 +9,7 @@ public static class Simulator
     static IBl? _bl = Factory.Get();
     private static Random random = new Random(DateTime.Now.Millisecond);
     private volatile static bool run;
-    private volatile static BO.Order order;
+    private static BO.Order? order;
     public static Action? actionForAdmin;
     private static event Action<string>? stopSimulator;
     private static event Action<Order, OrderStatus?, DateTime, int>? updatePlWindow;
@@ -34,15 +34,16 @@ public static class Simulator
                     processTime = random.Next(3, 8);
 
                     order = _bl?.Order.GetData((int)id!);
+                    IEnumerable<BO.Order> list = _bl.Order.GetList().Select(x => { return _bl.Order.GetData(x.ID); });
                     updatePlWindow?.Invoke(order, order.Status + 1, DateTime.Now, processTime);
                     Thread.Sleep(processTime * 1000);
                     
-                    if ( _bl?.Order.GetData((int)id!).ShipDate is null && _bl?.Order.GetData((int)id!).DeliveryrDate is null)
+                    if (order.Status == OrderStatus.CONFIRMED && order.ShipDate is null && order.DeliveryrDate is null)
                     {
                         _bl?.Order.UpdateShippingDate(order.ID);
                         UpdateComplete?.Invoke(OrderStatus.SHIPPED);
                     }
-                    else if(_bl?.Order.GetData((int)id!).ShipDate is not null && _bl?.Order.GetData((int)id!).DeliveryrDate is null)
+                    else if(order.ShipDate is not null && order.ShipDate is not null)
                     {
                         _bl?.Order.DeliveryUpdate(order.ID);
                         UpdateComplete?.Invoke(OrderStatus.PROVIDED);

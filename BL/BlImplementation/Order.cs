@@ -17,6 +17,7 @@ namespace BlImplementation
     internal class Order : IOrder
     {
         private DalApi.IDal? _dal = DalApi.Factory.Get();
+        private object _locker = new object();
         /// <summary>
         /// A helper function that returns an order status
         /// </summary>
@@ -170,7 +171,7 @@ namespace BlImplementation
 
                     DO.Order updateOrders = _dal?.Order.Get(id) ?? throw new BO.NullExeption("Dal");
                     updateOrders.ShipDate = DateTime.Now;
-                    lock (_dal)
+                    lock (_locker)
                     {
                         _dal.Order.Update(updateOrders); 
                     }
@@ -206,7 +207,7 @@ namespace BlImplementation
                 {
                     DO.Order updateOrdersData = _dal.Order.Get(id);
                     updateOrdersData.DeliveryrDate = DateTime.Now;
-                    lock (_dal)
+                    lock (_locker)
                     {
                         _dal.Order.Update(updateOrdersData); 
                     }
@@ -342,6 +343,7 @@ namespace BlImplementation
                 .Select(order => order.GetValueOrDefault());
             if (orders?.Count() != 0)
                 return orders?.MinBy(o => o.ShipDate is not null ? o.ShipDate : o.OrderDate).Id;
+
             return null;
         }
     }
