@@ -14,7 +14,7 @@ public static class Simulator
     private static event Action<string>? stopSimulator;
     private static event Action<Order, OrderStatus?, DateTime, int>? updatePlWindow;
     private static event Action<OrderStatus?>? UpdateComplete;
-    private static bool _isRunning = false;
+    public static bool _isRunning = false;
 
     /// <summary>
     /// Starts the simulation of processing and updating orders. 
@@ -24,10 +24,7 @@ public static class Simulator
     public static void StartSimulation()
     {
         int processTime;
-        while (_isRunning)
-        {
-            Thread.Sleep(100);
-        }
+       
         new Thread(() =>
         {
             run = true;
@@ -61,7 +58,9 @@ public static class Simulator
             }
             _isRunning = false;
         }).Start();
+
     }
+
     /// <summary>
     /// Stops the simulation and invokes the stopSimulator event with the provided message.
     /// </summary>
@@ -69,7 +68,13 @@ public static class Simulator
     public static void StopSimulation(string messeage)
     {
         run = false;
-        stopSimulator?.Invoke(messeage);
+        new Thread(() =>
+        {
+            while (_isRunning) { };
+            stopSimulator?.Invoke(messeage);
+
+        }).Start();
+       
     }
     /// <summary>
     /// Registers or deregisters an action for the admin. The registered action will be invoked when called.

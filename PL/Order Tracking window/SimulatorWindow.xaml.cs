@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.ServiceModel.Channels;
 using System.Threading;
 using System.Windows;
 
@@ -186,7 +187,10 @@ public partial class SimulatorWindow : Window
     /// <param name="sender"> The object that raised the event.</param>
     /// <param name="e">The event data.</param>
     private void Stop_Click(object sender, RoutedEventArgs e)
-    => Simulator.Simulator.StopSimulation("Simulation stop");
+    { 
+        Simulator.Simulator.StopSimulation("Simulation stop");
+    }
+    
 }
 /// <summary>
 /// "Defines a class OrderDetails that contains properties for 
