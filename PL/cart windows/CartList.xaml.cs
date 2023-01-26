@@ -36,7 +36,6 @@ namespace PL.cart_main_windows
             {
                 _item = value;
                 OnPropertyChanged();
-
             }
         }
 

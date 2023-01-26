@@ -32,7 +32,7 @@
             </Grid.RowDefinitions>
 
             <TextBox x:Name="ID"             Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Height="20" Text="{Binding orderId}" PreviewTextInput="ID_PreviewTextInput" BorderBrush="Black"/>
-            <TextBox x:Name="orderDetails"   Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3" Grid.RowSpan="3" HorizontalAlignment="Center" TextWrapping="Wrap"  VerticalAlignment="Center" Width="400" Height="160" Text="{Binding orderTrackingString}" BorderBrush="Black" BorderThickness="15" IsEnabled="False"/>
+            <TextBox x:Name="orderDetails"   Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3" Grid.RowSpan="3" HorizontalAlignment="Center" TextWrapping="Wrap"  VerticalAlignment="Center" Width="400" FontWeight="Bold" Height="160" Text="{Binding orderTrackingString}" BorderBrush="Black" BorderThickness="15" IsEnabled="False"/>
 
 
             <Label x:Name="label0"  Content="ORDER TRACKING"   Grid.ColumnSpan="2"   Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18" FontFamily="Elephant" Height="40" Foreground="Black"  OpacityMask="Black"/>
