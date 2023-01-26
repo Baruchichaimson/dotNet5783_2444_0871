@@ -72,7 +72,6 @@ public static class Simulator
         {
             while (_isRunning) { };
             stopSimulator?.Invoke(messeage);
-
         }).Start();
        
     }

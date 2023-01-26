@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Controls.Primitives;
 using BlApi;
 using System.Runtime.CompilerServices;
+using System.Windows.Data;
 
 namespace PL.new_order_window;
 
@@ -28,6 +29,7 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     private IEnumerable<BO.ProductItem?>? productItemsp;
 
     public IEnumerable<BO.ProductItem?>? productItems { get { return productItemsp; } set { productItemsp = value; if (PropertyChanged != null)  { PropertyChanged(this, new PropertyChangedEventArgs("productItems")); } }}
+
     /// <summary>
     /// constractor to window with all item in store.
     /// and make alist with groups
@@ -35,11 +37,14 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     public NewOrder()
     {
         InitializeComponent();
+
         cart = new BO.Cart();
         productItems = _bl?.Product.GetListProductItem(cart)!;
+
         groups = from item in productItems
                  group item by item.Category into x
                  select x;
+
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
         this.WindowStyle = WindowStyle.None;
         WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;

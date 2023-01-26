@@ -16,6 +16,7 @@ public partial class MainWindow : Window
     /// accses for the logical layyer.
     /// </summary>
     private BlApi.IBl? _bl = BlApi.Factory.Get();
+
     /// <summary>
     /// constructor
     /// </summary>
@@ -24,6 +25,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
     }
+
     /// <summary>
     /// event to double click to go update the product.
     /// </summary>
