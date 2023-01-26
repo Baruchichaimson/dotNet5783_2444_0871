@@ -34,9 +34,9 @@
             <TextBox x:Name="CustomerAddress" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" PreviewTextInput="adrress_PreviewTextInput" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Height="20" Text="{Binding cartDetails.CustomerAddress ,Mode=TwoWay}" BorderBrush="Black"/>
 
             <Label x:Name="label0"  Content="Order Confirmation"  Grid.Column="0" Grid.Row="1" HorizontalAlignment="left" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="20" FontFamily="Elephant" Height="36" Foreground="Black"  OpacityMask="Black"/>
-            <Label x:Name="label"  Content="CustomerName" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Height="28" Foreground="Black"  OpacityMask="Black"/>
-            <Label x:Name="label1" Content="CustomerEmail" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"  VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Foreground="Black"/>
-            <Label x:Name="label2" Content="CustomerAddress"  Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"  VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Foreground="Black"/>
+            <Label x:Name="label"  Content="Customer Name" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Height="28" Foreground="Black"  OpacityMask="Black"/>
+            <Label x:Name="label1" Content="Customer Email" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"  VerticalAlignment="Center" FontSize="14" FontFamily="Elephant" Foreground="Black"/>
+            <Label x:Name="label2" Content="Customer Address" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"  VerticalAlignment="Center" FontSize="12" FontFamily="Elephant" Foreground="Black"/>
             <Button x:Name="add" Content="order now" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="7" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="35" Width="125" Click="order_now" Cursor="Hand"  BorderBrush="Black" />
             <Image  Source="\images\Logo.png" HorizontalAlignment="Left" Height="100" Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3" VerticalAlignment="Top" Width="100" Stretch="Fill" Cursor="No"  >
                 <Image.OpacityMask>

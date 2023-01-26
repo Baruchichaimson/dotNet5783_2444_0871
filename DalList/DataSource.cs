@@ -144,7 +144,7 @@ internal static class DataSource
             DateTime currentTime = DateTime.Now;
 
             /// Subtract one month from current time
-            DateTime oneMonthAgo = currentTime.AddMonths(-1);
+            DateTime oneMonthAgo = currentTime.AddMonths(-randomNumber.Next(1, 4)).AddYears(-randomNumber.Next(0, 3));
 
             /// Generate random time between current time and one month ago
             DateTime randomTime = new DateTime(oneMonthAgo.Year, oneMonthAgo.Month,

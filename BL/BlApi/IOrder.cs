@@ -1,4 +1,5 @@
-﻿using BO;
+﻿using BlImplementation;
+using BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,5 +54,7 @@ namespace BlApi
         /// </summary>
         /// <returns></returns>
         public int? getOldOrder();
+
+        IEnumerable<StatisticksOrders> GetStatisticksOrdersByMonthsAndYear();
     }
 }

@@ -1,4 +1,6 @@
-﻿using BO;
+﻿using BlApi;
+using BlImplementation;
+using BO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,24 +18,29 @@ public partial class ProductAndOrderList : Window , INotifyPropertyChanged
     /// <summary>
     /// access to the logical layyer.
     /// </summary>
-    private BlApi.IBl? _bl = BlApi.Factory.Get();
+    private BlApi.IBl? _bl;
 
     public event PropertyChangedEventHandler? PropertyChanged;
     IEnumerable<IGrouping<BO.CoffeeShop?, ProductForList>> groups;
     /// <summary>
     /// initialize depency property
     /// </summary>
-    private IEnumerable<BO.ProductForList?>? productListp;
-    public IEnumerable<BO.ProductForList?>? productList { get { return productListp; } set { productListp = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("productList")); } } }
-    private IEnumerable<BO.OrderForList?>? orderListp;
-    public IEnumerable<BO.OrderForList?>? orderList { get { return orderListp; } set { orderListp = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("orderList")); } } }
+    private IEnumerable<BO.ProductForList?>? productList_p;
+    public IEnumerable<BO.ProductForList?>? productList { get { return productList_p; } set { productList_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("productList")); } } }
+
+    private IEnumerable<BO.OrderForList?>? orderList_p;
+    public IEnumerable<BO.OrderForList?>? orderList { get { return orderList_p; } set { orderList_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("orderList")); } } }
+
+    private IEnumerable<StatisticksOrders> statisticksOrdersByMonthsAndYear_p;
+    public IEnumerable<StatisticksOrders> statisticksOrdersByMonthsAndYear { get { return statisticksOrdersByMonthsAndYear_p; } set { statisticksOrdersByMonthsAndYear_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("statisticksOrdersByMonthsAndYear")); } } }
 
     /// <summary>
     /// constractor
     /// </summary>
-    public ProductAndOrderList()
+    public ProductAndOrderList(BlApi.IBl? _bl)
     {
-        Simulator.Simulator.RegisterToAdmin(OnChangeOrder);
+        this._bl = _bl;
+        Simulator.Simulator.ActionForAdmin += OnChangeOrder;
         this.Closed += MainWindow_Closed;
         InitializeComponent();
         productList = _bl?.Product.GetList()!;
@@ -41,14 +48,22 @@ public partial class ProductAndOrderList : Window , INotifyPropertyChanged
         groups = from item in productList
                  group item by item.Category into x
                  select x;
-        
+        initStatisticks();
+
+        _bl!.Cart.Action += initStatisticks;
+
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
+    }
+
+    private void initStatisticks()
+    {
+        statisticksOrdersByMonthsAndYear = _bl!.Order.GetStatisticksOrdersByMonthsAndYear();
     }
 
     private void MainWindow_Closed(object sender, EventArgs e)
     {
         // Perform actions when the window is closed
-        Simulator.Simulator.DeRegisterToAdmin(OnChangeOrder);
+        Simulator.Simulator.ActionForAdmin -= OnChangeOrder;
     }
     /// <summary>
     /// category selector in the combo box

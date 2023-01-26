@@ -8,6 +8,7 @@ using DalApi;
 using System.Text.RegularExpressions;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using BO;
 
 namespace BlImplementation
 {
@@ -17,6 +18,22 @@ namespace BlImplementation
     internal class Cart : ICart
     {
         DalApi.IDal? _dal = DalApi.Factory.Get();
+
+        private event Action? action;
+
+        public event Action? Action
+        {
+            add => action += value;
+            remove => action += value;
+        }
+
+        private void invokeList(Delegate[] delegates, params object[] objects)
+        {
+            foreach (var @delegate in delegates)
+            {
+                @delegate.DynamicInvoke(objects);
+            }
+        }
 
         /// <summary>
         /// the function add product from the store to the basket shopping .
@@ -32,14 +49,14 @@ namespace BlImplementation
             {
                 cart.Items = new();
             }
-            bool prodactExistInCart = cart.Items.Exists(x => x?.ProductID == id);
+            OrderItem orderItem = cart.Items.FirstOrDefault(x => x?.ProductID == id)!;
             try
             {
                 DO.Product product = _dal?.Product.GetElement(element => element?.Id == id) ?? throw new BO.NullExeption("Dal");
 
                 if (product.Instock > 0)
                 {
-                    if (!prodactExistInCart)
+                    if (orderItem is null)
                     {
                         cart.Items.Add(new BO.OrderItem()
                         {
@@ -52,25 +69,11 @@ namespace BlImplementation
                     }
                     else
                     {
-                        IEnumerable<BO.OrderItem> orderItem = from item in cart.Items
-                                                              where (item.ProductID == id)
-                                                              let amount = item.Amount + 1
-                                                              let price = item.Price + item.TotalPrice
-                                                              select new BO.OrderItem()
-                                                              {
-                                                                  ID = item.ID,
-                                                                  Name = item.Name,
-                                                                  Amount = amount,
-                                                                  TotalPrice = price,
-                                                                  ProductID = item.ProductID,
-                                                                  Price = item.Price
-                                                              };
-                        cart.Items = orderItem.ToList()!;
+
+                        orderItem.TotalPrice += product.Price;
+                        orderItem.Amount++;
                     }
-                    if (cart.TotalPrice > 0)
-                        cart.TotalPrice += product.Price;
-                    else
-                        cart.TotalPrice = product.Price;
+                    cart.TotalPrice += product.Price;
                     return cart;
 
                 };
@@ -145,6 +148,11 @@ namespace BlImplementation
                     product.Instock -= item.Amount;
                     _dal.Product.Update(product);
                 }
+                if (action is not null)
+                {
+                    invokeList(action!.GetInvocationList());
+                }
+               
             }
             catch (DO.EntityNotFoundException ex)
             {

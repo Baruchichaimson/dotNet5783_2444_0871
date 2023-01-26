@@ -26,6 +26,7 @@ public partial class AddOrUpdateProductWindow : Window , INotifyPropertyChanged
     private BO.Product Product_p;
     Action changeList;
     public BO.Product productDetail { get { return Product_p; } set { Product_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("productdetail")); } } }
+
     /// <summary>
     /// Constructor for the AddOrUpdateProductWindow class.
     /// </summary>

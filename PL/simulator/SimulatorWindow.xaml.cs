@@ -105,9 +105,9 @@ public partial class SimulatorWindow : Window
     /// <param name="e">The event data.</param>
     private void worker_DoWork(object? sender, DoWorkEventArgs e)
     {
-        Simulator.Simulator.RegisterToUpdtes(UpdateProgress);
-        Simulator.Simulator.RegisterToStop(stopWorker);
-        Simulator.Simulator.RegisterToComplete(UpdateComplete);
+        Simulator.Simulator.UpdatePlWindow += UpdateProgress;
+        Simulator.Simulator.StopSimulator += stopWorker;
+        Simulator.Simulator.UpdateComplete += UpdateComplete;
         Simulator.Simulator.StartSimulation();
         while (!worker.CancellationPending)
         {
@@ -145,9 +145,9 @@ public partial class SimulatorWindow : Window
     /// <param name="e">The event data, which includes the results of the background operation.</param>
     private void worker_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
     {
-        Simulator.Simulator.DeRegisterToUpdtes(UpdateProgress);
-        Simulator.Simulator.DeRegisterToStop(stopWorker);
-        Simulator.Simulator.DeRegisterToComplete(UpdateComplete);
+        Simulator.Simulator.UpdatePlWindow -= UpdateProgress;
+        Simulator.Simulator.StopSimulator -= stopWorker;
+        Simulator.Simulator.UpdateComplete -= UpdateComplete;
         Close();
     }
     /// <summary>

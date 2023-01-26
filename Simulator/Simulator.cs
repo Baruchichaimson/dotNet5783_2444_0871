@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using BO;
+using System;
 using System.Reflection.Metadata.Ecma335;
 
 namespace Simulator;
@@ -10,10 +11,34 @@ public static class Simulator
     private static Random random = new Random(DateTime.Now.Millisecond);
     private volatile static bool run;
     private static BO.Order? order;
-    public static Action? actionForAdmin;
-    private static event Action stopSimulator;
-    private static event Action<Order, OrderStatus?, DateTime, int>? updatePlWindow;
-    private static event Action<OrderStatus?>? UpdateComplete;
+
+    private static Action? actionForAdmin;
+    public static event Action? ActionForAdmin
+    {
+        add => actionForAdmin += value;
+        remove => actionForAdmin += value;
+    }
+
+    private static Action stopSimulator;
+    public static event Action StopSimulator
+    {
+        add => stopSimulator += value;
+        remove => stopSimulator += value;
+    }
+
+    private static Action<Order, OrderStatus?, DateTime, int>? updatePlWindow;
+    public static event Action<Order, OrderStatus?, DateTime, int>? UpdatePlWindow
+    {  
+        add => updatePlWindow += value;
+        remove => updatePlWindow += value;
+    }
+    private static Action<OrderStatus?>? updateComplete;
+    public static event Action<OrderStatus?>? UpdateComplete
+    {
+        add => updateComplete += value;
+        remove => updateComplete += value;
+    }
+
     public static bool _isRunning = false;
 
     /// <summary>
@@ -43,12 +68,12 @@ public static class Simulator
                     if ( _bl?.Order.GetData((int)id!).ShipDate is null && _bl?.Order.GetData((int)id!).DeliveryrDate is null)
                     {
                         _bl?.Order.UpdateShippingDate(order.ID);
-                        UpdateComplete?.Invoke(OrderStatus.SHIPPED);
+                        updateComplete?.Invoke(OrderStatus.SHIPPED);
                     }
                     else if(_bl?.Order.GetData((int)id!).ShipDate is not null && _bl?.Order.GetData((int)id!).DeliveryrDate is null)
                     {
                         _bl?.Order.DeliveryUpdate(order!.ID);
-                        UpdateComplete?.Invoke(OrderStatus.PROVIDED);
+                        updateComplete?.Invoke(OrderStatus.PROVIDED);
                     }
                     actionForAdmin?.Invoke();
                 }
@@ -58,7 +83,6 @@ public static class Simulator
         }).Start();
 
     }
-
     /// <summary>
     /// Stops the simulation and invokes the stopSimulator event with the provided message.
     /// </summary>
@@ -74,30 +98,4 @@ public static class Simulator
         }).Start();
        
     }
-    /// <summary>
-    /// Registers or deregisters an action for the admin. The registered action will be invoked when called.
-    /// </summary>
-    /// <param name="action">The action to be registered or deregistered for the admin.</param>
-    public static void RegisterToAdmin(Action? action) => actionForAdmin += action;
-    public static void DeRegisterToAdmin(Action? action) => actionForAdmin -= action;
-    /// <summary>
-    /// Registers or deregisters an action for the admin. The registered action will be invoked when called.
-    /// </summary>
-    /// <param name="action">The action to be registered or deregistered for the admin.</param>
-    public static void RegisterToStop(Action action) => stopSimulator += action;
-    public static void DeRegisterToStop(Action action) => stopSimulator -= action;
-    /// <summary>
-    /// Registers or deregisters an action for the admin. The registered action will be invoked when called.
-    /// </summary>
-    /// <param name="action">The action to be registered or deregistered for the admin.</param>
-    public static void RegisterToComplete(Action<OrderStatus?> action) => UpdateComplete += action;
-    public static void DeRegisterToComplete(Action<OrderStatus?> action) => UpdateComplete -= action;
-    /// <summary>
-    /// Registers or deregisters an action for the admin. The registered action will be invoked when called.
-    /// </summary>
-    /// <param name="action">The action to be registered or deregistered for the admin.</param>
-    public static void RegisterToUpdtes(Action<Order, OrderStatus?, DateTime, int> action) => updatePlWindow += action;
-    public static void DeRegisterToUpdtes(Action<Order, OrderStatus?, DateTime, int> action) => updatePlWindow -= action;
-
-
 }

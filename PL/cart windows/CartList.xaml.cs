@@ -22,7 +22,7 @@ namespace PL.cart_main_windows
     /// <summary>
     /// class to input in him more function we need on the list we have in bo layer.
     /// </summary>
-    public class OrderItemViewModel : INotifyPropertyChanged
+    public class OrderItemActions : INotifyPropertyChanged
     {
         private Cart cart;
         Action ListChanged;
@@ -42,13 +42,13 @@ namespace PL.cart_main_windows
         public ICommand IncreaseAmountCommand { get; set; }
         public ICommand DecreaseAmountCommand { get; set; }
         /// <summary>
-        /// Constructor for the OrderItemViewModel class.
+        /// Constructor for the OrderItemActions class.
         /// </summary>
         /// <param name="cart">An object of type Cart that represents the cart.</param>
         /// <param name="bl">An optional parameter of type IBl that represents the business logic object.</param>
         /// <param name="action">A delegate that represents an action to be taken when the list changes.</param>
         /// <param name="deleteProduct">A delegate that represents an action to be taken when a product is deleted.</param>
-        public OrderItemViewModel(Cart cart, IBl? bl, Action action, Action deleteProduct)
+        public OrderItemActions(Cart cart, IBl? bl, Action action, Action deleteProduct)
         {
             IncreaseAmountCommand = new RelayCommand(IncreaseAmount);
             DecreaseAmountCommand = new RelayCommand(DecreaseAmount);
@@ -95,6 +95,7 @@ namespace PL.cart_main_windows
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
     /// <summary>
     /// Interaction logic for CartList.xaml
     /// </summary>
@@ -105,8 +106,9 @@ namespace PL.cart_main_windows
         Action ListChanged;
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        private IEnumerable<OrderItemViewModel?>? cartItems_p;
-        public IEnumerable<OrderItemViewModel?>? CartItems { get => cartItems_p; set { cartItems_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("CartItems")); } } }
+        private IEnumerable<OrderItemActions?>? cartItems_p;
+        public IEnumerable<OrderItemActions?>? CartItems { get => cartItems_p; set { cartItems_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("CartItems")); } } }
+
         /// <summary>
         /// Constructor for the CartList class.
         /// </summary>
@@ -121,7 +123,7 @@ namespace PL.cart_main_windows
             cart = newCart;
             ListChanged = action;
             CartItems = from item in cart.Items 
-                        select new OrderItemViewModel(cart,_bl,ListChanged, DeleteProduct) { Item = item };
+                        select new OrderItemActions(cart,_bl,ListChanged, DeleteProduct) { Item = item };
         }
         /// <summary>
         /// function that update the old list with the new list.
@@ -129,7 +131,7 @@ namespace PL.cart_main_windows
         private void DeleteProduct()
         {
             CartItems = from item in cart.Items!
-                        select new OrderItemViewModel(cart, _bl, ListChanged, DeleteProduct) { Item = item };
+                        select new OrderItemActions(cart, _bl, ListChanged, DeleteProduct) { Item = item };
         }
         ///<summary>
         /// Event handler for the order now button. Opens the Order Confirmation window and closes the current window.

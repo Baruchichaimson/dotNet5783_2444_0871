@@ -20,7 +20,7 @@ namespace PL.new_order_window;
 /// </summary>
 public partial class NewOrder : Window , INotifyPropertyChanged 
 {
-    private BlApi.IBl? _bl = BlApi.Factory.Get();
+    private BlApi.IBl? _bl;
     private BO.Cart cart;
     private CartList? cartWindow;
     private IEnumerable<IGrouping<BO.CoffeeShop?, ProductItem?>>? groups_p;
@@ -34,10 +34,10 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     /// constractor to window with all item in store.
     /// and make alist with groups
     /// </summary>
-    public NewOrder()
+    public NewOrder(BlApi.IBl? _bl)
     {
         InitializeComponent();
-
+        this._bl = _bl;
         cart = new BO.Cart();
         productItems = _bl?.Product.GetListProductItem(cart)!;
 
@@ -57,7 +57,7 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     /// </summary>
     private void OnChange()
     {
-        productItems = productItems?.Select(x => x);
+        productItems = _bl?.Product.GetListProductItem(cart)!;
     }
     /// <summary>
     /// Activating a group linq in the combo box

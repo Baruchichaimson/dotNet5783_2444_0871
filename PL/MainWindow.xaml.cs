@@ -43,7 +43,7 @@ public partial class MainWindow : Window
         }
         else
         {
-            new ProductAndOrderList().Show();
+            new ProductAndOrderList(_bl).Show();
         }
     }
     private void ShowNewOrderButton_Click(object sender, RoutedEventArgs e)
@@ -56,7 +56,7 @@ public partial class MainWindow : Window
         }
         else
         {
-            new clientwindow().Show();
+            new clientwindow(_bl).Show();
         }
     }
 

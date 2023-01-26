@@ -12,8 +12,14 @@ namespace PL.client_window;
 /// </summary>
 public partial class clientwindow : Window
 {
-    public clientwindow()
+    /// <summary>
+    /// access to the logical layyer.
+    /// </summary>
+    private BlApi.IBl? _bl;
+
+    public clientwindow(BlApi.IBl? _bl)
     {
+        this._bl = _bl;
         InitializeComponent();
         WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
     }
@@ -32,7 +38,7 @@ public partial class clientwindow : Window
         }
         else
         {
-            new NewOrder().Show();
+            new NewOrder(_bl).Show();
         }
     }
     /// <summary>

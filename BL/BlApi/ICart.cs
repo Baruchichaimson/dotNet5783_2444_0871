@@ -34,5 +34,7 @@ namespace BlApi
         /// </summary>
         /// <param name="cart"> We receive a cart  initialized shopping basket entity </param>
         public void OrderConfirmation(Cart cart);
+
+        event Action? Action;
     }
 }
