@@ -41,7 +41,7 @@ public partial class NewOrder : Window , INotifyPropertyChanged
                  group item by item.Category into x
                  select x;
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
-        this.WindowStyle = WindowStyle.None;
+       // this.WindowStyle = WindowStyle.None;
         WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
 
     }
@@ -108,13 +108,5 @@ public partial class NewOrder : Window , INotifyPropertyChanged
            
         }
     }
-    /// <summary>
-    /// function to the button exist to close the window replace the button x that we have in all window.
-    /// </summary>
-    /// <param name="sender">The object that raised the event.</param>
-    /// <param name="e">Event arguments.</param>
-    private void buttonExit_Click(object sender, RoutedEventArgs e)
-    {
-        Close();
-    }
+   
 }

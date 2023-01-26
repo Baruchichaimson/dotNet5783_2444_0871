@@ -23,10 +23,6 @@ namespace BO
         /// List of strings with tracking dates by progress
         /// </summary>
         public List<string?>? orderDetails { get; set; }
-        public override string ToString() => $@"
-        ID: {ID}
-        Status: {Status}
-        order Details:
-        {string.Join(Environment.NewLine, orderDetails)}";
+        public override string ToString() => $@"ID: {ID}{Environment.NewLine}Status: {Status}{Environment.NewLine}order Details:{Environment.NewLine}{string.Join(Environment.NewLine, orderDetails)}";
     }
 }

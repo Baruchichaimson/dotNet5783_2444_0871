@@ -19,6 +19,13 @@ public partial class SimulatorWindow : Window
     private int precent;
     private Stopwatch stopwatch;
     private BackgroundWorker worker;
+
+    public Visibility stopButton
+    {
+        get { return (Visibility)GetValue(StopButtonProperty); }
+        set { SetValue(StopButtonProperty, value); }
+    }
+   
     /// <summary>
     /// Defines a public string property 'MyClock'
     /// with a getter and setter for accessing and updating 
@@ -52,6 +59,8 @@ public partial class SimulatorWindow : Window
     /// <summary>
     /// Using a DependencyProperty as the backing store for MyProccessDetails.  This enables animation, styling, binding, etc...
     /// </summary>
+    public static readonly DependencyProperty StopButtonProperty =
+       DependencyProperty.Register("stopButton", typeof(Visibility), typeof(SimulatorWindow));
     public static readonly DependencyProperty MyProccessDetailsProperty =
         DependencyProperty.Register("MyProccessDetails", typeof(OrderDetails), typeof(SimulatorWindow));
     public static readonly DependencyProperty MyClockProperty =
@@ -72,9 +81,9 @@ public partial class SimulatorWindow : Window
         stopwatch = new Stopwatch();
         stopwatch.Start();
         MyClock = stopwatch.Elapsed.ToString().Substring(0, 8);
-        this.WindowStyle = WindowStyle.None;
+        WindowStyle = WindowStyle.None;
         MyProgressBarValue = 0;
-
+        stopButton = Visibility.Visible;
         worker = new BackgroundWorker()
         {
             WorkerReportsProgress = true,
@@ -102,7 +111,7 @@ public partial class SimulatorWindow : Window
         Simulator.Simulator.StartSimulation();
         while (!worker.CancellationPending)
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(10);
             worker.ReportProgress((int)Progress.Clock);
         }
     }
@@ -119,7 +128,7 @@ public partial class SimulatorWindow : Window
         if (progress == Progress.Clock)
         {
             MyClock = stopwatch.Elapsed.ToString().Substring(0, 8);
-            MyProgressBarValue = precent++ * 100 / workTime;
+            MyProgressBarValue = precent++  / workTime;
         }
         else if (progress == Progress.Update)
         {
@@ -145,10 +154,10 @@ public partial class SimulatorWindow : Window
     /// Stops the background worker and shows a message box with the provided message.
     /// </summary>
     /// <param name="message">The message to be displayed in the message box.</param>
-    private void stopWorker(string message)
+    private void stopWorker()
     {
         worker.CancelAsync();
-        MessageBox.Show(message);
+        MessageBox.Show("The simulator has stopped!");
     }
     /// <summary>
     /// Updates the progress by creating a new OrderDetails object 
@@ -187,8 +196,9 @@ public partial class SimulatorWindow : Window
     /// <param name="sender"> The object that raised the event.</param>
     /// <param name="e">The event data.</param>
     private void Stop_Click(object sender, RoutedEventArgs e)
-    { 
-        Simulator.Simulator.StopSimulation("Simulation stop");
+    {
+        stopButton = Visibility.Hidden;
+        Simulator.Simulator.StopSimulation();
     }
     
 }

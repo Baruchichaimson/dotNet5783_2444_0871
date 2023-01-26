@@ -11,7 +11,7 @@ public static class Simulator
     private volatile static bool run;
     private static BO.Order? order;
     public static Action? actionForAdmin;
-    private static event Action<string>? stopSimulator;
+    private static event Action stopSimulator;
     private static event Action<Order, OrderStatus?, DateTime, int>? updatePlWindow;
     private static event Action<OrderStatus?>? UpdateComplete;
     public static bool _isRunning = false;
@@ -52,8 +52,6 @@ public static class Simulator
                     }
                     actionForAdmin?.Invoke();
                 }
-                else
-                    StopSimulation("ther is no more old order");
                 Thread.Sleep(1000);
             }
             _isRunning = false;
@@ -65,13 +63,13 @@ public static class Simulator
     /// Stops the simulation and invokes the stopSimulator event with the provided message.
     /// </summary>
     /// <param name="messeage">The message to be passed to the stopSimulator event upon invocation.</param>
-    public static void StopSimulation(string messeage)
+    public static void StopSimulation()
     {
         run = false;
         new Thread(() =>
         {
             while (_isRunning) { };
-            stopSimulator?.Invoke(messeage);
+            stopSimulator?.Invoke();
 
         }).Start();
        
@@ -86,8 +84,8 @@ public static class Simulator
     /// Registers or deregisters an action for the admin. The registered action will be invoked when called.
     /// </summary>
     /// <param name="action">The action to be registered or deregistered for the admin.</param>
-    public static void RegisterToStop(Action<string> action) => stopSimulator += action;
-    public static void DeRegisterToStop(Action<string> action) => stopSimulator -= action;
+    public static void RegisterToStop(Action action) => stopSimulator += action;
+    public static void DeRegisterToStop(Action action) => stopSimulator -= action;
     /// <summary>
     /// Registers or deregisters an action for the admin. The registered action will be invoked when called.
     /// </summary>
