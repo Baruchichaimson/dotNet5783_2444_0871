@@ -1,21 +1,12 @@
 ﻿using BlApi;
 using BO;
-using PL.order_main_windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.cart_main_windows
 {
@@ -26,7 +17,7 @@ namespace PL.cart_main_windows
     {
         private Cart cart;
         Action ListChanged;
-        Action DeleteProduct;
+        Action? DeleteProduct;
         private BlApi.IBl? _bl;
         private BO.OrderItem _item;
         public BO.OrderItem Item
@@ -48,7 +39,7 @@ namespace PL.cart_main_windows
         /// <param name="bl">An optional parameter of type IBl that represents the business logic object.</param>
         /// <param name="action">A delegate that represents an action to be taken when the list changes.</param>
         /// <param name="deleteProduct">A delegate that represents an action to be taken when a product is deleted.</param>
-        public OrderItemActions(Cart cart, IBl? bl, Action action, Action deleteProduct)
+        public OrderItemActions(Cart cart, IBl? bl, Action action, Action? deleteProduct)
         {
             IncreaseAmountCommand = new RelayCommand(IncreaseAmount);
             DecreaseAmountCommand = new RelayCommand(DecreaseAmount);
@@ -57,6 +48,12 @@ namespace PL.cart_main_windows
             ListChanged = action;
             DeleteProduct = deleteProduct;  
         }
+
+        public OrderItemActions(Cart cart, Action onChange, object value)
+        {
+            this.cart = cart;
+        }
+
         /// <summary>
         /// function to increase the amount with property change.
         /// </summary>
@@ -80,7 +77,7 @@ namespace PL.cart_main_windows
                 _bl?.Cart.UpdateProductAmount(cart, Item.ProductID, Item.Amount);
                 ListChanged();
                 OnPropertyChanged("Item");
-                if (Item.Amount == 0)
+                if (Item.Amount == 0 && DeleteProduct is not null)
                     DeleteProduct();
             }
         }
@@ -109,6 +106,9 @@ namespace PL.cart_main_windows
         private IEnumerable<OrderItemActions?>? cartItems_p;
         public IEnumerable<OrderItemActions?>? CartItems { get => cartItems_p; set { cartItems_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("CartItems")); } } }
 
+        private double totalPrice_p;
+        public double totalPrice { get => totalPrice_p; set { totalPrice_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("totalPrice")); } } }
+
         /// <summary>
         /// Constructor for the CartList class.
         /// </summary>
@@ -118,20 +118,42 @@ namespace PL.cart_main_windows
         public CartList(BlApi.IBl? bl , BO.Cart newCart ,Action action)
         {
             InitializeComponent();
-            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             _bl = bl;
             cart = newCart;
+            totalPrice = cart.TotalPrice;
             ListChanged = action;
-            CartItems = from item in cart.Items 
-                        select new OrderItemActions(cart,_bl,ListChanged, DeleteProduct) { Item = item };
+            CartItems = from item in cart.Items
+                        select new OrderItemActions(cart, _bl, productChange, DeleteProduct)
+                        {
+                            Item = new OrderItem
+                            {
+                                ID = item.ID,
+                                Name = item.Name,
+                                Amount = item.Amount,
+                                Price = item.Price,
+                                ProductID = item.ProductID,
+                                TotalPrice = item.TotalPrice
+                            }
+                        };
         }
         /// <summary>
         /// function that update the old list with the new list.
         /// </summary>
         private void DeleteProduct()
         {
-            CartItems = from item in cart.Items!
-                        select new OrderItemActions(cart, _bl, ListChanged, DeleteProduct) { Item = item };
+            CartItems = from item in cart.Items
+                        select new OrderItemActions(cart, _bl, productChange, DeleteProduct)
+                        {
+                            Item = new OrderItem
+                            {
+                                ID = item.ID,
+                                Name = item.Name,
+                                Amount = item.Amount,
+                                Price = item.Price,
+                                ProductID = item.ProductID,
+                                TotalPrice = item.TotalPrice
+                            }
+                        };
         }
         ///<summary>
         /// Event handler for the order now button. Opens the Order Confirmation window and closes the current window.
@@ -143,6 +165,11 @@ namespace PL.cart_main_windows
             var newOrderWindow = new Order_Confirmation(_bl, cart);
             newOrderWindow.ShowDialog();
             Close();
+        }
+        private void productChange()
+        {
+            totalPrice = cart.TotalPrice;
+            ListChanged();
         }
     }
 }

@@ -8,10 +8,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Controls.Primitives;
-using BlApi;
-using System.Runtime.CompilerServices;
-using System.Windows.Data;
 
 namespace PL.new_order_window;
 
@@ -22,6 +18,7 @@ public partial class NewOrder : Window , INotifyPropertyChanged
 {
     private BlApi.IBl? _bl;
     private BO.Cart cart;
+    private OrderItemActions itemActions;
     private CartList? cartWindow;
     private IEnumerable<IGrouping<BO.CoffeeShop?, ProductItem?>>? groups_p;
     public IEnumerable<IGrouping<BO.CoffeeShop?, ProductItem?>> groups { get { return groups_p; } set { groups_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("groups")); } } }
@@ -46,9 +43,6 @@ public partial class NewOrder : Window , INotifyPropertyChanged
                  select x;
 
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
-       // this.WindowStyle = WindowStyle.None;
-        WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
-
     }
     /// <summary>
     /// function with deleget to  that is transferred in 
@@ -94,8 +88,7 @@ public partial class NewOrder : Window , INotifyPropertyChanged
             return;
         }
         cartWindow = new CartList(_bl, cart, OnChange);
-      // myUserControl.Visibility = Visibility.Visible;
-      cartWindow.ShowDialog();     
+        cartWindow.ShowDialog();     
     }
     /// <summary>
     /// function to the mouse double click on the list that open the details on the item.

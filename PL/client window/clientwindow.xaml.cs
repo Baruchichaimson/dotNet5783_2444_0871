@@ -37,9 +37,7 @@ public partial class clientwindow : Window
             window.Focus();
         }
         else
-        {
             new NewOrder(_bl).Show();
-        }
     }
     /// <summary>
     /// function to the button the open to me the window to order tracking.

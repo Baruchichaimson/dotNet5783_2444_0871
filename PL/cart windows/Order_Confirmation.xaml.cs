@@ -23,7 +23,6 @@ public partial class Order_Confirmation : Window, INotifyPropertyChanged
     public Order_Confirmation(BlApi.IBl? bl, BO.Cart newCart)
     {
         InitializeComponent();
-        WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
         _bl = bl;
         cartDetails = newCart;
     }

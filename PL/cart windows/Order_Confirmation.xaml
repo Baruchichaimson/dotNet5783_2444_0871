@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:PL.cart_main_windows"
         mc:Ignorable="d"
         Icon="\images\icon.png"
+        WindowStartupLocation="CenterScreen"
         Title="Order_Confirmation" Height="350" Width="500">
     <Grid>
         <Grid.Background>

@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:PL.new_order_window"
         xmlns:local1="clr-namespace:PL.order_main_windows"
         Icon="\images\icon.png"
+        WindowStartupLocation="CenterScreen"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         mc:Ignorable="d"
         Title="NewOrder" Height="650" Width="850">
