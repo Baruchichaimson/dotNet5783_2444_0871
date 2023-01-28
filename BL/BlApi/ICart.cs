@@ -1,5 +1,4 @@
-﻿using BO;
-
+﻿
 namespace BlApi;
 
 /// <summary>
@@ -15,7 +14,7 @@ public interface ICart
     /// <param name="cart"> We receive a cart  initialized shopping basket entity </param>
     /// <param name="id">the id is for the user that want to add id specific </param>
     /// <returns></returns>
-    public BO.Cart AddProduct(Cart cart, int id);
+    public BO.Cart AddProduct(BO.Cart cart, int id);
     /// <summary>
     /// this function is for update which order item we have in the basket shopping
     /// </summary>
@@ -23,12 +22,11 @@ public interface ICart
     /// <param name="id"> the id is for the user that want to add id specific </param>
     /// <param name="newAmount"> the user put the amount that is want to update in the basket shopping</param>
     /// <returns></returns>
-    public BO.Cart UpdateProductAmount(Cart cart, int id, int newAmount);
+    public BO.Cart UpdateProductAmount(BO.Cart cart, int id, int newAmount);
     /// <summary>
     /// the function is to confirmation the basket shopping after every thing is correct and the the basket not empty or somthing.
     /// </summary>
     /// <param name="cart"> We receive a cart  initialized shopping basket entity </param>
-    public void OrderConfirmation(Cart cart);
-
+    public void OrderConfirmation(BO.Cart cart);
     event Action? Action;
 }

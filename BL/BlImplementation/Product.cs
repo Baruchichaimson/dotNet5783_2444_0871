@@ -1,214 +1,199 @@
 ﻿using BlApi;
-using BO;
-using Google.Api.Ads.AdWords.v201809;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Xml.Linq;
 
-namespace BlImplementation
+namespace BlImplementation;
+
+/// <summary>
+/// class for product.
+/// </summary>
+internal class Product : IProduct
 {
+    DalApi.IDal? _dal = DalApi.Factory.Get();
     /// <summary>
-    /// class for product.
+    /// A function that converts a list of products from the data 
+    /// layer to a list of products of the logical layer
     /// </summary>
-    internal class Product : IProduct
+    /// <returns></returns>
+    public IEnumerable<BO.ProductForList?>? GetList(Func<BO.ProductForList?, bool>? myFunc = null)
     {
-        DalApi.IDal? _dal = DalApi.Factory.Get();
-        private bool exsit(int instock)
-        {
-            if (instock > 0)
-                return true;
-            return false;
-        }
-        /// <summary>
-        /// A function that converts a list of products from the data 
-        /// layer to a list of products of the logical layer
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<BO.ProductForList?>? GetList(Func<BO.ProductForList?, bool>? myFunc = null)
-        {
-            IEnumerable<BO.ProductForList?>? newCollection = _dal?.Product.List()?.Select(item => {
-                return new BO.ProductForList
-                {
-                    ID = (int)item?.Id!,
-                    Name = item?.Name!,
-                    Price = (double)item?.Price!,
-                    Category = (BO.CoffeeShop?)item?.Categoryname
-                };
-            }) ?? throw new BO.NullExeption("product list");
-                               
-            return myFunc is null ? newCollection.Select(p => p) : newCollection?.Where(myFunc).Select(p => p);
-        }
-        public IEnumerable<BO.ProductItem?>? GetListProductItem(BO.Cart cart, Func<BO.ProductItem?, bool>? myFunc = null)
-        { 
-            var products = _dal?.Product.List();
-            bool flag = myFunc is null;
-            return (from item in products
-                   select GetData((int)item?.Id!, cart)).Where(element => flag ? flag : myFunc!(element));
-        }
-        /// <summary>
-        /// A function that returns a product by ID number
-        /// </summary>
-        /// <param name="id">product id</param>
-        /// <returns></returns>
-        /// <exception cref="EntityNotFoundException"> throw an Exception when the product was not found in the database</exception>
-        /// <exception cref="IdNotExsitException"> throw an Exception when the id is invalid</exception>
-        public BO.Product GetData(int id)
-        {
-            if (id > 0)
+        IEnumerable<BO.ProductForList?>? newCollection = _dal?.Product.List()?.Select(item => {
+            return new BO.ProductForList
             {
-                try
-                {
-                    DO.Product product = _dal?.Product.Get(id) ?? throw new BO.NullExeption("Dal");
-                    BO.Product newProduct = new()
-                    {
-                        ID = product.Id,
-                        Name = product.Name,
-                        Price = product.Price,
-                        InStock = product.Instock,
-                        Category = (BO.CoffeeShop?)product.Categoryname
-                    };
-                    return newProduct;
-                }
-                catch (DO.EntityNotFoundException ex)
-                {
-                    throw new BO.EntityNotFoundException(ex);
-                }
+                ID = (int)item?.Id!,
+                Name = item?.Name!,
+                Price = (double)item?.Price!,
+                Category = (BO.CoffeeShop?)item?.Categoryname
             };
-            throw new BO.IdNotExsitException("the id is not valid");
-        }
-        /// <summary>
-        ///  A function that returns a product by ID number and checks whether and how much is in the cart
-        /// </summary>
-        /// <param name="id">product id</param>
-        /// <param name="cart"> costumer cart</param>
-        /// <returns></returns>
-        /// <exception cref="EntityNotFoundException"> throw an Exception when the product was not found in the database</exception>
-        /// <exception cref="IdNotExsitException"> throw an Exception when the id is invalid</exception>
-        public BO.ProductItem GetData(int id, BO.Cart cart)
+        }) ?? throw new BO.NullExeption("product list");
+                           
+        return myFunc is null ? newCollection.Select(p => p) : newCollection?.Where(myFunc).Select(p => p);
+    }
+    public IEnumerable<BO.ProductItem?>? GetListProductItem(BO.Cart cart, Func<BO.ProductItem?, bool>? myFunc = null)
+    { 
+        var products = _dal?.Product.List();
+        bool flag = myFunc is null;
+        return (from item in products
+               select GetData((int)item?.Id!, cart)).Where(element => flag ? flag : myFunc!(element));
+    }
+    /// <summary>
+    /// A function that returns a product by ID number
+    /// </summary>
+    /// <param name="id">product id</param>
+    /// <returns></returns>
+    /// <exception cref="EntityNotFoundException"> throw an Exception when the product was not found in the database</exception>
+    /// <exception cref="IdNotExsitException"> throw an Exception when the id is invalid</exception>
+    public BO.Product GetData(int id)
+    {
+        if (id > 0)
         {
             try
             {
-                if (id > 0)
+                DO.Product product = _dal?.Product.Get(id) ?? throw new BO.NullExeption("Dal");
+                BO.Product newProduct = new()
                 {
-                    DO.Product product = _dal?.Product.Get(id) ?? throw new BO.NullExeption("Dal");
-                    BO.ProductItem newProductItem = new()
-                    {
-                        ID = product.Id,
-                        Name = product.Name,
-                        Price = product.Price,
-                        InStock = product.Instock > 0,
-                        Category = (BO.CoffeeShop?)product.Categoryname
-                    };
-                    if (cart.Items is not null)
-                    {
-                        BO.OrderItem? orderItem = cart.Items.Find(orderItem => orderItem?.ProductID == id);
-                        if (orderItem is not null)
-                        {
-                            newProductItem.Amount = orderItem.Amount;
-                        } 
-                    }
-                    return newProductItem;
-                }
+                    ID = product.Id,
+                    Name = product.Name,
+                    Price = product.Price,
+                    InStock = product.Instock,
+                    Category = (BO.CoffeeShop?)product.Categoryname
+                };
+                return newProduct;
             }
             catch (DO.EntityNotFoundException ex)
             {
                 throw new BO.EntityNotFoundException(ex);
             }
-            catch (DO.NullExeption ex)
+        };
+        throw new BO.IdNotExsitException("the id is not valid");
+    }
+    /// <summary>
+    ///  A function that returns a product by ID number and checks whether and how much is in the cart
+    /// </summary>
+    /// <param name="id">product id</param>
+    /// <param name="cart"> costumer cart</param>
+    /// <returns></returns>
+    /// <exception cref="EntityNotFoundException"> throw an Exception when the product was not found in the database</exception>
+    /// <exception cref="IdNotExsitException"> throw an Exception when the id is invalid</exception>
+    public BO.ProductItem GetData(int id, BO.Cart cart)
+    {
+        try
+        {
+            if (id > 0)
             {
-                throw new BO.NullExeptionForDO(ex);
-            }
-            throw new BO.IdNotExsitException("the id is negtive");
-        }
-        /// <summary>
-        /// A function to add a product to the database
-        /// </summary>
-        /// <param name="product">A logical entity of a product</param>
-        /// <exception cref="EntityDetailsWrongException">Incorrect product details</exception>
-        /// <exception cref="AllreadyExistException">Product id already exists</exception>
-        public void Add(BO.Product product)
-        {   
-            if (product.ID >= 100000 && product.ID < 1000000 && product.Name is not null && product.Price > 0 && product.InStock > 0)
-            {
-                DO.Product newProduct = new()
+                DO.Product product = _dal?.Product.Get(id) ?? throw new BO.NullExeption("Dal");
+                BO.ProductItem newProductItem = new()
                 {
-                    Id = product.ID,
+                    ID = product.Id,
                     Name = product.Name,
                     Price = product.Price,
-                    Instock = product.InStock,
-                    Categoryname = (DO.CoffeeShop?)product.Category
+                    InStock = product.Instock > 0,
+                    Category = (BO.CoffeeShop?)product.Categoryname
                 };
-                try
+                if (cart.Items is not null)
                 {
-                    _dal?.Product.Add(newProduct);
+                    BO.OrderItem? orderItem = cart.Items.Find(orderItem => orderItem?.ProductID == id);
+                    if (orderItem is not null)
+                    {
+                        newProductItem.Amount = orderItem.Amount;
+                    } 
                 }
-                catch(DO.AllreadyExistException ex)
-                {
-                    throw new BO.AllreadyExistException(ex);
-                }
-                catch (DO.EntityNotFoundException ex)
-                {
-                    throw new BO.EntityNotFoundException(ex);
-                }
+                return newProductItem;
             }
-            else
-                throw new BO.EntityDetailsWrongException("The product data is incorrect");
         }
-        /// <summary>
-        ///  A function to deleting a product from the database
-        /// </summary>
-        /// <param name="id">product id</param>
-        /// <exception cref="EntityNotFoundException"> throw an Exception when the product was not found in the database</exception>
-        /// <exception cref="ProductIsOnOrderException">It is not possible to delete a product that exists in one of the orders</exception>
-        public void Delete(int id)
+        catch (DO.EntityNotFoundException ex)
         {
-            if (!_dal?.OrderItem.List()?.Any(x => x?.ProductID == id) ?? throw new BO.NullExeption("Dal") ?? throw new BO.NullExeption("order item list"))
-            {
-                try
-                {
-                    _dal?.Product.Delete(id);
-                }
-                catch (DO.EntityNotFoundException ex)
-                {
-                    throw new BO.EntityNotFoundException(ex);
-                }
-            }
-            else
-                throw new BO.ProductIsOnOrderException("product exsit in order");
+            throw new BO.EntityNotFoundException(ex);
         }
-        /// <summary>
-        /// Function to update product details
-        /// </summary>
-        /// <param name="product">Receives a logic layer product</param>
-        /// <exception cref="EntityNotFoundException"> throw an Exception when the product was not found in the database</exception>
-        /// <exception cref="AllreadyExistException">Product id already exists</exception>
-        public void Update(BO.Product product)
+        catch (DO.NullExeption ex)
         {
-            if (product.ID > 0 && product.Name is not null && product.Price > 0 && product.InStock > 0)
-            {
-                DO.Product newProduct = new()
-                {
-                    Id = product.ID,
-                    Name = product.Name,
-                    Price = product.Price,
-                    Instock = product.InStock,
-                    Categoryname = (DO.CoffeeShop?)product.Category
-                };
-                try
-                {
-                    _dal?.Product.Update(newProduct);
-                }
-                catch (DO.EntityNotFoundException ex)
-                {
-                    throw new BO.EntityNotFoundException(ex);
-                }
-            }
-            else
-                throw new BO.EntityDetailsWrongException("product not exsit");
+            throw new BO.NullExeptionForDO(ex);
         }
+        throw new BO.IdNotExsitException("the id is negtive");
+    }
+    /// <summary>
+    /// A function to add a product to the database
+    /// </summary>
+    /// <param name="product">A logical entity of a product</param>
+    /// <exception cref="EntityDetailsWrongException">Incorrect product details</exception>
+    /// <exception cref="AllreadyExistException">Product id already exists</exception>
+    public void Add(BO.Product product)
+    {   
+        if (product.ID >= 100000 && product.ID < 1000000 && product.Name is not null && product.Price > 0 && product.InStock > 0)
+        {
+            DO.Product newProduct = new()
+            {
+                Id = product.ID,
+                Name = product.Name,
+                Price = product.Price,
+                Instock = product.InStock,
+                Categoryname = (DO.CoffeeShop?)product.Category
+            };
+            try
+            {
+                _dal?.Product.Add(newProduct);
+            }
+            catch(DO.AllreadyExistException ex)
+            {
+                throw new BO.AllreadyExistException(ex);
+            }
+            catch (DO.EntityNotFoundException ex)
+            {
+                throw new BO.EntityNotFoundException(ex);
+            }
+        }
+        else
+            throw new BO.EntityDetailsWrongException("The product data is incorrect");
+    }
+    /// <summary>
+    ///  A function to deleting a product from the database
+    /// </summary>
+    /// <param name="id">product id</param>
+    /// <exception cref="EntityNotFoundException"> throw an Exception when the product was not found in the database</exception>
+    /// <exception cref="ProductIsOnOrderException">It is not possible to delete a product that exists in one of the orders</exception>
+    public void Delete(int id)
+    {
+        if (!_dal?.OrderItem.List()?.Any(x => x?.ProductID == id) ?? throw new BO.NullExeption("Dal") ?? throw new BO.NullExeption("order item list"))
+        {
+            try
+            {
+                _dal?.Product.Delete(id);
+            }
+            catch (DO.EntityNotFoundException ex)
+            {
+                throw new BO.EntityNotFoundException(ex);
+            }
+        }
+        else
+            throw new BO.ProductIsOnOrderException("product exsit in order");
+    }
+    /// <summary>
+    /// Function to update product details
+    /// </summary>
+    /// <param name="product">Receives a logic layer product</param>
+    /// <exception cref="EntityNotFoundException"> throw an Exception when the product was not found in the database</exception>
+    /// <exception cref="AllreadyExistException">Product id already exists</exception>
+    public void Update(BO.Product product)
+    {
+        if (product.ID > 0 && product.Name is not null && product.Price > 0 && product.InStock > 0)
+        {
+            DO.Product newProduct = new()
+            {
+                Id = product.ID,
+                Name = product.Name,
+                Price = product.Price,
+                Instock = product.InStock,
+                Categoryname = (DO.CoffeeShop?)product.Category
+            };
+            try
+            {
+                _dal?.Product.Update(newProduct);
+            }
+            catch (DO.EntityNotFoundException ex)
+            {
+                throw new BO.EntityNotFoundException(ex);
+            }
+        }
+        else
+            throw new BO.EntityDetailsWrongException("product not exsit");
     }
 }
 

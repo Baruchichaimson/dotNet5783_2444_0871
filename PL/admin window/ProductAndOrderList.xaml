@@ -116,10 +116,10 @@
                     </ListView.Background>
                     <ListView.View>
                         <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
-                            <GridViewColumn Header="id" DisplayMemberBinding="{Binding ID}"/>
-                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
-                            <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}"/>
-                            <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}"/>
+                            <GridViewColumn Header="id" DisplayMemberBinding="{Binding ID}" Width="150"/>
+                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="150"/>
+                            <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}" Width="150"/>
+                            <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}" Width="150"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -200,11 +200,11 @@
                     </ListView.Background>
                     <ListView.View>
                         <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
-                            <GridViewColumn Header="id" DisplayMemberBinding="{Binding ID}"/>
-                            <GridViewColumn Header="Customer Name" DisplayMemberBinding="{Binding CustomerName}"/>
-                            <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}"/>
-                            <GridViewColumn Header="Amount Of Items" DisplayMemberBinding="{Binding AmountOfItems}"/>
-                            <GridViewColumn Header="Total Price" DisplayMemberBinding="{Binding TotalPrice}"/>
+                            <GridViewColumn Header="id" DisplayMemberBinding="{Binding ID}" Width="150"/>
+                            <GridViewColumn Header="Customer Name" DisplayMemberBinding="{Binding CustomerName}" Width="150"/>
+                            <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" Width="150"/>
+                            <GridViewColumn Header="Amount Of Items" DisplayMemberBinding="{Binding AmountOfItems}" Width="150"/>
+                            <GridViewColumn Header="Total Price" DisplayMemberBinding="{Binding TotalPrice}" Width="150"/>
                         </GridView>
                     </ListView.View>
                 </ListView>

@@ -2,14 +2,12 @@
 using System.Globalization;
 
 namespace BlImplementation;
-
 /// <summary>
 /// class for Order Management
 /// </summary>
 internal class Order : IOrder
 {
     private DalApi.IDal? _dal = DalApi.Factory.Get();
-    private object _locker = new object();
     /// <summary>
     /// A helper function that returns an order status
     /// </summary>
@@ -163,7 +161,7 @@ internal class Order : IOrder
 
                 DO.Order updateOrders = _dal?.Order.Get(id) ?? throw new BO.NullExeption("Dal");
                 updateOrders.ShipDate = DateTime.Now;
-                lock (_locker)
+                lock (_dal)
                 {
                     _dal.Order.Update(updateOrders); 
                 }
@@ -199,7 +197,7 @@ internal class Order : IOrder
             {
                 DO.Order updateOrdersData = _dal.Order.Get(id);
                 updateOrdersData.DeliveryrDate = DateTime.Now;
-                lock (_locker)
+                lock (_dal)
                 {
                     _dal.Order.Update(updateOrdersData); 
                 }
@@ -362,7 +360,6 @@ internal class Order : IOrder
                };
     }
 }
-
 public class StatisticksOrders
 {
     public KeyStatisticksOrders? keyStatisticksOrdersByMonth { get; set; }
