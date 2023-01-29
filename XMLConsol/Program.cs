@@ -35,7 +35,7 @@ internal class Program
             int userChoice;
             do
                 Console.WriteLine("Press your choice \nexit press: 0 \nfor load xml products press: 1 \nfor load xml orders press: 2 \nfor load xml order items press: 3");
-            while (int.TryParse(Console.ReadLine(), out userChoice)); ///the user must select which entity wants to perform actions
+            while (!int.TryParse(Console.ReadLine(), out userChoice)); ///the user must select which entity wants to perform actions
             switch (userChoice)
             {
                 case (int)UserForMain.EXIT:
