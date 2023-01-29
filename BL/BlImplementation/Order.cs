@@ -344,22 +344,22 @@ internal class Order : IOrder
         IEnumerable<DO.Order?> orders = _dal?.Order.List()!;
         CultureInfo cultureInfo = CultureInfo.GetCultureInfo("en-US");
 
-        return from order in orders
-               let _order = order.GetValueOrDefault()
-               let orderDate = _order.OrderDate!.GetValueOrDefault()
-               let year = orderDate.Year
-               let monthName = cultureInfo.DateTimeFormat.GetMonthName(orderDate.Month)
-               let keyStatisticksOrdersByMonth = new KeyStatisticksOrders { Year = year, MonthName = monthName }
-               group _order by keyStatisticksOrdersByMonth into newGroup
-               select new StatisticksOrders
-               {
-                   keyStatisticksOrdersByMonth = newGroup.Key,
-                   CountOrders = newGroup.Count(),
-                   SumOfOrders = (from order in newGroup
-                                  let orderItems = _dal?.OrderItem.List(orderItem => orderItem!.Value.OredrID == order.Id)
-                                  let totalPrice = orderItems.Sum(orderItem => orderItem!.Value.Amount * orderItem.Value.Price)
-                                  select totalPrice).Sum()
-               };
+        return (from order in orders
+                let _order = order.GetValueOrDefault()
+                let orderDate = _order.OrderDate!.GetValueOrDefault()
+                let year = orderDate.Year
+                let monthName = cultureInfo.DateTimeFormat.GetMonthName(orderDate.Month)
+                let keyStatisticksOrdersByMonth = new KeyStatisticksOrders { Year = year, MonthName = monthName }
+                group _order by keyStatisticksOrdersByMonth into newGroup
+                select new StatisticksOrders
+                {
+                    keyStatisticksOrdersByMonth = newGroup.Key,
+                    CountOrders = newGroup.Count(),
+                    SumOfOrders = (from order in newGroup
+                                   let orderItems = _dal?.OrderItem.List(orderItem => orderItem!.Value.OredrID == order.Id)
+                                   let totalPrice = orderItems.Sum(orderItem => orderItem!.Value.Amount * orderItem.Value.Price)
+                                   select totalPrice).Sum()
+                }).OrderByDescending(x => x.keyStatisticksOrdersByMonth?.Year);
     }
 }
 
