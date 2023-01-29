@@ -1,7 +1,6 @@
 ﻿using DO;
 using DalApi;
 using System.Runtime.CompilerServices;
-//using System.Security.Principal;
 namespace Dal;
 /// <summary>
 /// class for Manage The order database

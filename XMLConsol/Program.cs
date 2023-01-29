@@ -1,12 +1,6 @@
 ﻿using DalApi;
 using DO;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Dal;
 
@@ -19,18 +13,18 @@ internal class Program
 
     private static void LoadOrders()
     {
-        List<Order?> orders = dallist.Order.List().ToList();
+        List<Order?> orders = dallist.Order.List()!.ToList();
         XMLTools.SaveListToXMLSerializer(orders, s_order);
     }
     private static void LoadOrderItems()
     {
-        List<OrderItem?> orderItems = dallist.OrderItem.List().ToList();
+        List<OrderItem?> orderItems = dallist.OrderItem.List()!.ToList();
         XMLTools.SaveListToXMLSerializer(orderItems, s_orderItem);
 
     }
     private static void LoadProducts()
     {
-        List<Product?> products = dallist.Product.List().ToList();
+        List<Product?> products = dallist.Product.List()!.ToList();
         XMLTools.SaveListToXMLSerializer(products, s_product);
 
     }

@@ -20,11 +20,13 @@ public partial class NewOrder : Window , INotifyPropertyChanged
     private BO.Cart cart;
     private OrderItemActions itemActions;
     private CartList? cartWindow;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     private IEnumerable<IGrouping<BO.CoffeeShop?, ProductItem?>>? groups_p;
     public IEnumerable<IGrouping<BO.CoffeeShop?, ProductItem?>> groups { get { return groups_p; } set { groups_p = value; if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("groups")); } } }
-    public event PropertyChangedEventHandler? PropertyChanged;
-    private IEnumerable<BO.ProductItem?>? productItemsp;
 
+    private IEnumerable<BO.ProductItem?>? productItemsp;
     public IEnumerable<BO.ProductItem?>? productItems { get { return productItemsp; } set { productItemsp = value; if (PropertyChanged != null)  { PropertyChanged(this, new PropertyChangedEventArgs("productItems")); } }}
 
     /// <summary>
@@ -41,7 +43,8 @@ public partial class NewOrder : Window , INotifyPropertyChanged
         groups = from item in productItems
                  group item by item.Category into x
                  select x;
-
+        _bl!.Cart.Action += initializationStore;
+        this.Closed += Window_Closed;
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.CoffeeShop));
     }
     /// <summary>
@@ -106,5 +109,14 @@ public partial class NewOrder : Window , INotifyPropertyChanged
            
         }
     }
-   
+    private void initializationStore()
+    {
+        cart.Items?.Clear();
+        cart.TotalPrice = 0;
+        OnChange();
+    }
+    private void Window_Closed(object sender, EventArgs e)
+    {
+        _bl!.Cart.Action -= initializationStore; 
+    }
 }

@@ -1,15 +1,8 @@
 ﻿using BlImplementation;
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BlApi
+namespace BlApi;
+
+public class Factory
 {
-    public class Factory
-    {
-        public static IBl? Get() => new Bl();
-    }
+    public static IBl? Get() => new Bl();
 }

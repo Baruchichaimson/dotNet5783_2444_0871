@@ -1,12 +1,4 @@
-﻿using System;
-using BlApi;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DalApi;
-using System.Text.RegularExpressions;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using BlApi;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlImplementation
@@ -20,12 +12,20 @@ namespace BlImplementation
 
         private event Action? action;
 
+        /// <summary>
+        /// to regist and deregist to event.
+        /// </summary>
         public event Action? Action
         {
             add => action += value;
             remove => action += value;
         }
 
+        /// <summary>
+        /// Invokes a list of delegates with the specified objects as parameters.
+        /// </summary>
+        /// <param name="delegates">An array of delegates to invoke.</param>
+        /// <param name="objects">The objects to pass as parameters to the delegates.</param>
         private void invokeList(Delegate[] delegates, params object[] objects)
         {
             foreach (var @delegate in delegates)
