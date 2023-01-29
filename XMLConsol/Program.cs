@@ -6,7 +6,7 @@ namespace Dal;
 
 internal class Program
 {
-    private static IDal dallist = Factory.Get()!;
+    private static readonly IDal dallist = Factory.Get()!;
     const string s_orderItem = @"OrderItems";
     const string s_product = @"Products";
     const string s_order = @"Orders";
@@ -28,12 +28,14 @@ internal class Program
         XMLTools.SaveListToXMLSerializer(products, s_product);
 
     }
-    static void Main(string[] args)
+    static void Main()
     {
         while (true) ///ask the user until he will put zero.
         {
-            Console.WriteLine("Press your choice \nexit press: 0 \nfor load xml products press: 1 \nfor load xml orders press: 2 \nfor load xml order items press: 3");
-            int.TryParse(Console.ReadLine(), out int userChoice); ///the user must select which entity wants to perform actions
+            int userChoice;
+            do
+                Console.WriteLine("Press your choice \nexit press: 0 \nfor load xml products press: 1 \nfor load xml orders press: 2 \nfor load xml order items press: 3");
+            while (int.TryParse(Console.ReadLine(), out userChoice)); ///the user must select which entity wants to perform actions
             switch (userChoice)
             {
                 case (int)UserForMain.EXIT:
