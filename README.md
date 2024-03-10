@@ -1,4 +1,13 @@
 # dotNet5783_2444_0871
+
+Store Inventory Management System
+
+Overview:
+The Store Inventory Management System is designed to efficiently manage inventory data, implement business logic, and provide a user-friendly interface for seamless operation.
+The system follows a layered architecture, separating concerns into data, business logic, and user interface layers.
+It utilizes the Singleton pattern to prevent redundancy of classes and employs a factory mechanism for extracting data from various sources.
+
+
 bonus 1 : tryparse.
 bonus 2 : using is null or empty function in string.
 bonus 3 : function update admin in the cart. 
